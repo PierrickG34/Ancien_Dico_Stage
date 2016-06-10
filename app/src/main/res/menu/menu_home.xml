@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".Controllers.HomeFragment">
+
+    <item android:id="@+id/action_add_dictionary"
+        android:title="@string/add"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/action_multiple_delete"
+        android:title="@string/delete"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+</menu>

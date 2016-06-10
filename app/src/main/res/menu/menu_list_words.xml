@@ -1,0 +1,35 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".Controllers.ListWordsActivity">
+
+    <item android:id="@+id/action_add_word"
+        android:title="@string/add_word"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/action_import_csv"
+        android:title="@string/import_csv"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/action_export_csv"
+        android:title="@string/export_csv"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/action_rename_dictionary"
+        android:title="@string/rename_dictionary"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/action_delete_words"
+        android:title="@string/delete_words"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/action_delete_dictionary"
+        android:title="@string/delete_dictionary"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+</menu>

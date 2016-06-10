@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="nb_columns_grid">1</integer>
+    <integer name="floating_menu_translation">10</integer>
+    <integer name="header_gravity">3</integer>
+</resources>

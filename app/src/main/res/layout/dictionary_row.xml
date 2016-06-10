@@ -1,0 +1,40 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:descendantFocusability="blocksDescendants">
+
+
+    <TextView
+        android:id="@+id/dictionary_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DicoName"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
+        android:paddingRight="14dp"
+        android:paddingLeft="14dp"
+        android:textColor="@color/textColor"
+        android:singleLine="true"
+        android:textSize="16sp"
+        android:background="@color/rowBackground"
+        android:layout_toLeftOf="@+id/dico_more_button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dico_more_button"
+        android:background="@color/rowBackground"
+        android:src="@drawable/ic_more_vert_black_24dp"
+        android:paddingRight="@dimen/more_button_padding"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@+id/dictionary_title"
+        android:layout_marginRight="@dimen/grid_space"/>
+
+
+</RelativeLayout>
+

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/before"
+        android:id="@+id/beforeTextView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="@dimen/edit_text_margin"
+        android:layout_marginStart="@dimen/edit_text_margin"
+        android:layout_marginRight="@dimen/edit_text_margin"
+        android:layout_marginEnd="@dimen/edit_text_margin"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/after"
+        android:id="@+id/afterTextView"
+        android:layout_below="@+id/editTextBefore"
+        android:layout_alignLeft="@+id/editTextBefore"
+        android:layout_alignStart="@+id/editTextBefore"
+        android:layout_alignRight="@+id/editTextBefore"
+        android:layout_alignEnd="@+id/editTextBefore" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTextBefore"
+        android:layout_below="@+id/beforeTextView"
+        android:layout_alignLeft="@+id/beforeTextView"
+        android:layout_alignStart="@+id/beforeTextView"
+        android:layout_alignRight="@+id/beforeTextView"
+        android:layout_alignEnd="@+id/beforeTextView" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTextAfter"
+        android:layout_below="@+id/afterTextView"
+        android:layout_alignLeft="@+id/afterTextView"
+        android:layout_alignStart="@+id/afterTextView"
+        android:layout_alignRight="@+id/afterTextView"
+        android:layout_alignEnd="@+id/afterTextView" />
+
+</RelativeLayout>

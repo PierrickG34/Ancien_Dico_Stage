@@ -1,0 +1,40 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="8dp"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
+    android:focusable="true"
+    tools:context="Controllers.HomeFragment">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/jump_to"
+            android:layout_marginLeft="@dimen/edit_text_margin"
+            android:layout_marginRight="@dimen/edit_text_margin"
+            android:textSize="@dimen/textSize"
+            android:drawableLeft="@drawable/ic_search_black_18dp"
+            android:drawablePadding="5dp"
+            android:id="@+id/search_field"
+            android:singleLine="true"
+            android:inputType="text"
+            android:imeOptions="actionGo|flagNoExtractUi" />
+
+        <com.antoine_charlotte_romain.dictionary.Controllers.Lib.HeaderGridView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/dictionary_list"
+            android:paddingTop="5dp"
+            android:paddingBottom="93dp"
+            android:clipToPadding="false"
+            android:numColumns="@integer/nb_columns_grid"
+            android:verticalSpacing="@dimen/vertical_spacing"
+            android:paddingLeft="@dimen/grid_space" />
+
+</LinearLayout>

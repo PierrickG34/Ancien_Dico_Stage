@@ -1,0 +1,26 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".AdvancedSearchResultActivity"
+    android:id="@+id/advanced_search">
+
+    <include android:id="@+id/tool_bar"
+        layout="@layout/tool_bar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"/>
+
+    <GridView
+        android:id="@+id/resultsList"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:paddingTop="5dp"
+        android:clipToPadding="false"
+        android:numColumns="@integer/nb_columns_grid"
+        android:verticalSpacing="@dimen/vertical_spacing"
+        android:horizontalSpacing="@dimen/grid_space"
+        android:paddingLeft="@dimen/grid_space"
+        android:paddingRight="@dimen/grid_space"/>
+
+</LinearLayout>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="more_button_padding">6dp</dimen>
+    <dimen name="grid_space">5dp</dimen>
+    <dimen name="vertical_spacing">5dp</dimen>
+</resources>

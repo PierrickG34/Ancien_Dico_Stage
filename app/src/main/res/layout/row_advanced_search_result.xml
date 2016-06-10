@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants"
+    android:background="@color/rowBackground">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textHeader"
+        android:text="Head"
+        android:textSize="@dimen/textSize"
+        android:textColor="@color/textColor"
+        android:paddingTop="7dp"
+        android:paddingRight="@dimen/edit_text_margin"
+        android:paddingEnd="@dimen/edit_text_margin"
+        android:singleLine="true"
+        android:layout_toLeftOf="@+id/imageButtonWord"
+        android:layout_alignLeft="@+id/textSub"
+        android:layout_alignStart="@+id/textSub" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textSub"
+        android:text="Sub"
+        android:textSize="@dimen/subTextSize"
+        android:textColor="@color/subTextColor"
+        android:layout_below="@+id/textHeader"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="@dimen/edit_text_margin"
+        android:layout_marginStart="@dimen/edit_text_margin"
+        android:paddingBottom="7dp"
+        android:paddingRight="@dimen/edit_text_margin"
+        android:paddingEnd="@dimen/edit_text_margin"
+        android:singleLine="true"
+        android:layout_toLeftOf="@+id/imageButtonWord"
+        android:layout_toStartOf="@+id/imageButtonWord" />
+
+</RelativeLayout>
