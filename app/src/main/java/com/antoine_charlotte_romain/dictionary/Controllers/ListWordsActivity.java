@@ -104,6 +104,7 @@ public class ListWordsActivity extends AppCompatActivity implements AdapterView.
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(R.string.list_words_activity);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
