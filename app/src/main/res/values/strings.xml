@@ -115,4 +115,6 @@
     <string name="delete_progress">Delete in progress</string>
 
     <string name="see_updated">See updated words</string>
+    <string name="maximum_translate">You can\'t add more than 5 translations.</string>
+    <string name="translation_children">Translation </string>
 </resources>

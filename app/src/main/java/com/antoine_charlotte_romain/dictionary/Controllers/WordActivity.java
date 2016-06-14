@@ -95,16 +95,16 @@ public class WordActivity  extends AppCompatActivity {
                     if (enfants == 2) {
                         relativeParams.addRule(RelativeLayout.BELOW, R.id.editTextTranslation1);
                         lEditText.setHintTextColor(Color.parseColor("#6d6d6d"));
-                        lEditText.setHint("Transtation " + enfants);
+                        lEditText.setHint(getResources().getString(R.string.translation_children) + " " + enfants);
 
                     } else {
                         relativeParams.addRule(RelativeLayout.BELOW, layoutTranslations.getChildAt(enfants - 1).getId());
                         lEditText.setHintTextColor(Color.parseColor("#777777"));
-                        lEditText.setHint("Transtation " + enfants);
+                        lEditText.setHint(getResources().getString(R.string.translation_children) + " " + enfants);
                     }
                     layoutTranslations.addView(lEditText, relativeParams);
                 } else {
-                    Toast.makeText(getApplicationContext(), "You can't add more than 5 translations", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),R.string.maximum_translate, Toast.LENGTH_SHORT).show();
                 }
 
             }

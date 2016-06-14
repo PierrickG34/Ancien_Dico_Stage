@@ -99,7 +99,7 @@
             android:layout_alignRight="@+id/textViewTranslation"
             android:layout_alignEnd="@+id/textViewTranslation"
             android:imeOptions="flagNoExtractUi"
-            android:hint="Translation 1"
+            android:hint="@string/translation_children"
             />
 
     </RelativeLayout>
