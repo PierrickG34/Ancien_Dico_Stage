@@ -106,8 +106,9 @@
     <string name="about">About</string>
     <string name="language">Language</string>
     <string name="title_activity_language">Language selection</string>
-    <string name="version">Version 1.0</string>
-    <string name="about_message">App created by Romain GUILMET, Antoine JOERG  and Charlotte TOUCHARD.</string>
+    <string name="version">Version 2.0</string>
+    <string name="about_message">App created by Romain GUILMET, Antoine JOERG and Charlotte TOUCHARD.</string>
+    <string name="about_message_update">App upgraded by Jeremy BEULE, Melissa BIGNOUX, Loic DUMAS, Pierrick GIULIANI, Thomas GRASSELLI, Kevin MARGUERITTE and Dorian VACHER.</string>
     <string name="all_rights_reserved">Gearoid O\'NEILL - All rights reserved.</string>
     <string name="from_csv">From a csv</string>
     <string name="import_progress">Import in progress</string>

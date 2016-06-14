@@ -36,6 +36,7 @@ public class AdvancedSearchResultActivity extends AppCompatActivity {
         // Creating The Toolbar and setting it as the Toolbar for the activity
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(R.string.title_activity_advanced_search_result);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Get data associated to the advanced search
