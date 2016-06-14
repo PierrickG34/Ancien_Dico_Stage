@@ -3,7 +3,12 @@ package com.antoine_charlotte_romain.dictionary.Controllers;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -14,7 +19,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.antoine_charlotte_romain.dictionary.Business.Dictionary;
@@ -24,9 +32,10 @@ import com.antoine_charlotte_romain.dictionary.DataModel.SearchDateDataModel;
 import com.antoine_charlotte_romain.dictionary.DataModel.WordDataModel;
 import com.antoine_charlotte_romain.dictionary.R;
 import com.antoine_charlotte_romain.dictionary.Utilities.KeyboardUtility;
+import android.view.View.OnClickListener;
 
 
-public class WordActivity extends AppCompatActivity {
+public class WordActivity  extends AppCompatActivity {
 
     private EditText dictionaryText;
     private EditText headwordText;
@@ -34,6 +43,11 @@ public class WordActivity extends AppCompatActivity {
     private EditText noteText;
     private Toolbar toolbar;
     private MenuItem saveButton;
+    private Button addButton;
+
+    private RelativeLayout layoutTranslations;
+    private FloatingActionButton addTranslationButton;
+    private RelativeLayout word_layout;
 
     private WordDataModel wdm;
     private Word selectedWord;
@@ -54,13 +68,55 @@ public class WordActivity extends AppCompatActivity {
 
         dictionaryText = (EditText) findViewById(R.id.editTextDictionary);
         headwordText = (EditText) findViewById(R.id.editTextHeadword);
-        translationText = (EditText) findViewById(R.id.editTextTranslation);
+        translationText = (EditText) findViewById(R.id.editTextTranslation1);
         noteText = (EditText) findViewById(R.id.editTextNote);
+        word_layout = (RelativeLayout) findViewById(R.id.word_layout) ;
+
+
+
+        layoutTranslations = (RelativeLayout) findViewById(R.id.layoutTranslations);
+        addTranslationButton = (FloatingActionButton) findViewById(R.id.add_button1);
+        addTranslationButton.setOnClickListener(new OnClickListener() {
+            /** This function is called when the user clicks on the add Button.
+             *  It adds a new EditText unless the number of EditText is superior to 5.
+             */
+
+            @Override
+            public void onClick(View v) {
+                EditText lEditText = new EditText(getApplicationContext());
+                int enfants = layoutTranslations.getChildCount();
+                if(enfants<6) {
+                    @IdRes int id = enfants + 1;
+                    lEditText.setId(id);
+                    RelativeLayout.LayoutParams relativeParams = new RelativeLayout.LayoutParams(headwordText.getWidth(), headwordText.getHeight());
+                    lEditText.setTextColor(Color.BLACK);
+                    lEditText.getBackground().setColorFilter(Color.parseColor("#6d6d6d"), PorterDuff.Mode.SRC_ATOP);
+
+                    if (enfants == 2) {
+                        relativeParams.addRule(RelativeLayout.BELOW, R.id.editTextTranslation1);
+                        lEditText.setHintTextColor(Color.parseColor("#6d6d6d"));
+                        lEditText.setHint("Transtation " + enfants);
+
+                    } else {
+                        relativeParams.addRule(RelativeLayout.BELOW, layoutTranslations.getChildAt(enfants - 1).getId());
+                        lEditText.setHintTextColor(Color.parseColor("#777777"));
+                        lEditText.setHint("Transtation " + enfants);
+                    }
+                    layoutTranslations.addView(lEditText, relativeParams);
+                } else {
+                    Toast.makeText(getApplicationContext(), "You can't add more than 5 translations", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
         dictionaryText.setEnabled(false);
         dictionaryText.setText(selectedDictionary.getTitle());
+
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         setupUI(findViewById(R.id.word_layout));
     }
+
 
     /**
      * This function is called when a child activity back to this view or finish
