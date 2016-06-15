@@ -108,7 +108,7 @@ public class ListWordsActivity extends AppCompatActivity implements AdapterView.
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
-        selectedDictionary = (Dictionary)intent.getSerializableExtra(MainActivity.EXTRA_DICTIONARY);
+        selectedDictionary = (Dictionary)intent.getSerializableExtra(MainActivityKot.Companion.getEXTRA_DICTIONARY());
 
         filterWords = (EditText) findViewById(R.id.filterWords);
         gridViewWords = (GridView) findViewById(R.id.gridViewWords);
@@ -134,8 +134,8 @@ public class ListWordsActivity extends AppCompatActivity implements AdapterView.
 
         registerForContextMenu(gridViewWords);
 
-        if(intent.getBooleanExtra(MainActivity.EXTRA_RENAME,false)) {
-            getIntent().removeExtra(MainActivity.EXTRA_RENAME);
+        if(intent.getBooleanExtra(MainActivityKot.Companion.getEXTRA_RENAME(),false)) {
+            getIntent().removeExtra(MainActivityKot.Companion.getEXTRA_RENAME());
             renameDictionary(findViewById(R.id.list_words_layout));
         }
 
@@ -397,7 +397,7 @@ public class ListWordsActivity extends AppCompatActivity implements AdapterView.
         }
         Intent newWordIntent = new Intent(this, WordActivity.class);
 
-        newWordIntent.putExtra(MainActivity.EXTRA_DICTIONARY, selectedDictionary);
+        newWordIntent.putExtra(MainActivityKot.Companion.getEXTRA_DICTIONARY(), selectedDictionary);
 
         startActivityForResult(newWordIntent, NEW_WORD);
 
@@ -415,7 +415,7 @@ public class ListWordsActivity extends AppCompatActivity implements AdapterView.
             showFloatingMenu(view);
         }
         Intent exportCSVintent = new Intent(this, CSVExportActivity.class);
-        exportCSVintent.putExtra(MainActivity.EXTRA_DICTIONARY, selectedDictionary);
+        exportCSVintent.putExtra(MainActivityKot.Companion.getEXTRA_DICTIONARY(), selectedDictionary);
 
         startActivity(exportCSVintent);
 
@@ -465,10 +465,10 @@ public class ListWordsActivity extends AppCompatActivity implements AdapterView.
      * @param view
      */
     public void advancedSearch(View view){
-        Intent advancedSearchIntent = new Intent(this, MainActivity.class);
+        Intent advancedSearchIntent = new Intent(this, MainActivityKot.class);
 
-        advancedSearchIntent.putExtra(MainActivity.EXTRA_FRAGMENT, "advancedSearch");
-        advancedSearchIntent.putExtra(MainActivity.EXTRA_DICTIONARY, selectedDictionary);
+        advancedSearchIntent.putExtra(MainActivityKot.Companion.getEXTRA_FRAGMENT(), "advancedSearch");
+        advancedSearchIntent.putExtra(MainActivityKot.Companion.getEXTRA_DICTIONARY(), selectedDictionary);
 
         startActivity(advancedSearchIntent);
 
@@ -599,13 +599,13 @@ public class ListWordsActivity extends AppCompatActivity implements AdapterView.
     private void modify(int position){
         Intent wordDetailIntent = new Intent(this, WordActivity.class);
 
-        wordDetailIntent.putExtra(MainActivity.EXTRA_WORD, myWordsList.get(position));
+        wordDetailIntent.putExtra(MainActivityKot.Companion.getEXTRA_WORD(), myWordsList.get(position));
         if(selectedDictionary != null) {
-            wordDetailIntent.putExtra(MainActivity.EXTRA_DICTIONARY, selectedDictionary);
+            wordDetailIntent.putExtra(MainActivityKot.Companion.getEXTRA_DICTIONARY(), selectedDictionary);
         }
         else{
             ddm = new DictionaryDataModel(getApplicationContext());
-            wordDetailIntent.putExtra(MainActivity.EXTRA_DICTIONARY, ddm.select(myWordsList.get(position).getDictionaryID()));
+            wordDetailIntent.putExtra(MainActivityKot.Companion.getEXTRA_DICTIONARY(), ddm.select(myWordsList.get(position).getDictionaryID()));
         }
 
         startActivityForResult(wordDetailIntent, DELETE_WORD);

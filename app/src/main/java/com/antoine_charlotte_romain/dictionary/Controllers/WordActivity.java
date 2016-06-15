@@ -5,12 +5,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -32,7 +30,6 @@ import com.antoine_charlotte_romain.dictionary.DataModel.SearchDateDataModel;
 import com.antoine_charlotte_romain.dictionary.DataModel.WordDataModel;
 import com.antoine_charlotte_romain.dictionary.R;
 import com.antoine_charlotte_romain.dictionary.Utilities.KeyboardUtility;
-import android.view.View.OnClickListener;
 
 
 public class WordActivity  extends AppCompatActivity {
@@ -64,8 +61,8 @@ public class WordActivity  extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
-        selectedWord = (Word)intent.getSerializableExtra(MainActivity.EXTRA_WORD);
-        selectedDictionary = (Dictionary)intent.getSerializableExtra(MainActivity.EXTRA_DICTIONARY);
+        selectedWord = (Word)intent.getSerializableExtra(MainActivityKot.Companion.getEXTRA_WORD());
+        selectedDictionary = (Dictionary)intent.getSerializableExtra(MainActivityKot.Companion.getEXTRA_DICTIONARY());
 
         dictionaryText = (EditText) findViewById(R.id.editTextDictionary);
         headwordText = (EditText) findViewById(R.id.editTextHeadword);

@@ -42,12 +42,12 @@ public class AdvancedSearchResultActivity extends AppCompatActivity {
         // Get data associated to the advanced search
         Intent intent = getIntent();
         if (intent != null){
-            String begin = intent.getStringExtra(MainActivity.EXTRA_BEGIN_STRING);
-            String middle = intent.getStringExtra(MainActivity.EXTRA_MIDDLE_STRING);
-            String end = intent.getStringExtra(MainActivity.EXTRA_END_STRING);
-            String searchOption = intent.getStringExtra(MainActivity.EXTRA_SEARCH_DATA);
-            String dico = intent.getStringExtra(MainActivity.EXTRA_DICTIONARY);
-            String partWhole = intent.getStringExtra(MainActivity.EXTRA_PART_OR_WHOLE);
+            String begin = intent.getStringExtra(MainActivityKot.Companion.getEXTRA_BEGIN_STRING());
+            String middle = intent.getStringExtra(MainActivityKot.Companion.getEXTRA_MIDDLE_STRING());
+            String end = intent.getStringExtra(MainActivityKot.Companion.getEXTRA_END_STRING());
+            String searchOption = intent.getStringExtra(MainActivityKot.Companion.getEXTRA_SEARCH_DATA());
+            String dico = intent.getStringExtra(MainActivityKot.Companion.getEXTRA_DICTIONARY());
+            String partWhole = intent.getStringExtra(MainActivityKot.Companion.getEXTRA_PART_OR_WHOLE());
 
             // find id of the dictionary
             long id;
@@ -60,24 +60,24 @@ public class AdvancedSearchResultActivity extends AppCompatActivity {
 
             // search
             wdm = new WordDataModel(this);
-            if (partWhole.equals(MainActivity.PART_WORD)){
-                if(searchOption.equals(MainActivity.HEADWORD_ONLY)){
+            if (partWhole.equals(MainActivityKot.Companion.getPART_WORD())){
+                if(searchOption.equals(MainActivityKot.Companion.getHEADWORD_ONLY())){
                     results = wdm.selectHeadword(begin, middle, end, id);
-                } else if (searchOption.equals(MainActivity.ALL_DATA)){
+                } else if (searchOption.equals(MainActivityKot.Companion.getALL_DATA())){
                     results = wdm.selectWholeWord(begin, middle, end, id);
-                } else if (searchOption.equals(MainActivity.MEANING_ONLY)){
+                } else if (searchOption.equals(MainActivityKot.Companion.getMEANING_ONLY())){
                     results = wdm.selectTranslation(begin, middle, end, id);
-                } else if (searchOption.equals(MainActivity.NOTES_ONLY)){
+                } else if (searchOption.equals(MainActivityKot.Companion.getNOTES_ONLY())){
                     results = wdm.selectNote(begin, middle, end, id);
                 }
             } else {
-                if(searchOption.equals(MainActivity.HEADWORD_ONLY)){
+                if(searchOption.equals(MainActivityKot.Companion.getHEADWORD_ONLY())){
                     results = wdm.selectWholeHeadword(end, id);
-                } else if (searchOption.equals(MainActivity.ALL_DATA)){
+                } else if (searchOption.equals(MainActivityKot.Companion.getALL_DATA())){
                     results = wdm.selectWholeAllData(end, id);
-                } else if (searchOption.equals(MainActivity.MEANING_ONLY)){
+                } else if (searchOption.equals(MainActivityKot.Companion.getMEANING_ONLY())){
                     results = wdm.selectWholeTranslation(end, id);
-                } else if (searchOption.equals(MainActivity.NOTES_ONLY)){
+                } else if (searchOption.equals(MainActivityKot.Companion.getNOTES_ONLY())){
                     results = wdm.selectWholeNote(end, id);
                 }
             }
@@ -96,10 +96,10 @@ public class AdvancedSearchResultActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent wordDetailIntent = new Intent(AdvancedSearchResultActivity.this, WordActivity.class);
-                    wordDetailIntent.putExtra(MainActivity.EXTRA_WORD, results.get(position));
+                    wordDetailIntent.putExtra(MainActivityKot.Companion.getEXTRA_WORD(), results.get(position));
 
                     DictionaryDataModel ddm = new DictionaryDataModel(getApplicationContext());
-                    wordDetailIntent.putExtra(MainActivity.EXTRA_DICTIONARY, ddm.select(results.get(position).getDictionaryID()));
+                    wordDetailIntent.putExtra(MainActivityKot.Companion.getEXTRA_DICTIONARY(), ddm.select(results.get(position).getDictionaryID()));
 
                     startActivity(wordDetailIntent);
                 }

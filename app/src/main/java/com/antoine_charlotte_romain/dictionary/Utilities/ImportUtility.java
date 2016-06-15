@@ -1,22 +1,15 @@
 package com.antoine_charlotte_romain.dictionary.Utilities;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
-import android.os.Message;
 
 import com.antoine_charlotte_romain.dictionary.Business.Dictionary;
 import com.antoine_charlotte_romain.dictionary.Business.Word;
-import com.antoine_charlotte_romain.dictionary.Controllers.ListWordsActivity;
-import com.antoine_charlotte_romain.dictionary.Controllers.MainActivity;
 import com.antoine_charlotte_romain.dictionary.DataModel.WordDataModel;
 import com.antoine_charlotte_romain.dictionary.R;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;

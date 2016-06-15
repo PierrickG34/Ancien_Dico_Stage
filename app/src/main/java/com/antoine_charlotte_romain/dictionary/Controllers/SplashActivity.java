@@ -25,7 +25,7 @@ public class SplashActivity extends Activity {
             public void run() {
                 /* Create an Intent that will start the Menu-Activity. */
                 splashSound.release();
-                Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
+                Intent mainIntent = new Intent(SplashActivity.this, MainActivityKot.class);
                 SplashActivity.this.startActivity(mainIntent);
                 SplashActivity.this.finish();
             }

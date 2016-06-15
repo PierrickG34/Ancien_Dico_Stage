@@ -306,9 +306,9 @@ public class HistoryFragment extends Fragment {
     public void seeWord(int position){
         Intent wordDetailIntent = new Intent(getActivity(), WordActivity.class);
 
-        wordDetailIntent.putExtra(MainActivity.EXTRA_WORD, mySearchDateList.get(position).getWord());
+        wordDetailIntent.putExtra(MainActivityKot.Companion.getEXTRA_WORD(), mySearchDateList.get(position).getWord());
         DictionaryDataModel ddm = new DictionaryDataModel(getActivity());
-        wordDetailIntent.putExtra(MainActivity.EXTRA_DICTIONARY, ddm.select(mySearchDateList.get(position).getWord().getDictionaryID()));
+        wordDetailIntent.putExtra(MainActivityKot.Companion.getEXTRA_DICTIONARY(), ddm.select(mySearchDateList.get(position).getWord().getDictionaryID()));
 
         startActivity(wordDetailIntent);
 

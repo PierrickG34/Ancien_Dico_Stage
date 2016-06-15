@@ -103,7 +103,7 @@ public class CSVExportActivity extends AppCompatActivity {
         // Getting the dictionary to export
         Intent intent = getIntent();
         if (intent != null){
-            dictionary = (Dictionary)intent.getSerializableExtra(MainActivity.EXTRA_DICTIONARY);
+            dictionary = (Dictionary)intent.getSerializableExtra(MainActivityKot.Companion.getEXTRA_DICTIONARY());
 
             fileName.setText(dictionary.getTitle() + ".csv");
             fileName.setSelection(0,dictionary.getTitle().length());

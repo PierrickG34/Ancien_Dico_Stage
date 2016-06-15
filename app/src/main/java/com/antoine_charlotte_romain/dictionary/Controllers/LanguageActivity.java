@@ -83,7 +83,7 @@ public class LanguageActivity extends AppCompatActivity {
                 getApplicationContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
 
                 // Come back to the Home
-                Intent refresh = new Intent(LanguageActivity.this, MainActivity.class);
+                Intent refresh = new Intent(LanguageActivity.this, MainActivityKot.class);
                 startActivity(refresh);
             }
         });

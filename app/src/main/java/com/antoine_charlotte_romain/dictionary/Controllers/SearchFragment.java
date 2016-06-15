@@ -52,7 +52,7 @@ public class SearchFragment extends Fragment {
         thisView = inflater.inflate(R.layout.fragment_search,container,false);
 
         Intent intent = getActivity().getIntent();
-        selectedDictionary = (Dictionary)intent.getSerializableExtra(MainActivity.EXTRA_DICTIONARY);
+        selectedDictionary = (Dictionary)intent.getSerializableExtra(MainActivityKot.Companion.getEXTRA_DICTIONARY());
 
         beginningText = ((EditText) thisView.findViewById(R.id.beginString));
         containsText = ((EditText) thisView.findViewById(R.id.middleString));
@@ -299,17 +299,17 @@ public class SearchFragment extends Fragment {
     public void advancedSearch(View v){
         Intent intent = new Intent(getActivity(), AdvancedSearchResultActivity.class);
 
-        intent.putExtra(MainActivity.EXTRA_BEGIN_STRING, beginningText.getText().toString());
-        intent.putExtra(MainActivity.EXTRA_MIDDLE_STRING, containsText.getText().toString());
-        intent.putExtra(MainActivity.EXTRA_END_STRING, endText.getText().toString());
+        intent.putExtra(MainActivityKot.Companion.getEXTRA_BEGIN_STRING(), beginningText.getText().toString());
+        intent.putExtra(MainActivityKot.Companion.getEXTRA_MIDDLE_STRING(), containsText.getText().toString());
+        intent.putExtra(MainActivityKot.Companion.getEXTRA_END_STRING(), endText.getText().toString());
 
         // Let's see if the search has to be done on part or whole word
         switch (((RadioGroup)thisView.findViewById(R.id.boutonsradio)).getCheckedRadioButtonId()) {
             case R.id.part:
-                intent.putExtra(MainActivity.EXTRA_PART_OR_WHOLE, MainActivity.PART_WORD);
+                intent.putExtra(MainActivityKot.Companion.getEXTRA_PART_OR_WHOLE(), MainActivityKot.Companion.getPART_WORD());
                 break;
             case R.id.whole:
-                intent.putExtra(MainActivity.EXTRA_PART_OR_WHOLE, MainActivity.WHOLE_WORD);
+                intent.putExtra(MainActivityKot.Companion.getEXTRA_PART_OR_WHOLE(), MainActivityKot.Companion.getWHOLE_WORD());
                 break;
         }
 
@@ -319,23 +319,23 @@ public class SearchFragment extends Fragment {
 
         switch (getSearchChoiceRank(searchChoice)) {
             case 0:
-                intent.putExtra(MainActivity.EXTRA_SEARCH_DATA, MainActivity.HEADWORD_ONLY);
+                intent.putExtra(MainActivityKot.Companion.getEXTRA_SEARCH_DATA(), MainActivityKot.Companion.getHEADWORD_ONLY());
                 break;
             case 1:
-                intent.putExtra(MainActivity.EXTRA_SEARCH_DATA, MainActivity.MEANING_ONLY);
+                intent.putExtra(MainActivityKot.Companion.getEXTRA_SEARCH_DATA(), MainActivityKot.Companion.getMEANING_ONLY());
                 break;
             case 2:
-                intent.putExtra(MainActivity.EXTRA_SEARCH_DATA, MainActivity.NOTES_ONLY);
+                intent.putExtra(MainActivityKot.Companion.getEXTRA_SEARCH_DATA(), MainActivityKot.Companion.getNOTES_ONLY());
                 break;
             case 3:
-                intent.putExtra(MainActivity.EXTRA_SEARCH_DATA, MainActivity.ALL_DATA);
+                intent.putExtra(MainActivityKot.Companion.getEXTRA_SEARCH_DATA(), MainActivityKot.Companion.getALL_DATA());
                 break;
         }
 
         // Let's get the targeted dictionary
         tmp = targetDictionary.getText().toString();
         String dico = tmp.replace((getString(R.string.target_dico) + " : "), "");
-        intent.putExtra(MainActivity.EXTRA_DICTIONARY, dico);
+        intent.putExtra(MainActivityKot.Companion.getEXTRA_DICTIONARY(), dico);
 
         startActivity(intent);
 

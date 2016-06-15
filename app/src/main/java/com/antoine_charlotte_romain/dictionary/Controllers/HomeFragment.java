@@ -16,7 +16,6 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.text.method.ScrollingMovementMethod;
 import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.Gravity;
@@ -73,7 +72,7 @@ public class HomeFragment extends Fragment implements DictionaryAdapter.Dictiona
     /**
      * The view corresponding to this fragment.
      *
-     * @see MainActivity
+     * @see MainActivityKot
      */
     private View v;
 
@@ -322,7 +321,7 @@ public class HomeFragment extends Fragment implements DictionaryAdapter.Dictiona
      */
     private void initFloatingActionButton()
     {
-        addButton = ((MainActivity)(getActivity())).getAddButton();
+        addButton = ((MainActivityKot)(getActivity())).getAddButton();
         addButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -410,7 +409,7 @@ public class HomeFragment extends Fragment implements DictionaryAdapter.Dictiona
                                 }
                                 read(dictionariesDisplay.indexOf(d));
                             } else {
-                                Snackbar.make(((MainActivity)(getActivity())).getRootLayout(), R.string.dictionary_not_added, Snackbar.LENGTH_LONG).setAction(R.string.close_button, new View.OnClickListener() {
+                                Snackbar.make(((MainActivityKot)(getActivity())).getRootLayout(), R.string.dictionary_not_added, Snackbar.LENGTH_LONG).setAction(R.string.close_button, new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
 
@@ -418,7 +417,7 @@ public class HomeFragment extends Fragment implements DictionaryAdapter.Dictiona
                                 }).show();
                             }
                         } else {
-                            Snackbar.make(((MainActivity)(getActivity())).getRootLayout(), R.string.dictionary_not_added_empty_string, Snackbar.LENGTH_LONG).setAction(R.string.close_button, new View.OnClickListener() {
+                            Snackbar.make(((MainActivityKot)(getActivity())).getRootLayout(), R.string.dictionary_not_added_empty_string, Snackbar.LENGTH_LONG).setAction(R.string.close_button, new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
 
@@ -490,7 +489,7 @@ public class HomeFragment extends Fragment implements DictionaryAdapter.Dictiona
     {
         Intent intent = new Intent(HomeFragment.this.getActivity(),ListWordsActivity.class);
         if(position != -1)
-            intent.putExtra(MainActivity.EXTRA_DICTIONARY, dictionariesDisplay.get(position));
+            intent.putExtra(MainActivityKot.Companion.getEXTRA_DICTIONARY(), dictionariesDisplay.get(position));
         startActivity(intent);
 
         if(searchBox.getText().toString().trim().length() > 0) {
@@ -536,7 +535,7 @@ public class HomeFragment extends Fragment implements DictionaryAdapter.Dictiona
                                 searchBox.setText("");
                             }
 
-                            Snackbar.make(((MainActivity)(getActivity())).getRootLayout(), R.string.dictionary_renamed, Snackbar.LENGTH_LONG).setAction(R.string.close_button, new View.OnClickListener() {
+                            Snackbar.make(((MainActivityKot)(getActivity())).getRootLayout(), R.string.dictionary_renamed, Snackbar.LENGTH_LONG).setAction(R.string.close_button, new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
 
@@ -544,7 +543,7 @@ public class HomeFragment extends Fragment implements DictionaryAdapter.Dictiona
                             }).show();
                         } else {
                             d.setTitle(title);
-                            Snackbar.make(((MainActivity)(getActivity())).getRootLayout(), R.string.dictionary_not_renamed, Snackbar.LENGTH_LONG).setAction(R.string.close_button, new View.OnClickListener() {
+                            Snackbar.make(((MainActivityKot)(getActivity())).getRootLayout(), R.string.dictionary_not_renamed, Snackbar.LENGTH_LONG).setAction(R.string.close_button, new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
 
@@ -593,7 +592,7 @@ public class HomeFragment extends Fragment implements DictionaryAdapter.Dictiona
         dictionariesDisplay.remove(d);
         adapter.notifyDataSetChanged();
         undo = false;
-        Snackbar snack = Snackbar.make(((MainActivity)(getActivity())).getRootLayout(), d.getTitle() + getString(R.string.deleted), Snackbar.LENGTH_LONG).setAction(R.string.undo, new View.OnClickListener() {
+        Snackbar snack = Snackbar.make(((MainActivityKot)(getActivity())).getRootLayout(), d.getTitle() + getString(R.string.deleted), Snackbar.LENGTH_LONG).setAction(R.string.undo, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 undo = true;
@@ -652,7 +651,7 @@ public class HomeFragment extends Fragment implements DictionaryAdapter.Dictiona
     public void export(int position)
     {
         Intent exportCSVintent = new Intent(getActivity(), CSVExportActivity.class);
-        exportCSVintent.putExtra(MainActivity.EXTRA_DICTIONARY, dictionariesDisplay.get(position));
+        exportCSVintent.putExtra(MainActivityKot.Companion.getEXTRA_DICTIONARY(), dictionariesDisplay.get(position));
         startActivity(exportCSVintent);
         if(searchBox.getText().toString().trim().length() > 0) {
             searchBox.setText("");
@@ -680,8 +679,8 @@ public class HomeFragment extends Fragment implements DictionaryAdapter.Dictiona
                 @Override
                 public void handleMessage(Message msg) {
                     Intent intent = new Intent(c,ListWordsActivity.class);
-                    intent.putExtra(MainActivity.EXTRA_DICTIONARY, d);
-                    intent.putExtra(MainActivity.EXTRA_RENAME, true);
+                    intent.putExtra(MainActivityKot.Companion.getEXTRA_DICTIONARY(), d);
+                    intent.putExtra(MainActivityKot.Companion.getEXTRA_RENAME(), true);
                     c.startActivity(intent);
                 }
             };

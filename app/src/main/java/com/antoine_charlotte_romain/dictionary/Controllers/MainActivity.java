@@ -24,7 +24,6 @@ import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.ViewPagerAdap
 import com.antoine_charlotte_romain.dictionary.Controllers.Lib.SlidingTabLayout;
 import com.antoine_charlotte_romain.dictionary.R;
 import com.antoine_charlotte_romain.dictionary.Utilities.KeyboardUtility;
-import com.antoine_charlotte_romain.dictionary.Utilities.StringsUtility;
 
 /**
  */

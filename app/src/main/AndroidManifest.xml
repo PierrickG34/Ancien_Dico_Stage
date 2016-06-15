@@ -21,20 +21,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Controllers.MainActivity"
+            android:name=".Controllers.MainActivityKot"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:windowSoftInputMode="adjustPan" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".Controllers.ListWordsActivity"
             android:label="@string/list_words_activity"
             android:launchMode="singleTop"
-            android:parentActivityName=".Controllers.MainActivity" >
+            android:parentActivityName=".Controllers.MainActivityKot" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Controllers.MainActivity" />
+                android:value=".Controllers.MainActivityKot" />
         </activity>
         <activity
             android:name=".Controllers.WordActivity"
@@ -47,10 +51,10 @@
         <activity
             android:name=".Controllers.AdvancedSearchResultActivity"
             android:label="@string/title_activity_advanced_search_result"
-            android:parentActivityName=".Controllers.MainActivity" >
+            android:parentActivityName=".Controllers.MainActivityKot" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Controllers.MainActivity" />
+                android:value=".Controllers.MainActivityKot" />
         </activity>
         <activity
             android:name=".Controllers.CSVExportActivity"
@@ -66,18 +70,18 @@
         <activity
             android:name=".Controllers.LanguageActivity"
             android:label="@string/title_activity_language"
-            android:parentActivityName=".Controllers.MainActivity" >
+            android:parentActivityName=".Controllers.MainActivityKot" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Controllers.MainActivity" />
+                android:value=".Controllers.MainActivityKot" />
         </activity>
         <activity
             android:name=".Controllers.AboutActivityKot"
             android:label="@string/about"
-            android:parentActivityName=".Controllers.MainActivity" >
+            android:parentActivityName=".Controllers.MainActivityKot" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Controllers.MainActivity" />
+                android:value=".Controllers.MainActivityKot" />
         </activity>
 
     </application>
