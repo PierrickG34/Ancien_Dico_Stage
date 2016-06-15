@@ -100,7 +100,7 @@
             android:layout_alignEnd="@+id/textViewTranslation"
             android:imeOptions="flagNoExtractUi"
             android:hint="@string/translation_children"
-            />
+            android:visibility="visible" />
 
     </RelativeLayout>
     <LinearLayout
@@ -119,6 +119,23 @@
             android:layout_weight="1"
             />
 
+        <requestFocus
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/remove_button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_remove_white_24"
+            app:borderWidth="0dp"
+            app:fabSize="normal"
+            android:visibility="invisible"
+            android:layout_marginLeft="10dp"
+            android:onClick="onClick"
+            android:layout_marginRight="15dp" />
+
+
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/add_button1"
             android:layout_width="wrap_content"
@@ -128,8 +145,9 @@
             app:fabSize="normal"
             android:visibility="visible"
             android:layout_marginLeft="10dp"
-            android:layout_gravity="right"
+            android:onClick="onClick"
             android:layout_marginRight="15dp" />
+
 
     </LinearLayout>
 

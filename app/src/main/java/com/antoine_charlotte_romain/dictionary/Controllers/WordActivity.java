@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewManager;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -75,40 +76,41 @@ public class WordActivity  extends AppCompatActivity {
 
 
         layoutTranslations = (RelativeLayout) findViewById(R.id.layoutTranslations);
-        addTranslationButton = (FloatingActionButton) findViewById(R.id.add_button1);
-        addTranslationButton.setOnClickListener(new OnClickListener() {
-            /** This function is called when the user clicks on the add Button.
-             *  It adds a new EditText unless the number of EditText is superior to 5.
-             */
 
-            @Override
-            public void onClick(View v) {
-                EditText lEditText = new EditText(getApplicationContext());
-                int enfants = layoutTranslations.getChildCount();
-                if(enfants<6) {
-                    @IdRes int id = enfants + 1;
-                    lEditText.setId(id);
-                    RelativeLayout.LayoutParams relativeParams = new RelativeLayout.LayoutParams(headwordText.getWidth(), headwordText.getHeight());
-                    lEditText.setTextColor(Color.BLACK);
-                    lEditText.getBackground().setColorFilter(Color.parseColor("#6d6d6d"), PorterDuff.Mode.SRC_ATOP);
-
-                    if (enfants == 2) {
-                        relativeParams.addRule(RelativeLayout.BELOW, R.id.editTextTranslation1);
-                        lEditText.setHintTextColor(Color.parseColor("#6d6d6d"));
-                        lEditText.setHint(getResources().getString(R.string.translation_children) + " " + enfants);
-
-                    } else {
-                        relativeParams.addRule(RelativeLayout.BELOW, layoutTranslations.getChildAt(enfants - 1).getId());
-                        lEditText.setHintTextColor(Color.parseColor("#777777"));
-                        lEditText.setHint(getResources().getString(R.string.translation_children) + " " + enfants);
-                    }
-                    layoutTranslations.addView(lEditText, relativeParams);
-                } else {
-                    Toast.makeText(getApplicationContext(),R.string.maximum_translate, Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
+//    addTranslationButton = (FloatingActionButton) findViewById(R.id.add_button1);
+//    addTranslationButton.setOnClickListener(new OnClickListener() {
+//        /** This function is called when the user clicks on the add Button.
+//         *  It adds a new EditText unless the number of EditText is superior to 5.
+//         */
+//
+//        @Override
+//        public void onClick(View v) {
+//            EditText lEditText = new EditText(getApplicationContext());
+//            int enfants = layoutTranslations.getChildCount();
+//            if(enfants<6) {
+//                @IdRes int id = enfants + 1;
+//                lEditText.setId(id);
+//                RelativeLayout.LayoutParams relativeParams = new RelativeLayout.LayoutParams(headwordText.getWidth(), headwordText.getHeight());
+//                lEditText.setTextColor(Color.BLACK);
+//                lEditText.getBackground().setColorFilter(Color.parseColor("#6d6d6d"), PorterDuff.Mode.SRC_ATOP);
+//
+//                if (enfants == 2) {
+//                    relativeParams.addRule(RelativeLayout.BELOW, R.id.editTextTranslation1);
+//                    lEditText.setHintTextColor(Color.parseColor("#6d6d6d"));
+//                    lEditText.setHint(getResources().getString(R.string.translation_children) + " " + enfants);
+//
+//                } else {
+//                    relativeParams.addRule(RelativeLayout.BELOW, layoutTranslations.getChildAt(enfants - 1).getId());
+//                    lEditText.setHintTextColor(Color.parseColor("#777777"));
+//                    lEditText.setHint(getResources().getString(R.string.translation_children) + " " + enfants);
+//                }
+//                layoutTranslations.addView(lEditText, relativeParams);
+//            } else {
+//                Toast.makeText(getApplicationContext(),R.string.maximum_translate, Toast.LENGTH_SHORT).show();
+//            }
+//
+//        }
+//    });
 
         dictionaryText.setEnabled(false);
         dictionaryText.setText(selectedDictionary.getTitle());
@@ -117,6 +119,54 @@ public class WordActivity  extends AppCompatActivity {
         setupUI(findViewById(R.id.word_layout));
     }
 
+    public void onClick(View v) {
+        int enfants = layoutTranslations.getChildCount();
+        System.out.println("enfants - " + enfants);
+        EditText lEditText = new EditText(getApplicationContext());
+        View removeButton = findViewById(R.id.remove_button1);
+        if (enfants == 3) {
+            removeButton.setVisibility(View.INVISIBLE);
+        }
+        RelativeLayout.LayoutParams relativeParams = new RelativeLayout.LayoutParams(headwordText.getWidth(), headwordText.getHeight());
+        switch (v.getId()) {
+            case R.id.add_button1: {
+                if(enfants<6) {
+                    @IdRes int id = enfants + 1;
+                    lEditText.setId(id);
+
+                    lEditText.setTextColor(Color.BLACK);
+                    lEditText.getBackground().setColorFilter(Color.parseColor("#6d6d6d"), PorterDuff.Mode.SRC_ATOP);
+
+                    if (enfants == 2) {
+                        relativeParams.addRule(RelativeLayout.BELOW, R.id.editTextTranslation1);
+                        lEditText.setHintTextColor(Color.parseColor("#6d6d6d"));
+                        lEditText.setHint(getResources().getString(R.string.translation_children) + " " + enfants);
+                        removeButton.setVisibility(View.INVISIBLE);
+
+                    } else {
+                        relativeParams.addRule(RelativeLayout.BELOW, layoutTranslations.getChildAt(enfants - 1).getId());
+                        lEditText.setHintTextColor(Color.parseColor("#777777"));
+                        lEditText.setHint(getResources().getString(R.string.translation_children) + " " + enfants);
+                    }
+                    layoutTranslations.addView(lEditText, relativeParams);
+                    removeButton.setVisibility(View.VISIBLE);
+                }
+                else {
+                    Toast.makeText(getApplicationContext(),R.string.maximum_translate, Toast.LENGTH_SHORT).show();
+                }
+                break;
+            }
+            case R.id.remove_button1: {
+                @IdRes int id = enfants;
+                if (enfants != 2){
+                    View test = (View)findViewById(id);
+                    ((ViewManager)test.getParent()).removeView(test);
+                    test.setVisibility(View.GONE);
+                }
+                break;
+            }
+        }
+    }
 
     /**
      * This function is called when a child activity back to this view or finish
