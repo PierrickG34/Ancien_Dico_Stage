@@ -72,7 +72,7 @@
                 android:value=".Controllers.MainActivity" />
         </activity>
         <activity
-            android:name=".Controllers.AboutActivity"
+            android:name=".Controllers.AboutActivityKot"
             android:label="@string/about"
             android:parentActivityName=".Controllers.MainActivity" >
             <meta-data

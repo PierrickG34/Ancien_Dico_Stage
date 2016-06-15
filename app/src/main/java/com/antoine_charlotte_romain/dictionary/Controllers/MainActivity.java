@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // About position
                 else if(position == 2){
-                    Intent aboutIntent = new Intent(getApplicationContext(), AboutActivity.class);
+                    Intent aboutIntent = new Intent(getApplicationContext(), AboutActivityKot.class);
                     startActivity(aboutIntent);
                 }
             }
