@@ -1,4 +1,4 @@
-package com.antoine_charlotte_romain.dictionary.Controllers;
+package com.antoine_charlotte_romain.dictionary.Controllers.activities.language;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -11,6 +11,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import com.antoine_charlotte_romain.dictionary.Controllers.activities.MainActivityKot;
 import com.antoine_charlotte_romain.dictionary.R;
 
 import java.util.ArrayList;
@@ -69,6 +70,7 @@ public class LanguageActivity extends AppCompatActivity {
         languages.setAdapter(adapter);
 
         languages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 HashMap<String, String> item = (HashMap<String, String>) parent.getItemAtPosition(position);

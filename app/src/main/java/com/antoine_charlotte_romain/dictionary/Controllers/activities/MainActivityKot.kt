@@ -1,4 +1,4 @@
-package com.antoine_charlotte_romain.dictionary.Controllers
+package com.antoine_charlotte_romain.dictionary.Controllers.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,6 +15,9 @@ import android.view.View
 import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.DrawerAdapter
 import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.ViewPagerAdapter
 import com.antoine_charlotte_romain.dictionary.Controllers.Lib.SlidingTabLayout
+import com.antoine_charlotte_romain.dictionary.Controllers.activities.about.AboutActivityKot
+import com.antoine_charlotte_romain.dictionary.Controllers.activities.language.LanguageActivity
+import com.antoine_charlotte_romain.dictionary.Controllers.activities.language.SetLanguageKot
 import com.antoine_charlotte_romain.dictionary.R
 import com.dicosaure.DataModel.DataBaseHelper
 
@@ -241,14 +244,13 @@ class MainActivityKot : AppCompatActivity() {
         }
 
         menuDrawerLayout!!.addDrawerListener(menuDrawerToggle)
-        //menuDrawerLayout!!.setDrawerListener(myMenuDrawerToggle)
         menuDrawerToggle!!.syncState()
 
         // Set the onItemClickListener of the menu settings
         this.menuAdapter!!.SetOnItemClickListener { v, position ->
             // Languages position
             if (position == 1) {
-                val languageIntent = Intent(applicationContext, LanguageActivity::class.java)
+                val languageIntent = Intent(applicationContext, SetLanguageKot::class.java)
                 startActivity(languageIntent)
             } else if (position == 2) {
                 val aboutIntent = Intent(applicationContext, AboutActivityKot::class.java)

@@ -1,4 +1,4 @@
-package com.antoine_charlotte_romain.dictionary.Controllers
+package com.antoine_charlotte_romain.dictionary.Controllers.activities.about
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity

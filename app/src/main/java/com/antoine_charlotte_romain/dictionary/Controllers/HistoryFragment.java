@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.antoine_charlotte_romain.dictionary.Business.SearchDate;
 import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.SearchDateAdapter;
+import com.antoine_charlotte_romain.dictionary.Controllers.activities.MainActivityKot;
 import com.antoine_charlotte_romain.dictionary.DataModel.DictionaryDataModel;
 import com.antoine_charlotte_romain.dictionary.DataModel.SearchDateDataModel;
 import com.antoine_charlotte_romain.dictionary.R;
