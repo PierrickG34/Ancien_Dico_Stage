@@ -1,5 +1,6 @@
 package com.antoine_charlotte_romain.dictionary.Controllers
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.CoordinatorLayout
 import android.support.design.widget.FloatingActionButton
@@ -28,8 +29,8 @@ class MainActivityKot : AppCompatActivity() {
     private var tabs: SlidingTabLayout? = null
     private val numbOfTabs = 3
 
-    var menuDrawerList: RecyclerView? = null
-    var menuDrawerLayout: DrawerLayout? = null
+    //var menuDrawerList: RecyclerView? = null
+    //var menuDrawerLayout: DrawerLayout? = null
     private var myMenuDrawerToggle: ActionBarDrawerToggle? = null
     var menuAdapter: DrawerAdapter? = null
 
@@ -50,17 +51,7 @@ class MainActivityKot : AppCompatActivity() {
         toolbar = findViewById(R.id.tool_bar) as Toolbar?
         super.setSupportActionBar(toolbar)
 
-        // Creating the menu settings
-        val menuTitles = arrayOf(getString(R.string.language), getString(R.string.about))
-        val menuIcons = intArrayOf(R.drawable.ic_language_white_24dp, R.drawable.ic_info_white_24dp)
-        this.menuDrawerLayout = findViewById(R.id.activity_main) as DrawerLayout?
-        this.menuDrawerList = findViewById(R.id.left_drawer) as RecyclerView?
-
-        // Set the adapter for the recycler view of the menu settings
-        this.menuAdapter = DrawerAdapter(menuTitles, menuIcons)
-        this.menuDrawerList!!.adapter = this.menuAdapter
-        val mLayoutManager = LinearLayoutManager(this)
-        this.menuDrawerList!!.layoutManager = mLayoutManager
+        initMenu()
 
 //        // Set the listener of the menu settings drawer
 //        myMenuDrawerToggle = object : ActionBarDrawerToggle(this, myMenuDrawerLayout, toolbar, R.string.open, R.string.close) {
@@ -218,6 +209,52 @@ class MainActivityKot : AppCompatActivity() {
 //            }
 //        }
 //    }
+    }
+
+    //Create menu settings
+    fun initMenu() {
+        val menuTitles = arrayOf(getString(R.string.language), getString(R.string.about))
+        val menuIcons = intArrayOf(R.drawable.ic_language_white_24dp, R.drawable.ic_info_white_24dp)
+        val menuDrawerLayout = findViewById(R.id.activity_main) as DrawerLayout?
+        val menuDrawerList = findViewById(R.id.left_drawer) as RecyclerView?
+
+        // Set the adapter for the recycler view of the menu settings
+        this.menuAdapter = DrawerAdapter(menuTitles, menuIcons)
+        menuDrawerList!!.adapter = this.menuAdapter
+        val layoutManager = LinearLayoutManager(this)
+        menuDrawerList!!.layoutManager = layoutManager
+
+        //Add listener when the menu is open or close
+        val menuDrawerToggle = object : ActionBarDrawerToggle(this, menuDrawerLayout, toolbar, R.string.open, R.string.close) {
+
+            /** Called when a drawer has settled in a completely closed state.  */
+            override fun onDrawerClosed(drawerView: View?) {
+                super.onDrawerClosed(drawerView)
+                invalidateOptionsMenu()
+            }
+
+            /** Called when a drawer has settled in a completely open state.  */
+            override fun onDrawerOpened(drawerView: View?) {
+                super.onDrawerOpened(drawerView)
+                invalidateOptionsMenu()
+            }
+        }
+
+        menuDrawerLayout!!.addDrawerListener(menuDrawerToggle)
+        //menuDrawerLayout!!.setDrawerListener(myMenuDrawerToggle)
+        menuDrawerToggle!!.syncState()
+
+        // Set the onItemClickListener of the menu settings
+        this.menuAdapter!!.SetOnItemClickListener { v, position ->
+            // Languages position
+            if (position == 1) {
+                val languageIntent = Intent(applicationContext, LanguageActivity::class.java)
+                startActivity(languageIntent)
+            } else if (position == 2) {
+                val aboutIntent = Intent(applicationContext, AboutActivityKot::class.java)
+                startActivity(aboutIntent)
+            }// About position
+        }
     }
 
     companion object {
