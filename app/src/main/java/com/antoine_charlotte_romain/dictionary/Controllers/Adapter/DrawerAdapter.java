@@ -70,7 +70,6 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.ViewHolder
             return vhHeader;
         }
         return null;
-
     }
 
     @Override
@@ -111,4 +110,6 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.ViewHolder
         this.myItemClickListener = mItemClickListener;
     }
 
+    public static class MenuDrawerViewHolder {
+    }
 }
