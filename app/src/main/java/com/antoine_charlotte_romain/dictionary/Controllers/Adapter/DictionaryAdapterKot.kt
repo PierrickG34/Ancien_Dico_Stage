@@ -36,10 +36,10 @@ class DictionaryAdapterKot(ctx : Context, layoutRessourceId : Int, data : ArrayL
         }
 
         var titleCell = convertView.findViewById(R.id.dictionary_title) as TextView
-        titleCell.setText("""${dictionary.inLang} -> ${dictionary.outLang}""")
+        titleCell.setText(dictionary.getNameDictionary())
 
         //More information in the cell
-        if (layoutRessourceId == R.layout.dictionary_row) {
+        if (this.layoutRessourceId == R.layout.dictionary_row) {
             val menuButton = convertView.findViewById(R.id.dico_more_button) as ImageButton
             menuButton.setColorFilter(R.color.textColor, PorterDuff.Mode.MULTIPLY)
             convertView.setOnClickListener {
@@ -64,6 +64,31 @@ class DictionaryAdapterKot(ctx : Context, layoutRessourceId : Int, data : ArrayL
                 }
             }
         }
+        //More information button (top the screen) -> delete
+        else if (this.layoutRessourceId == R.layout.delete_dictionary_row) {
+            val checkBox = convertView.findViewById(R.id.delete_box) as CheckBox
+
+            checkBox.isChecked = deleteList.contains(dictionary)
+
+            checkBox.setOnClickListener {
+                if (checkBox.isChecked) {
+                    addToDeleteList(dictionary)
+                }
+                else {
+                    removeFromDeleteList(dictionary)
+                }
+            }
+            convertView.setOnClickListener {
+                if (checkBox.isChecked) {
+                    checkBox.isChecked = false
+                    removeFromDeleteList(dictionary)
+                }
+                else {
+                    checkBox.isChecked = true
+                    addToDeleteList(dictionary)
+                }
+            }
+        }
 
         return convertView
 
@@ -77,22 +102,23 @@ class DictionaryAdapterKot(ctx : Context, layoutRessourceId : Int, data : ArrayL
     }
 
     private fun removeFromDeleteList(d: Dictionary) {
-        deleteList.remove(d)
-        all_selected = false
+        this.deleteList.remove(d)
+        this.all_selected = false
         this.dictionaryCallback!!.notifyDeleteListChanged()
     }
 
     fun selectAll() {
-        all_selected = !all_selected
-        if (all_selected) {
-            for (i in data.indices) {
-                addToDeleteList(data[i])
+        this.all_selected = !this.all_selected
+        if (this.all_selected) {
+            for (i in this.data.indices) {
+                this.addToDeleteList(this.data[i])
             }
-        } else {
-            deleteList.clear()
+        }
+        else {
+            this.deleteList.clear()
             this.dictionaryCallback!!.notifyDeleteListChanged()
         }
-        notifyDataSetChanged()
+        super.notifyDataSetChanged()
     }
 
 }

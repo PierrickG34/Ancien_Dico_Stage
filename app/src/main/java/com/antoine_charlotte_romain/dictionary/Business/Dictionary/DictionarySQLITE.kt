@@ -4,6 +4,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import com.antoine_charlotte_romain.dictionary.DataModel.DataBaseHelper
 import org.jetbrains.anko.db.classParser
+import org.jetbrains.anko.db.delete
 import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.db.select
 
@@ -31,8 +32,9 @@ class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String?
         return this.db.select(DictionarySQLITE.DB_TABLE).parseList(classParser<com.antoine_charlotte_romain.dictionary.business.dictionary.Dictionary>())
     }
 
-    fun delete() {
-        throw UnsupportedOperationException()
+    fun delete(id : String) {
+        this.db.delete(DictionarySQLITE.DB_TABLE,"",
+                DictionarySQLITE.DB_COLUMN_ID to id)
     }
 
     fun read() {

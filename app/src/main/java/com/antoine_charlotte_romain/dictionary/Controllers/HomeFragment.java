@@ -642,7 +642,6 @@ public class HomeFragment extends Fragment implements DictionaryAdapterOld.Dicti
             }
         });
         snack.show();
-
     }
 
     /**

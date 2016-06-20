@@ -46,6 +46,7 @@
     <string name="created">" a été créé."</string>
     <string name="updated">" a été mis à jour."</string>
     <string name="rename_dictionary">Renommer ce dictionnaire</string>
+    <string name="update_dictionary">Modifier ce disctionnaire</string>
     <string name="dictionary_renamed">Dictionnaire renommé.</string>
     <string name="dictionary_not_renamed">Impossible de renommer ce dictionnaire. Nom déjà pris.</string>
     <string name="open">Ouvrir</string>

@@ -9,4 +9,8 @@ open class Dictionary(inLang : String? = null, outLang: String? = null, idDictio
     var outLang : String? = outLang
     var idDictionary : String? = idDictionary
 
+    fun getNameDictionary() : String {
+        return """${this.inLang} -> ${this.outLang}"""
+    }
+
 }

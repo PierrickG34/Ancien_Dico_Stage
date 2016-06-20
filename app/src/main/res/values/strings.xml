@@ -45,6 +45,7 @@
     <string name="created">" has been created."</string>
     <string name="updated">" has been updated."</string>
     <string name="rename_dictionary">Rename this dictionary</string>
+    <string name="update_dictionary">Modify this dictionary</string>
     <string name="dictionary_renamed">Dictionary renamed.</string>
     <string name="dictionary_not_renamed">Can\'t rename this dictionary. Name already taken.</string>
     <string name="open">Open</string>
