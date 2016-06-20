@@ -1,4 +1,4 @@
-package com.antoine_charlotte_romain.dictionary.Business;
+package com.antoine_charlotte_romain.dictionary.business.old;
 
 /**
  * Created by summer1 on 08/07/2015.

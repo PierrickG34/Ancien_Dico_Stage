@@ -3,7 +3,7 @@ package com.antoine_charlotte_romain.dictionary.DataModel;
 import android.test.AndroidTestCase;
 import android.test.RenamingDelegatingContext;
 
-import com.antoine_charlotte_romain.dictionary.Business.Dictionary;
+import com.antoine_charlotte_romain.dictionary.business.old.Dictionary;
 
 /**
  * Created by summer3 on 23/06/2015.

@@ -12,7 +12,7 @@ import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.antoine_charlotte_romain.dictionary.Business.Word;
+import com.antoine_charlotte_romain.dictionary.business.old.Word;
 import com.antoine_charlotte_romain.dictionary.DataModel.DictionaryDataModel;
 import com.antoine_charlotte_romain.dictionary.R;
 

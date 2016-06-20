@@ -18,7 +18,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.antoine_charlotte_romain.dictionary.Business.Dictionary;
+import com.antoine_charlotte_romain.dictionary.business.old.Dictionary;
 import com.antoine_charlotte_romain.dictionary.Controllers.activities.MainActivityKot;
 import com.antoine_charlotte_romain.dictionary.DataModel.DictionaryDataModel;
 import com.antoine_charlotte_romain.dictionary.R;

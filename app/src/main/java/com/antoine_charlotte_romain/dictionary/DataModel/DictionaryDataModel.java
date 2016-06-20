@@ -5,14 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.provider.BaseColumns;
 
-import com.antoine_charlotte_romain.dictionary.Business.Dictionary;
+import com.antoine_charlotte_romain.dictionary.business.old.Dictionary;
 import java.util.ArrayList;
 
 
 /**
  * Created by summer1 on 22/06/2015.
  * Updated by summer3 on 22/06/2015.
- */
+ * */
 public class DictionaryDataModel extends DAOBase{
 
     public static final String SQL_CREATE_DICTIONARY =

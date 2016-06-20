@@ -26,7 +26,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Toast;
 
-import com.antoine_charlotte_romain.dictionary.Business.SearchDate;
+import com.antoine_charlotte_romain.dictionary.business.old.SearchDate;
 import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.SearchDateAdapter;
 import com.antoine_charlotte_romain.dictionary.Controllers.activities.MainActivityKot;
 import com.antoine_charlotte_romain.dictionary.DataModel.DictionaryDataModel;

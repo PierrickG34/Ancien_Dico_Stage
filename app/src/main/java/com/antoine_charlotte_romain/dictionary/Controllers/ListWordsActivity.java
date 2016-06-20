@@ -40,8 +40,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.antoine_charlotte_romain.dictionary.Business.Dictionary;
-import com.antoine_charlotte_romain.dictionary.Business.Word;
+import com.antoine_charlotte_romain.dictionary.business.old.Dictionary;
+import com.antoine_charlotte_romain.dictionary.business.old.Word;
 import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.WordAdapter;
 import com.antoine_charlotte_romain.dictionary.Controllers.activities.MainActivityKot;
 import com.antoine_charlotte_romain.dictionary.DataModel.DictionaryDataModel;

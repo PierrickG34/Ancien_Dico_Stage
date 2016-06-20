@@ -1,10 +1,9 @@
-package com.dicosaure.Business.Word
+package  com.antoine_charlotte_romain.dictionary.business.word
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import com.dicosaure.Business.Dictionary.Dictionary
-import com.dicosaure.Business.Dictionary.DictionarySQLITE
-import com.dicosaure.DataModel.DataBaseHelper
+import com.antoine_charlotte_romain.dictionary.DataModel.DataBaseHelper
+import com.antoine_charlotte_romain.dictionary.business.dictionary.Dictionary
 import java.sql.Blob
 import java.sql.Date
 

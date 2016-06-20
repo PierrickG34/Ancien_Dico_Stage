@@ -2,8 +2,8 @@ package com.dicosaure.Business.Translate
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import com.dicosaure.Business.Word.Word
-import com.dicosaure.DataModel.DataBaseHelper
+import com.antoine_charlotte_romain.dictionary.DataModel.DataBaseHelper
+import com.antoine_charlotte_romain.dictionary.business.word.Word
 
 /**
  * Created by dineen on 15/06/2016.

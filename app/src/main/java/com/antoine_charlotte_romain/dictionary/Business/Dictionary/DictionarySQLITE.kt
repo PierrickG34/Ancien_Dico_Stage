@@ -1,17 +1,16 @@
-package com.dicosaure.Business.Dictionary
+package com.antoine_charlotte_romain.dictionary.business.dictionary
 
 import android.content.Context
-import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import com.dicosaure.XML.WordXML
-import com.dicosaure.DataModel.DataBaseHelper
+import com.antoine_charlotte_romain.dictionary.DataModel.DataBaseHelper
+import org.jetbrains.anko.db.classParser
 import org.jetbrains.anko.db.insert
-import java.util.*
+import org.jetbrains.anko.db.select
 
 /**
  * Created by dineen on 14/06/2016.
  */
-class DictionarySQLITE : Dictionary {
+class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String? = null, id : String? = null) : Dictionary(inLang, outLang, id) {
 
     companion object {
         val DB_TABLE = "DICTIONARY"
@@ -20,27 +19,23 @@ class DictionarySQLITE : Dictionary {
         val DB_COLUMN_ID = "id"
     }
 
-    var db : SQLiteDatabase
+    var db : SQLiteDatabase = DataBaseHelper.getInstance(ctx).readableDatabase
 
-    constructor(ctx : Context, inLang : String, outLang : String, id : String? = null) : super(inLang, outLang, id) {
-        this.db = DataBaseHelper.getInstance(ctx).readableDatabase
-    }
-
-//    constructor(ctx : Context, c : Cursor) : super(c.p) {
-//        super("titi", "toto")
-//    }
-
-    override fun save() {
+    fun save() {
         this.db.insert(DictionarySQLITE.DB_TABLE,
-                DictionarySQLITE.DB_COLUMN_INLANG to this.inLang,
-                DictionarySQLITE.DB_COLUMN_OUTLANG to this.outLang)
+                DictionarySQLITE.DB_COLUMN_INLANG to super.inLang!!,
+                DictionarySQLITE.DB_COLUMN_OUTLANG to super.outLang!!)
     }
 
-    override fun delete() {
+    fun selectAll(): List<Dictionary> {
+        return this.db.select(DictionarySQLITE.DB_TABLE).parseList(classParser<com.antoine_charlotte_romain.dictionary.business.dictionary.Dictionary>())
+    }
+
+    fun delete() {
         throw UnsupportedOperationException()
     }
 
-    override fun read() {
+    fun read() {
         throw UnsupportedOperationException()
     }
 

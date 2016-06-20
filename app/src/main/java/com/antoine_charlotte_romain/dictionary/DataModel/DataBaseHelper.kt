@@ -1,11 +1,11 @@
-package com.dicosaure.DataModel
+package com.antoine_charlotte_romain.dictionary.DataModel
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.widget.Toast
-import com.dicosaure.Business.Dictionary.DictionarySQLITE
+import com.antoine_charlotte_romain.dictionary.business.dictionary.DictionarySQLITE
+import com.antoine_charlotte_romain.dictionary.business.word.WordSQLITE
 import com.dicosaure.Business.Translate.TranslateSQLITE
-import com.dicosaure.Business.Word.WordSQLITE
 import org.jetbrains.anko.db.ManagedSQLiteOpenHelper
 import org.jetbrains.anko.db.select
 

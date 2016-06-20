@@ -6,8 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 
-import com.antoine_charlotte_romain.dictionary.Business.SearchDate;
-import com.antoine_charlotte_romain.dictionary.Business.Word;
+import com.antoine_charlotte_romain.dictionary.business.old.SearchDate;
+import com.antoine_charlotte_romain.dictionary.business.old.Word;
 
 import java.util.ArrayList;
 

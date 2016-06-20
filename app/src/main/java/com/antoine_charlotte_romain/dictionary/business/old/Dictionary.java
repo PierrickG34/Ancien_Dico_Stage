@@ -1,4 +1,4 @@
-package com.antoine_charlotte_romain.dictionary.Business;
+package com.antoine_charlotte_romain.dictionary.business.old;
 
 import java.io.Serializable;
 

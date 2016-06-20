@@ -1,6 +1,6 @@
 package com.antoine_charlotte_romain.dictionary.Controllers.Adapter;
 
-import com.antoine_charlotte_romain.dictionary.business.dictionary.Dictionary;
+import com.antoine_charlotte_romain.dictionary.business.old.Dictionary;
 import com.antoine_charlotte_romain.dictionary.R;
 
 import android.content.Context;
@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class DictionaryAdapter extends ArrayAdapter<Dictionary>{
+public class DictionaryAdapterOld extends ArrayAdapter<Dictionary>{
 
     private Context context;
     private int layoutResourceId;
@@ -26,7 +26,7 @@ public class DictionaryAdapter extends ArrayAdapter<Dictionary>{
     private DictionaryAdapterCallback callback;
     private boolean all_selected;
 
-    public DictionaryAdapter(Context context, int layoutResourceId, ArrayList<Dictionary> data) {
+    public DictionaryAdapterOld(Context context, int layoutResourceId, ArrayList<Dictionary> data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
@@ -49,12 +49,12 @@ public class DictionaryAdapter extends ArrayAdapter<Dictionary>{
 
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(layoutResourceId, parent, false);
+            convertView = LayoutInflater.from(super.getContext()).inflate(layoutResourceId, parent, false);
         }
         // Lookup view for data population
         TextView title = (TextView) convertView.findViewById(R.id.dictionary_title);
         // Populate the data into the template view using the data object
-        title.setText(dictionary.getInLang() + "->" + dictionary.getOutLang());
+        title.setText(dictionary.getTitle());
 
         //configuring more_button if exists
         if(layoutResourceId == R.layout.dictionary_row)

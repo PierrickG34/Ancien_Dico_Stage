@@ -12,7 +12,6 @@ import com.antoine_charlotte_romain.dictionary.R;
 
 public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.ViewHolder> {
 
-
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
     static OnItemClickListener myItemClickListener;

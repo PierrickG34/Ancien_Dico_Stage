@@ -1,6 +1,6 @@
 package com.dicosaure.Business.Translate
 
-import com.dicosaure.Business.Word.Word
+import com.antoine_charlotte_romain.dictionary.business.word.Word
 
 /**
  * Created by dineen on 15/06/2016.

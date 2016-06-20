@@ -38,8 +38,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.antoine_charlotte_romain.dictionary.Business.Dictionary;
-import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.DictionaryAdapter;
+import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.DictionaryAdapterOld;
+import com.antoine_charlotte_romain.dictionary.business.old.Dictionary;
 import com.antoine_charlotte_romain.dictionary.Controllers.Lib.HeaderGridView;
 import com.antoine_charlotte_romain.dictionary.Controllers.activities.MainActivityKot;
 import com.antoine_charlotte_romain.dictionary.DataModel.DictionaryDataModel;
@@ -51,7 +51,7 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment implements DictionaryAdapter.DictionaryAdapterCallback {
+public class HomeFragment extends Fragment implements DictionaryAdapterOld.DictionaryAdapterCallback {
 
 
     /*---------------------------------------------------------
@@ -100,7 +100,7 @@ public class HomeFragment extends Fragment implements DictionaryAdapter.Dictiona
     /**
      * Custom ArrayAdapter to manage the different rows of the grid
      */
-    private DictionaryAdapter adapter;
+    private DictionaryAdapterOld adapter;
 
 
     /**
@@ -205,7 +205,7 @@ public class HomeFragment extends Fragment implements DictionaryAdapter.Dictiona
             });
 
             //Populating the GridView
-            adapter = new DictionaryAdapter(getActivity(), R.layout.dictionary_row, dictionariesDisplay);
+            adapter = new DictionaryAdapterOld(getActivity(), R.layout.dictionary_row, dictionariesDisplay);
             adapter.setCallback(this);
             gridView.setAdapter(adapter);
 
@@ -228,7 +228,7 @@ public class HomeFragment extends Fragment implements DictionaryAdapter.Dictiona
             });
 
             //Populating the GridView
-            adapter = new DictionaryAdapter(getActivity(), R.layout.delete_dictionary_row, dictionariesDisplay);
+            adapter = new DictionaryAdapterOld(getActivity(), R.layout.delete_dictionary_row, dictionariesDisplay);
             adapter.setCallback(this);
             gridView.setAdapter(adapter);
         }

@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.antoine_charlotte_romain.dictionary.Business.SearchDate;
+import com.antoine_charlotte_romain.dictionary.business.old.SearchDate;
 import com.antoine_charlotte_romain.dictionary.R;
 
 import java.util.ArrayList;

@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.PagerAdapterKot;
 import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.ViewPagerAdapter;
 import com.antoine_charlotte_romain.dictionary.R;
 
@@ -170,7 +171,8 @@ public class SlidingTabLayout extends HorizontalScrollView {
     }
 
     private void populateTabStrip() {
-        final ViewPagerAdapter adapter = (ViewPagerAdapter) mViewPager.getAdapter();
+        //final ViewPagerAdapter adapter = (ViewPagerAdapter) mViewPager.getAdapter();
+        final PagerAdapterKot adapter = (PagerAdapterKot) mViewPager.getAdapter();
         final View.OnClickListener tabClickListener = new TabClickListener();
 
         for (int i = 0; i < adapter.getCount(); i++) {
