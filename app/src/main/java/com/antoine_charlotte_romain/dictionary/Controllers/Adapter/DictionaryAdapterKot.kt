@@ -19,7 +19,9 @@ class DictionaryAdapterKot(ctx : Context, layoutRessourceId : Int, data : ArrayL
     var ctx : Context = ctx
     var layoutRessourceId : Int = layoutRessourceId
     var data : ArrayList<Dictionary>  = data
+    var deleteList : ArrayList<Dictionary> = ArrayList<Dictionary>()
     var dictionaryCallback : DictionaryAdapterCallbackKot? = null
+    var all_selected : Boolean = false
 
     fun setCallback(callback: DictionaryAdapterCallbackKot) {
         this.dictionaryCallback = callback
@@ -40,7 +42,9 @@ class DictionaryAdapterKot(ctx : Context, layoutRessourceId : Int, data : ArrayL
         if (layoutRessourceId == R.layout.dictionary_row) {
             val menuButton = convertView.findViewById(R.id.dico_more_button) as ImageButton
             menuButton.setColorFilter(R.color.textColor, PorterDuff.Mode.MULTIPLY)
-            convertView.setOnClickListener { callback.read(position) }
+            convertView.setOnClickListener {
+                this.dictionaryCallback!!.read(position)
+            }
             menuButton.setOnClickListener { v ->
                 when (v.id) {
                     R.id.dico_more_button -> {
@@ -49,21 +53,13 @@ class DictionaryAdapterKot(ctx : Context, layoutRessourceId : Int, data : ArrayL
                         popup.show()
                         popup.setOnMenuItemClickListener { item ->
                             when (item.itemId) {
-                                R.id.open -> callback.read(position)
-
-                                R.id.rename -> callback.update(position)
-
-                                R.id.delete -> callback.delete(position)
-
-                                R.id.export -> callback.export(position)
-                                else -> {
-                                }
+                                R.id.open -> this.dictionaryCallback!!.read(position)
+                                R.id.rename -> this.dictionaryCallback!!.update(position)
+                                R.id.delete -> this.dictionaryCallback!!.delete(position)
+                                R.id.export -> this.dictionaryCallback!!.export(position)
                             }
                             true
                         }
-                    }
-
-                    else -> {
                     }
                 }
             }
@@ -73,5 +69,30 @@ class DictionaryAdapterKot(ctx : Context, layoutRessourceId : Int, data : ArrayL
 
     }
 
+    private fun addToDeleteList(d: Dictionary) {
+        if (!this.deleteList.contains(d)) {
+            this.deleteList.add(d)
+            this.dictionaryCallback!!.notifyDeleteListChanged()
+        }
+    }
+
+    private fun removeFromDeleteList(d: Dictionary) {
+        deleteList.remove(d)
+        all_selected = false
+        this.dictionaryCallback!!.notifyDeleteListChanged()
+    }
+
+    fun selectAll() {
+        all_selected = !all_selected
+        if (all_selected) {
+            for (i in data.indices) {
+                addToDeleteList(data[i])
+            }
+        } else {
+            deleteList.clear()
+            this.dictionaryCallback!!.notifyDeleteListChanged()
+        }
+        notifyDataSetChanged()
+    }
 
 }
