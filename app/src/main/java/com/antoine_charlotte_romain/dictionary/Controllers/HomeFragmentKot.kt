@@ -10,14 +10,14 @@ import android.os.Message
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.text.Editable
 import android.text.InputType
+import android.text.TextWatcher
 import android.util.TypedValue
 import android.view.*
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.DictionaryAdapterCallbackKot
 import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.DictionaryAdapterKot
 import com.antoine_charlotte_romain.dictionary.Controllers.Lib.HeaderGridView
@@ -113,8 +113,8 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
 
         this.initData()
         this.initFloatingActionButton()
-//        this.initGridView()
-//        this.initEditText()
+        this.initGridView()
+        this.initEditText()
 
         return v
     }
@@ -124,7 +124,7 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
      */
     private fun initData() {
         this.dictionaryModel = DictionarySQLITE(this.context)
-
+        println(this.dictionaryModel!!.selectAll())
         this.dictionaries!!.addAll(this.dictionaryModel!!.selectAll())
         this.dictionariesDisplay = ArrayList<Dictionary>(dictionaries)
     }
@@ -135,6 +135,120 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
     private fun initFloatingActionButton() {
         this.addButton = (this.activity as MainActivityKot).addButton
         this.addButton!!.setOnClickListener(View.OnClickListener { create() })
+    }
+
+    /**
+     * Initialising the GridView to display the dictionary list and making its clickables
+     */
+    private fun initGridView() {
+        //Creating the GridView
+        this.gridView = this.v!!.findViewById(R.id.dictionary_list) as HeaderGridView
+        this.gridView!!.setDrawSelectorOnTop(true)
+
+        if (this.state == NORMAL_STATE) {
+            //Adding the GridView header
+            this.gridView!!.removeHeaderView(header)
+            this.header = this.activity.layoutInflater.inflate(R.layout.grid_view_header, null)
+            this.gridView!!.addHeaderView(header)
+            val b = this.header!!.findViewById(R.id.button_all) as Button
+            b.setText(R.string.all_dictionaries)
+            b.setOnClickListener { read(-1) }
+
+            //Populating the GridView
+            this.adapter = DictionaryAdapterKot(this.activity, R.layout.dictionary_row, this.dictionariesDisplay!!)
+            this.adapter!!.setCallback(this)
+            this.gridView!!.setAdapter(this.adapter)
+
+            //Adding the context menu on each rows
+            registerForContextMenu(this.gridView)
+        }
+        else if (state == DELETE_STATE) {
+            //Adding the GridView header
+            this.gridView!!.removeHeaderView(this.header)
+            this.header = activity.layoutInflater.inflate(R.layout.grid_view_header, null)
+            this.gridView!!.addHeaderView(this.header)
+            this.headerButton = this.header!!.findViewById(R.id.button_all) as Button
+            this.headerButton!!.setText(R.string.select_all)
+            this.headerButton!!.setOnClickListener(View.OnClickListener { this.adapter!!.selectAll() })
+
+            //Populating the GridView
+            this.adapter = DictionaryAdapterKot(activity, R.layout.delete_dictionary_row, this.dictionariesDisplay!!)
+            this.adapter!!.setCallback(this)
+            this.gridView!!.setAdapter(this.adapter)
+        }
+
+        //Animating the gridView on Scroll
+        this.myLastFirstVisibleItem = 0
+        this.hidden = false
+        this.addButton!!.animate().translationY(0f)
+        this.gridView!!.setOnScrollListener(object : AbsListView.OnScrollListener {
+            override fun onScrollStateChanged(view: AbsListView, scrollState: Int) {
+                val currentFirstVisibleItem = gridView!!.getFirstVisiblePosition()
+                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL || scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+                    if (currentFirstVisibleItem > myLastFirstVisibleItem) {
+                        if (!hidden) {
+                            addButton!!.animate().translationY(350f)
+                            hidden = true
+                        }
+                    } else if (currentFirstVisibleItem < myLastFirstVisibleItem) {
+                        if (hidden) {
+                            addButton!!.animate().translationY(0f)
+                            hidden = false
+                        }
+                    }
+                }
+                myLastFirstVisibleItem = currentFirstVisibleItem
+            }
+
+            override fun onScroll(view: AbsListView, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {
+                val lastInScreen = firstVisibleItem + visibleItemCount
+                if (lastInScreen == totalItemCount) {
+                    if (hidden!!) {
+                        addButton!!.animate().translationY(0f)
+                        hidden = false
+                    }
+                }
+            }
+        })
+
+        //Animating the gridView on appear
+        val anim = AnimationUtils.loadAnimation(activity, android.R.anim.slide_in_left)
+        this.gridView!!.setAnimation(anim)
+        anim.start()
+
+    }
+
+    /**
+     * Initialising the search box to dynamically researching on the dictionary list
+     */
+    private fun initEditText() {
+        //Creating the EditText for searching inside the dictionaries list
+        this.searchBox = this.v!!.findViewById(R.id.search_field) as EditText
+        this.searchBox!!.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable) {
+                dictionariesDisplay!!.clear()
+                val search = s.toString()
+                for (i in dictionaries!!.indices) {
+                    if (dictionaries!!.get(i).getNameDictionary().toLowerCase().contains(search.toLowerCase())) {
+                        dictionariesDisplay!!.add(dictionaries!!.get(i))
+                    }
+                }
+                adapter!!.notifyDataSetChanged()
+            }
+        })
+
+        this.searchBox!!.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
+            if (!dictionariesDisplay!!.isEmpty())
+                read(0)
+            true
+        })
+
     }
 
     /**
@@ -398,4 +512,163 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
             this.headerButton!!.setText(R.string.select_all)
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
+    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo)
+        val info = menuInfo as AdapterView.AdapterContextMenuInfo
+
+        val title = this.adapter!!.getItem(info.position - 1).getNameDictionary()
+        menu.setHeaderTitle(title)
+
+        menu.add(Menu.NONE, CONTEXT_MENU_READ, Menu.NONE, R.string.open)
+        menu.add(Menu.NONE, CONTEXT_MENU_UPDATE, Menu.NONE, R.string.rename)
+        menu.add(Menu.NONE, CONTEXT_MENU_DELETE, Menu.NONE, R.string.delete)
+        menu.add(Menu.NONE, CONTEXT_MENU_EXPORT, Menu.NONE, R.string.csvexport_export)
+    }
+
+    override fun onContextItemSelected(item: MenuItem?): Boolean {
+        val info = item!!.menuInfo as AdapterView.AdapterContextMenuInfo
+        when (item.itemId) {
+            CONTEXT_MENU_READ -> {
+                read(info.position - 1)
+                return true
+            }
+            CONTEXT_MENU_UPDATE -> {
+                update(info.position - 1)
+                return true
+            }
+            CONTEXT_MENU_DELETE -> {
+                delete(info.position - 1)
+                return true
+            }
+            CONTEXT_MENU_EXPORT -> {
+                export(info.position - 1)
+                return true
+            }
+            else -> return super.onContextItemSelected(item)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        //If we are importing a file
+//        if (requestCode == SELECT_FILE && resultCode == Activity.RESULT_OK) {
+//            //Creating the file
+//            val fileUri = data!!.data
+//            val fileName = fileUri.lastPathSegment
+//
+//            //Creating ta dictionary named like the file (without the extension)
+//            val d = Dictionary(fileName.substring(0, fileName.indexOf(".")))
+//
+//            val c = activity
+//
+//            //Handling the end of the import
+//            val handler = object : Handler() {
+//                override fun handleMessage(msg: Message) {
+//                    val intent = Intent(c, ListWordsActivity::class.java)
+//                    intent.putExtra(MainActivityKot.EXTRA_DICTIONARY, d)
+//                    intent.putExtra(MainActivityKot.EXTRA_RENAME, true)
+//                    c.startActivity(intent)
+//                }
+//            }
+//
+//            if (ddm.insert(d) == 1) {
+//                dictionariesDisplay.add(d)
+//                dictionaries.add(d)
+//                if (searchBox.getText().toString().trim { it <= ' ' }.length > 0) {
+//                    searchBox.setText("")
+//                }
+//
+//                ImportUtility.importCSV(d, data.data, c, handler)
+//            } else
+//                Toast.makeText(activity, R.string.dictionary_not_added, Toast.LENGTH_SHORT).show()
+//        }
+    }
+
+    override fun onCreateOptionsMenu(m: Menu?, inflater: MenuInflater?) {
+        this.menu = m
+        super.onCreateOptionsMenu(this.menu, inflater)
+        showMenu()
+    }
+
+    fun showMenu() {
+        this.menu!!.clear()
+        if (state == NORMAL_STATE) {
+            this.activity.menuInflater.inflate(R.menu.menu_home, this.menu)
+        }
+        else if (state == DELETE_STATE) {
+            this.activity.menuInflater.inflate(R.menu.menu_home_delete, this.menu)
+            val s = this.adapter!!.deleteList.size
+            this.menu!!.findItem(R.id.nb_items).setTitle("""${s} ${getString(R.string.item)}""")
+            this.menu!!.findItem(R.id.action_delete_list).isVisible = s > 0
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item!!.itemId) {
+            R.id.action_add_dictionary -> {
+                this.create()
+                return true
+            }
+            R.id.action_multiple_delete -> {
+                this.state = DELETE_STATE
+                this.initGridView()
+                this.showMenu()
+                return true
+            }
+            R.id.action_delete_list -> {
+                val alert = AlertDialog.Builder(activity)
+                val s = adapter!!.deleteList.size
+                if (s == 1) {
+                    alert.setMessage("""${getString(R.string.delete)} ${s} ${getString(R.string.dictionary)} ?""")
+                } else {
+                    alert.setMessage("""${getString(R.string.delete)} ${s} ${getString(R.string.dictionaries)} ?""")
+                }
+                alert.setPositiveButton(getString(R.string.delete)) { dialog, whichButton ->
+                    val progressDialog = ProgressDialog(activity)
+                    progressDialog.setMessage(getString(R.string.delete_progress))
+                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER)
+                    progressDialog.isIndeterminate = true
+                    progressDialog.setCancelable(false)
+                    progressDialog.window.setGravity(Gravity.BOTTOM)
+                    progressDialog.show()
+
+                    val handler = object : Handler() {
+                        override fun handleMessage(msg: Message) {
+                            progressDialog.dismiss()
+                            state = NORMAL_STATE
+                            initGridView()
+                            showMenu()
+                        }
+                    }
+                    val t = object : Thread() {
+                        override fun run() {
+
+                            for (i in 0..s - 1) {
+                                val d = adapter!!.deleteList.get(i)
+                                dictionaries!!.remove(d)
+                                dictionariesDisplay!!.remove(d)
+                                dictionaryModel!!.delete(d.idDictionary!!)
+                            }
+                            handler.sendEmptyMessage(0)
+                        }
+                    }
+                    t.start()
+                }
+                alert.setNegativeButton(getString(R.string.cancel)) { dialog, whichButton -> }
+                alert.show()
+                return true
+            }
+            R.id.action_cancel -> {
+                state = NORMAL_STATE
+                initGridView()
+                showMenu()
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
 }

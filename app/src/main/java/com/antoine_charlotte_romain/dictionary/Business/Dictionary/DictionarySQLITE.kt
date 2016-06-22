@@ -2,13 +2,15 @@ package com.antoine_charlotte_romain.dictionary.business.dictionary
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import com.antoine_charlotte_romain.dictionary.DataModel.DataBaseHelper
+import android.widget.Toast
+import com.antoine_charlotte_romain.dictionary.DataModel.DataBaseHelperKot
 import org.jetbrains.anko.db.*
+import java.util.*
 
 /**
  * Created by dineen on 14/06/2016.
  */
-class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String? = null, id : String? = null) : Dictionary(inLang, outLang, id) {
+class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String? = null, id : String? = null) : Dictionary(inLang = inLang, outLang = outLang, id = id) {
 
     companion object {
         val DB_TABLE = "DICTIONARY"
@@ -17,16 +19,22 @@ class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String?
         val DB_COLUMN_ID = "id"
     }
 
-    var db : SQLiteDatabase = DataBaseHelper.getInstance(ctx).readableDatabase
+    var db : SQLiteDatabase = DataBaseHelperKot.getInstance(ctx).readableDatabase
 
     fun save() : Int {
         return this.db.insert(DictionarySQLITE.DB_TABLE,
-                DictionarySQLITE.DB_COLUMN_INLANG to super.inLang!!,
-                DictionarySQLITE.DB_COLUMN_OUTLANG to super.outLang!!).toInt()
+            DictionarySQLITE.DB_COLUMN_INLANG to super.inLang!!,
+            DictionarySQLITE.DB_COLUMN_OUTLANG to super.outLang!!).toInt()
     }
 
     fun selectAll(): List<Dictionary> {
-        return this.db.select(DictionarySQLITE.DB_TABLE).parseList(classParser<Dictionary>())
+        var res : MutableList<Dictionary> = ArrayList<Dictionary>()
+        val c = this.db.select(DictionarySQLITE.DB_TABLE).exec {
+            while(this.moveToNext()) {
+                res.add(Dictionary(this.getString(0), this.getString(1), this.getString(2)))
+            }
+        }
+        return res
     }
 
     fun delete(id : String) : Int {

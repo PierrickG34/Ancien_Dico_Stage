@@ -17,10 +17,11 @@ import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.PagerAdapterK
 import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.ViewPagerAdapter
 import com.antoine_charlotte_romain.dictionary.Controllers.Lib.SlidingTabLayout
 import com.antoine_charlotte_romain.dictionary.Controllers.activities.about.AboutActivityKot
-import com.antoine_charlotte_romain.dictionary.Controllers.activities.language.LanguageActivity
 import com.antoine_charlotte_romain.dictionary.Controllers.activities.language.SetLanguageKot
 import com.antoine_charlotte_romain.dictionary.DataModel.DataBaseHelper
+import com.antoine_charlotte_romain.dictionary.DataModel.DataBaseHelperKot
 import com.antoine_charlotte_romain.dictionary.R
+import org.jetbrains.anko.ctx
 
 /**
  * Created by dineen on 15/06/2016.
@@ -78,6 +79,8 @@ class MainActivityKot : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         super.setContentView(R.layout.activity_main)
         var db = DataBaseHelper(this)
+        var d = DataBaseHelperKot(this.ctx)
+        d.insertTest(this.ctx)
 
         // Creating The Toolbar and setting it as the Toolbar for the activity
         this.toolbar = findViewById(R.id.tool_bar) as Toolbar?

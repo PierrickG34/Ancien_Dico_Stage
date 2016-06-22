@@ -7,20 +7,22 @@ import com.antoine_charlotte_romain.dictionary.business.dictionary.DictionarySQL
 import com.antoine_charlotte_romain.dictionary.business.word.WordSQLITE
 import com.dicosaure.Business.Translate.TranslateSQLITE
 import org.jetbrains.anko.db.ManagedSQLiteOpenHelper
+import org.jetbrains.anko.db.dropTable
+import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.db.select
 
 /**
  * Created by dineen on 13/06/2016.
  */
 
-class DataBaseHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase", null, 1) {
+class DataBaseHelperKot(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase", null, 1) {
     companion object {
-        private var instance: DataBaseHelper? = null
+        private var instance: DataBaseHelperKot? = null
 
         @Synchronized
-        fun getInstance(ctx: Context): DataBaseHelper {
+        fun getInstance(ctx: Context): DataBaseHelperKot {
             if (instance == null) {
-                instance = DataBaseHelper(ctx.getApplicationContext())
+                instance = DataBaseHelperKot(ctx.getApplicationContext())
             }
             return instance!!
         }
@@ -68,31 +70,34 @@ class DataBaseHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase", 
 
     fun showTable(ctx : Context) {
         val c = this.readableDatabase.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
-
         if (c.moveToFirst()) {
             while ( !c.isAfterLast() ) {
-                Toast.makeText(ctx, "Table Name=> "+c.getString(0), Toast.LENGTH_LONG).show();
+                Toast.makeText(ctx, "Table Name=> " + c.getString(0), Toast.LENGTH_LONG).show();
+                val col = this.readableDatabase.rawQuery("SELECT * FROM ${c.getString(0)}", null);
+                for (table in col.columnNames) {
+                    Toast.makeText(ctx, "Table Name=> " + table, Toast.LENGTH_LONG).show();
+                }
                 c.moveToNext();
             }
         }
     }
 
     fun insertTest(ctx : Context) {
-//        var dico = DictionarySQLITE(ctx, "fr", "en")
-//        dico.save()
-//        dico = DictionarySQLITE(ctx, "en", "fr")
-//        dico.save()
-        val c = this.readableDatabase.select(DictionarySQLITE.DB_TABLE).exec {
-            this.moveToFirst()
-            Toast.makeText(ctx, """Dictionary=> ${this.getString(0)} ${this.getString(1)}""", Toast.LENGTH_LONG).show();
-        }
+        var dico = DictionarySQLITE(ctx = ctx, inLang = "eng", outLang = "fr")
+        dico.save()
+        //dico.delete("1")
+        Toast.makeText(ctx, """Dictionary=> ${dico.selectAll().get(0)}""", Toast.LENGTH_LONG).show();
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         // Here you can upgrade tables, as usual
+        db.dropTable(DictionarySQLITE.DB_TABLE)
+        db.dropTable(WordSQLITE.DB_TABLE)
+        db.dropTable(TranslateSQLITE.DB_TABLE)
+        onCreate(db)
     }
 }
 
 // Access property for Context
-val Context.database: DataBaseHelper
-    get() = DataBaseHelper.getInstance(getApplicationContext())
+val Context.database: DataBaseHelperKot
+    get() = DataBaseHelperKot.getInstance(getApplicationContext())

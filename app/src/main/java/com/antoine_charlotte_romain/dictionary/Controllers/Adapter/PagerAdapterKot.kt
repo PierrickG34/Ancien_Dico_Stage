@@ -6,8 +6,8 @@ import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.view.PagerAdapter
 import com.antoine_charlotte_romain.dictionary.Controllers.HistoryFragment
 import com.antoine_charlotte_romain.dictionary.Controllers.HomeFragment
+import com.antoine_charlotte_romain.dictionary.Controllers.HomeFragmentKot
 import com.antoine_charlotte_romain.dictionary.Controllers.SearchFragment
-import com.antoine_charlotte_romain.dictionary.R
 
 /**
  * Created by dineen on 17/06/2016.
@@ -22,7 +22,7 @@ class PagerAdapterKot(fm: FragmentManager, icons: IntArray) : FragmentStatePager
     //This method return the fragment for the every position in the View Pager
     override fun getItem(position: Int): Fragment {
         if (position == 0) {
-            return HomeFragment()
+            return HomeFragmentKot()
         } else if (position == 1) {
             return HistoryFragment()
         } else {

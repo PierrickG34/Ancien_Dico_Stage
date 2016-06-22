@@ -2,7 +2,7 @@ package com.dicosaure.Business.Translate
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import com.antoine_charlotte_romain.dictionary.DataModel.DataBaseHelper
+import com.antoine_charlotte_romain.dictionary.DataModel.DataBaseHelperKot
 import com.antoine_charlotte_romain.dictionary.business.word.Word
 
 /**
@@ -19,7 +19,7 @@ class TranslateSQLITE : Translate {
     val db : SQLiteDatabase
 
     constructor(ctx: Context, wordTo: Word, wordFrom: Word) : super(wordTo, wordFrom) {
-        this.db = DataBaseHelper.getInstance(ctx).readableDatabase
+        this.db = DataBaseHelperKot.getInstance(ctx).readableDatabase
     }
 
     override fun save() {
