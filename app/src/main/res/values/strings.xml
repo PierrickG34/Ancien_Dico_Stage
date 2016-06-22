@@ -35,9 +35,9 @@
     <string name="jump_to">Jump to&#8230;</string>
     <string name="dictionary_name">Dictionary Name</string>
     <string name="add_dictionary">Add a dictionary</string>
-    <string name="dictionary_not_added">Can\'t add this dictionary. Name already taken.</string>
-    <string name="dictionary_not_added_empty_string">Can\'t add this dictionary. Choose a name.</string>
-    <string name="dico_name_not_available">Can\'t choose this dictionary name. Name already taken.</string>
+    <string name="dictionary_not_added">Can\'t add this dictionary. Name already used.</string>
+    <string name="dictionary_not_added_empty_string">Can\'t add this dictionary. Please fill all the fields.</string>
+    <string name="dico_name_not_available">Can\'t choose this dictionary name. Name already used.</string>
     <string name="close_button">Close</string>
     <string name="delete">Delete</string>
     <string name="rename">Rename</string>
@@ -47,7 +47,7 @@
     <string name="rename_dictionary">Rename this dictionary</string>
     <string name="update_dictionary">Modify this dictionary</string>
     <string name="dictionary_renamed">Dictionary renamed.</string>
-    <string name="dictionary_not_renamed">Can\'t rename this dictionary. Name already taken.</string>
+    <string name="dictionary_not_renamed">Can\'t rename this dictionary. Name already used.</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="search">Search</string>
@@ -85,6 +85,8 @@
     <string name="dictionary">dictionary</string>
     <string name="dictionaries">dictionaries</string>
     <string name="word">word</string>
+    <string name="dictionary_inLang">Input language</string>
+    <string name="dictionary_outLang">Output language</string>
     <string name="words">words</string>
     <string name="target_dico">Target dictionary</string>
     <string name="no_result">No result</string>

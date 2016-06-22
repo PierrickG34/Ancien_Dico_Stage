@@ -27,7 +27,7 @@ class DictionaryAdapterKot(ctx : Context, layoutRessourceId : Int, data : ArrayL
         this.dictionaryCallback = callback
     }
 
-    override fun getView(position : Int, convertView : View, parent : ViewGroup) : View {
+    override fun getView(position : Int, convertView : View?, parent : ViewGroup) : View {
         var convertView = convertView
         var dictionary = super.getItem(position) //get item
 
@@ -35,7 +35,7 @@ class DictionaryAdapterKot(ctx : Context, layoutRessourceId : Int, data : ArrayL
             convertView = LayoutInflater.from(super.getContext()).inflate(this.layoutRessourceId, parent, false);
         }
 
-        var titleCell = convertView.findViewById(R.id.dictionary_title) as TextView
+        var titleCell = convertView!!.findViewById(R.id.dictionary_title) as TextView
         titleCell.setText(dictionary.getNameDictionary())
 
         //More information in the cell

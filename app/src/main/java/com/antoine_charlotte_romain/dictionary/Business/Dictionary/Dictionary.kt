@@ -5,11 +5,19 @@ import java.io.Serializable
 /**
  * Created by dineen on 14/06/2016.
  */
-open class Dictionary(inLang : String? = null, outLang: String? = null, id: String? = null) : Serializable {
+open class Dictionary : Serializable {
 
-    var inLang : String? = inLang
-    var outLang : String? = outLang
-    var idDictionary : String? = id
+    var inLang : String? = null
+    var outLang : String? = null
+    var idDictionary : String? = null
+
+    constructor(inLang : String?, outLang: String?, id: String?) {
+        if (inLang != null && outLang != null) {
+            this.inLang = inLang.toUpperCase()
+            this.outLang = outLang.toUpperCase()
+        }
+        this.idDictionary = id
+    }
 
     fun getNameDictionary() : String {
         return """${this.inLang} -> ${this.outLang}"""

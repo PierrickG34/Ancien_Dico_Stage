@@ -36,9 +36,9 @@
     <string name="jump_to">Aller à&#8230;</string>
     <string name="dictionary_name">Nom du dictionnaire</string>
     <string name="add_dictionary">Ajouter un dictionnaire</string>
-    <string name="dictionary_not_added">Impossible d\'ajouter ce dictionnaire. Nom déjà pris.</string>
-    <string name="dictionary_not_added_empty_string">Impossible d\'ajouter ce dictionnaire. Entrez un nom.</string>
-    <string name="dico_name_not_available">Impossible de créer ce dictionnaire. Nom déjà pris.</string>
+    <string name="dictionary_not_added">Impossible d\'ajouter ce dictionnaire. Le nom est déjà utilisé.</string>
+    <string name="dictionary_not_added_empty_string">Impossible d\'ajouter ce dictionnaire. Veuillez remplir tous les champs</string>
+    <string name="dico_name_not_available">Impossible de créer ce dictionnaire. Le nom est déjà utilisé.</string>
     <string name="close_button">Fermer</string>
     <string name="delete">Supprimer</string>
     <string name="rename">Renommer</string>
@@ -48,7 +48,7 @@
     <string name="rename_dictionary">Renommer ce dictionnaire</string>
     <string name="update_dictionary">Modifier ce disctionnaire</string>
     <string name="dictionary_renamed">Dictionnaire renommé.</string>
-    <string name="dictionary_not_renamed">Impossible de renommer ce dictionnaire. Nom déjà pris.</string>
+    <string name="dictionary_not_renamed">Impossible de renommer ce dictionnaire. Le nom est déjà utilisé.</string>
     <string name="open">Ouvrir</string>
     <string name="close">Fermer</string>
     <string name="search">Rechercher</string>
@@ -68,7 +68,6 @@
     <string name="dictionary_title">Dictionnaire :</string>
     <string name="dico_not_exists">Ce dictionnaire n\'existe pas.</string>
     <string name="no_selected_dico">Aucun dictionnaire sélectionné.</string>
-
     <string name="import_csv">Importer un csv</string>
     <string name="export_csv">Exporter ce dictionnaire</string>
     <string name="add_word">Ajouter un mot</string>
@@ -87,6 +86,8 @@
     <string name="dictionaries">dictionnaires</string>
     <string name="word">mot</string>
     <string name="words">mots</string>
+    <string name="dictionary_inLang">Langue d\'entrée</string>
+    <string name="dictionary_outLang">Langue de sortie</string>
     <string name="target_dico">Dictionnaire cible</string>
     <string name="no_result">Pas de résultat</string>
     <string name="clearHistory">Nettoyer l\'historique</string>

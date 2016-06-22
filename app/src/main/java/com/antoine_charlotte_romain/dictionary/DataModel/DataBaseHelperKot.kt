@@ -84,9 +84,8 @@ class DataBaseHelperKot(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase
 
     fun insertTest(ctx : Context) {
         var dico = DictionarySQLITE(ctx = ctx, inLang = "eng", outLang = "fr")
-        dico.save()
         //dico.delete("1")
-        Toast.makeText(ctx, """Dictionary=> ${dico.selectAll().get(0)}""", Toast.LENGTH_LONG).show();
+        Toast.makeText(ctx, """Dictionary=> ${dico.save()}""", Toast.LENGTH_LONG).show();
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {

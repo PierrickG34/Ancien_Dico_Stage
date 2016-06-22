@@ -22,9 +22,9 @@ import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.DictionaryAda
 import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.DictionaryAdapterKot
 import com.antoine_charlotte_romain.dictionary.Controllers.Lib.HeaderGridView
 import com.antoine_charlotte_romain.dictionary.Controllers.activities.MainActivityKot
-import com.antoine_charlotte_romain.dictionary.R
 import com.antoine_charlotte_romain.dictionary.business.dictionary.Dictionary
 import com.antoine_charlotte_romain.dictionary.business.dictionary.DictionarySQLITE
+import com.antoine_charlotte_romain.dictionary.R
 import java.util.*
 
 /**
@@ -42,12 +42,12 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
     /**
      * Initial dictionary list. Contains all the dictionary.
      */
-    var dictionaries: ArrayList<Dictionary>? = null
+    var dictionaries: ArrayList<Dictionary> = ArrayList<Dictionary>()
 
     /**
      * List of displayed dictionaries according to the research performed
      */
-    var dictionariesDisplay: ArrayList<Dictionary>? = null
+    var dictionariesDisplay: ArrayList<Dictionary> = ArrayList<Dictionary>()
 
     /**
      * Allow to display a list of Objects.
@@ -265,7 +265,7 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
         //add inlang field
         this.inLangField = EditText(this.activity)
         this.inLangField!!.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
-        this.inLangField!!.setHint(R.string.dictionary_name)
+        this.inLangField!!.setHint(R.string.dictionary_inLang)
         this.inLangField!!.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES)
         this.inLangField!!.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI)
         layout.addView(this.inLangField)
@@ -273,7 +273,7 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
         //add outlang field
         this.outLangField = EditText(this.activity)
         this.outLangField!!.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
-        this.outLangField!!.setHint(R.string.dictionary_name)
+        this.outLangField!!.setHint(R.string.dictionary_outLang)
         this.outLangField!!.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES)
         this.outLangField!!.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI)
         layout.addView(this.outLangField)
@@ -287,9 +287,9 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
 
         //Dialog positive action
         builder.setPositiveButton(R.string.add) { dialog, which ->
-            if (!this.inLangField!!.getText().toString().isEmpty() && !this.inLangField!!.getText().toString().isEmpty()) {
+            if (!this.inLangField!!.getText().toString().isEmpty() && !this.outLangField!!.getText().toString().isEmpty()) {
                 val d = DictionarySQLITE(this.context, this.inLangField!!.getText().toString(), this.outLangField!!.getText().toString())
-                if (d.save() == 1) {
+                if (d.save() > 0) {
                     this.dictionariesDisplay!!.add(d)
                     this.dictionaries!!.add(d)
                     if (this.searchBox!!.getText().toString().trim { it <= ' ' }.length > 0) {
@@ -435,24 +435,30 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
 
         builder.setPositiveButton(R.string.modify) { dialog, which ->
             val title = dictionary.getNameDictionary()
+            this.dictionaryModel!!.idDictionary = dictionary.idDictionary
+            if(!this.inLangField!!.getText().toString().isEmpty() && !this.outLangField!!.getText().toString().isEmpty()) {
+                if (this.dictionaryModel!!.update(this.inLangField!!.getText().toString(), this.outLangField!!.getText().toString()) > 0) {
+                    this.adapter!!.notifyDataSetChanged()
 
-            if (this.dictionaryModel!!.update(this.inLangField!!.getText().toString(), this.outLangField!!.getText().toString()) == 1) {
-                this.adapter!!.notifyDataSetChanged()
+                    //Set dictionary object
+                    dictionary.inLang = this.inLangField!!.getText().toString()
+                    dictionary.outLang = this.outLangField!!.getText().toString()
 
-                //Set dictionary object
-                dictionary.inLang = this.inLangField!!.getText().toString()
-                dictionary.outLang = this.outLangField!!.getText().toString()
+                    //Set search box
+                    if (this.searchBox!!.getText().toString().trim { it <= ' ' }.length > 0) {
+                        this.searchBox!!.setText("")
+                    }
 
-                //Set search box
-                if (this.searchBox!!.getText().toString().trim { it <= ' ' }.length > 0) {
-                    this.searchBox!!.setText("")
+                    Snackbar.make((activity as MainActivityKot).rootLayout!!, R.string.dictionary_renamed, Snackbar.LENGTH_LONG)
+                            .setAction(R.string.close_button) { }.show()
+                } else {
+                    Snackbar.make((activity as MainActivityKot).rootLayout!!, R.string.dictionary_not_renamed, Snackbar.LENGTH_LONG).setAction(R.string.close_button) { }.show()
                 }
-
-                Snackbar.make((activity as MainActivityKot).rootLayout!!, R.string.dictionary_renamed, Snackbar.LENGTH_LONG)
-                        .setAction(R.string.close_button) { }.show()
             }
             else {
-                Snackbar.make((activity as MainActivityKot).rootLayout!!, R.string.dictionary_not_renamed, Snackbar.LENGTH_LONG).setAction(R.string.close_button) { }.show()
+                Snackbar.make((activity as MainActivityKot).rootLayout!!, R.string.dictionary_not_renamed, Snackbar.LENGTH_LONG)
+                        .setAction(R.string.close_button) { }
+                        .show()
             }
             dialog.cancel()
         }
@@ -488,7 +494,7 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
         if (position != -1) {
             intent.putExtra(MainActivityKot.EXTRA_DICTIONARY, this.dictionariesDisplay!!.get(position))
         }
-        startActivity(intent)
+        //startActivity(intent) //A virer
 
         //set searchBox into empty
         if (this.searchBox!!.getText().toString().trim { it <= ' ' }.length > 0) {

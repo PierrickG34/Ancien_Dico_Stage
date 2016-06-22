@@ -80,7 +80,7 @@ class MainActivityKot : AppCompatActivity() {
         super.setContentView(R.layout.activity_main)
         var db = DataBaseHelper(this)
         var d = DataBaseHelperKot(this.ctx)
-        d.insertTest(this.ctx)
+        //d.insertTest(this.ctx)
 
         // Creating The Toolbar and setting it as the Toolbar for the activity
         this.toolbar = findViewById(R.id.tool_bar) as Toolbar?
