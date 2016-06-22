@@ -31,7 +31,9 @@ class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String?
         var res : MutableList<Dictionary> = ArrayList<Dictionary>()
         val c = this.db.select(DictionarySQLITE.DB_TABLE).exec {
             while(this.moveToNext()) {
-                res.add(Dictionary(this.getString(0), this.getString(1), this.getString(2)))
+                res.add(Dictionary(id = this.getString(this.getColumnIndex("id")),
+                        inLang = this.getString(this.getColumnIndex("inLang")),
+                        outLang = this.getString(this.getColumnIndex("outLang"))))
             }
         }
         return res
