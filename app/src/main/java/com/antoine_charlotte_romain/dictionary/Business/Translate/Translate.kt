@@ -5,7 +5,7 @@ import com.antoine_charlotte_romain.dictionary.business.word.Word
 /**
  * Created by dineen on 15/06/2016.
  */
-abstract class Translate {
+open class Translate {
 
     var wordTo : Word
     var wordFrom : Word
@@ -15,8 +15,5 @@ abstract class Translate {
         this.wordTo = wordTo
     }
 
-    abstract fun save()
-    abstract fun delete()
-    abstract fun modify()
 
 }
