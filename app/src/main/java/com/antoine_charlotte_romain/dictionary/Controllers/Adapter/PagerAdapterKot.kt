@@ -22,7 +22,8 @@ class PagerAdapterKot(fm: FragmentManager, icons: IntArray) : FragmentStatePager
     //This method return the fragment for the every position in the View Pager
     override fun getItem(position: Int): Fragment {
         if (position == 0) {
-            return HomeFragmentKot()
+            //return HomeFragmentKot()
+            return HomeFragment()
         } else if (position == 1) {
             return HistoryFragment()
         } else {

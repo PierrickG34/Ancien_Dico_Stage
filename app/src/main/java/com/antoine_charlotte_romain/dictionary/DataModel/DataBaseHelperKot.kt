@@ -2,7 +2,10 @@ package com.antoine_charlotte_romain.dictionary.DataModel
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.widget.Toast
+import com.antoine_charlotte_romain.dictionary.R
 import com.antoine_charlotte_romain.dictionary.business.dictionary.DictionarySQLITE
 import com.antoine_charlotte_romain.dictionary.business.word.WordSQLITE
 import com.dicosaure.Business.Translate.TranslateSQLITE
@@ -10,6 +13,8 @@ import org.jetbrains.anko.db.ManagedSQLiteOpenHelper
 import org.jetbrains.anko.db.dropTable
 import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.db.select
+import java.io.ByteArrayOutputStream
+import java.util.*
 
 /**
  * Created by dineen on 13/06/2016.
@@ -86,6 +91,17 @@ class DataBaseHelperKot(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase
         var dico = DictionarySQLITE(ctx = ctx, inLang = "eng", outLang = "fr")
         //dico.delete("1")
         Toast.makeText(ctx, """Dictionary=> ${dico.save()}""", Toast.LENGTH_LONG).show();
+    }
+
+    fun imageTest(ctx : Context) {
+        var img = BitmapFactory.decodeResource(ctx.getResources(), R.drawable.ic_action_create)
+        var bos: ByteArrayOutputStream? = ByteArrayOutputStream();
+        img.compress(Bitmap.CompressFormat.PNG, 100, bos);
+
+        val bArray : ByteArray = bos!!.toByteArray()
+
+        var test: WordSQLITE? = WordSQLITE(ctx, "1", "note", bArray, bArray, "headword", java.sql.Date(Calendar.getInstance().getTime().getTime()), "2")
+        test!!.save()
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {

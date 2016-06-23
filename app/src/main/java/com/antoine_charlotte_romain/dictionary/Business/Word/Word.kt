@@ -1,33 +1,32 @@
 package  com.antoine_charlotte_romain.dictionary.business.word
 
+import java.io.Serializable
 import java.sql.Blob
 import java.sql.Date
+import java.util.*
 
 /**
  * Created by dineen on 15/06/2016.
  */
-abstract class Word {
+open class Word(idWord: String? = null, note : String? = null, image : ByteArray? = null, sound : ByteArray? = null, headword
+: String, dateView: Date? = null, idDictionary: String? = null) : Serializable {
 
-    val idWord : String?
-    var note : String?
-    var image : Blob?
-    var sound : Blob?
-    var headword : String
-    var dateView : Date?
-    var dictionary : com.antoine_charlotte_romain.dictionary.business.dictionary.Dictionary
+    val idWord : String? = idWord
+    var note : String? = note
+    var image : ByteArray? = image
+    var sound : ByteArray? = sound
+    var headword : String = headword
+    var dateView : Date? = dateView
+    var idDictionary : String? = idDictionary
 
-    constructor(idWord: String? = null, note : String? = null, image : Blob? = null, sound : Blob? = null, headword
-     : String, dateView: Date? = null, dictionary: com.antoine_charlotte_romain.dictionary.business.dictionary.Dictionary) {
-        this.idWord = idWord
-        this.note = note
-        this.image = image
-        this.sound = sound
-        this.headword = headword
-        this.dateView = dateView
-        this.dictionary = dictionary
+    override fun toString(): String{
+        return "Word(idWord=$idWord, " +
+                "note=$note, " +
+                "image=$image, " +
+                "sound=$sound, " +
+                "headword='$headword', " +
+                "dateView=$dateView, " +
+                "idDictionary=$idDictionary)"
     }
 
-    abstract fun save()
-    abstract fun delete()
-    abstract fun modify()
 }

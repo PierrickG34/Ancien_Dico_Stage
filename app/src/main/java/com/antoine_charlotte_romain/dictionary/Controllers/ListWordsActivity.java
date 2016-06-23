@@ -56,7 +56,7 @@ import java.util.ArrayList;
  * TODO Garder l'état des activités au changement d'orientation
  * Created by summer1 on 24/06/2015.
  */
-public class ListWordsActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, WordAdapter.WordAdapterCallback{
+public class ListWordsActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, WordAdapter.WordAdapterCallback {
 
     private final int CONTEXT_MENU_MODIFY = 0;
     private final int CONTEXT_MENU_DELETE = 1;
