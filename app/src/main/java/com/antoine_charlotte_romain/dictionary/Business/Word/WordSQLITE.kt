@@ -10,13 +10,14 @@ import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.db.select
 import java.sql.Blob
 import java.sql.Date
+import java.text.SimpleDateFormat
 import java.util.*
 
 /**
  * Created by dineen on 15/06/2016.
  */
-class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, image : ByteArray? = null, sound : ByteArray? = null, headword
-: String, dateView: Date? = null, idDictionary: String? = null) : Word(idWord, note, image, sound, headword, dateView, idDictionary) {
+class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, image : ByteArray? = null, sound : ByteArray? = null, headword: String, dateView: Date? = null, idDictionary: String? = null)
+: Word(idWord, note, image, sound, headword, dateView, idDictionary) {
 
     companion object {
         val DB_TABLE = "WORD"
@@ -31,35 +32,36 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
 
     var db: SQLiteDatabase = DataBaseHelperKot.getInstance(ctx).readableDatabase
 
-    /*constructor(ctx : Context, idWord: String? = null, note : String? = null, image : Blob? = null, sound : Blob? = null, headword
-    : String, dateView: Date? = null, dictionary: Dictionary) : super(idWord, note, image, sound, headword, dateView, dictionary) {
-        this.db = DataBaseHelper.getInstance(ctx).readableDatabase
-    }*/
-
     fun save(): Int {
-        println(super.toString())
+        println(super.dateView)
         return this.db.insert(WordSQLITE.DB_TABLE,
                 WordSQLITE.DB_COLUMN_NOTE to super.note!!,
                 WordSQLITE.DB_COLUMN_IMAGE to super.image!!,
                 WordSQLITE.DB_COLUMN_SOUND to super.sound!!,
                 WordSQLITE.DB_COLUMN_HEADWORD to super.headword,
-                WordSQLITE.DB_COLUMN_DATE to super.dateView!!.toString(),
+                WordSQLITE.DB_COLUMN_DATE to super.dateView.toString()!!,
                 WordSQLITE.DB_COLUMN_ID_DICTIONARY to super.idDictionary!!).toInt()
     }
 
     fun selectAll(): List<Word> {
         var res: MutableList<Word> = ArrayList<Word>()
+        var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
         val c = this.db.select(WordSQLITE.DB_TABLE).exec {
             while (this.moveToNext()) {
+                println(this.getString(this.getColumnIndex("dateView")))
+                println(this.getString(this.getColumnIndex("idDictionary")))
+                var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())
                 res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
                         note = this.getString(this.getColumnIndex("note")),
                         image = this.getBlob(this.getColumnIndex("image")),
                         sound = this.getBlob(this.getColumnIndex("sound")),
                         headword = this.getString(this.getColumnIndex("headword")),
-                        dateView = this.getString(this.getColumnIndex("dateView")) as Date,
+                        dateView = sqlDate,
                         idDictionary = this.getString(this.getColumnIndex("idDictionary"))))
             }
         }
+        println(res)
         return res
     }
 

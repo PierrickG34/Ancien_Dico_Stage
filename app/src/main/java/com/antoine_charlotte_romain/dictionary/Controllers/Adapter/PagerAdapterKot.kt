@@ -4,10 +4,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.view.PagerAdapter
-import com.antoine_charlotte_romain.dictionary.Controllers.HistoryFragment
-import com.antoine_charlotte_romain.dictionary.Controllers.HomeFragment
-import com.antoine_charlotte_romain.dictionary.Controllers.HomeFragmentKot
-import com.antoine_charlotte_romain.dictionary.Controllers.SearchFragment
+import com.antoine_charlotte_romain.dictionary.Controllers.*
 
 /**
  * Created by dineen on 17/06/2016.
@@ -25,7 +22,7 @@ class PagerAdapterKot(fm: FragmentManager, icons: IntArray) : FragmentStatePager
             //return HomeFragmentKot()
             return HomeFragment()
         } else if (position == 1) {
-            return HistoryFragment()
+            return HistoryFragmentKot()
         } else {
             return SearchFragment()
         }

@@ -14,6 +14,7 @@ import org.jetbrains.anko.db.dropTable
 import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.db.select
 import java.io.ByteArrayOutputStream
+import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -100,8 +101,14 @@ class DataBaseHelperKot(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase
 
         val bArray : ByteArray = bos!!.toByteArray()
 
-        var test: WordSQLITE? = WordSQLITE(ctx, "1", "note", bArray, bArray, "headword", java.sql.Date(Calendar.getInstance().getTime().getTime()), "2")
+        var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+        var utilDate : java.util.Date = formatter.parse("2016-11-12")
+        var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())
+        println("SQL - "+sqlDate)
+        var test: WordSQLITE? = WordSQLITE(ctx, "1", "note", bArray, bArray, "headword", sqlDate, "2")
+        //print("ICIIIIIIIIIIIIIIIIIIII - "+java.sql.Date(Calendar.getInstance().getTime().getTime()))
         test!!.save()
+        test!!.selectAll()
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
