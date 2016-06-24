@@ -29,7 +29,6 @@
     <string name="name_already_exists">The specified name already exists</string>
     <string name="already_exists">already exists.</string>
     <string name="error">Error</string>
-    <string name="oups">Oups...</string>
     <string name="change_file_name">Change file name</string>
 
     <string name="jump_to">Jump to&#8230;</string>
@@ -120,4 +119,6 @@
     <string name="see_updated">See updated words</string>
     <string name="maximum_translate">You can\'t add more than 5 translations.</string>
     <string name="translation_children">Translation </string>
+    <string name="clear">Clear</string>
+    <string name="oups">historyCleared</string>
 </resources>

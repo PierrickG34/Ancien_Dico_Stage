@@ -30,7 +30,6 @@
     <string name="name_already_exists">Le nom spécifié existe déjà</string>
     <string name="already_exists">existe déjà.</string>
     <string name="error">Erreur</string>
-    <string name="oups">Oups...</string>
     <string name="change_file_name">Changez le nom du fichier</string>
 
     <string name="jump_to">Aller à&#8230;</string>
@@ -91,7 +90,7 @@
     <string name="target_dico">Dictionnaire cible</string>
     <string name="no_result">Pas de résultat</string>
     <string name="clearHistory">Nettoyer l\'historique</string>
-    <string name="historyCleared">L\'historique a été effacé.</string>
+    <string name="historyCleared">L\'historique a été nettoyé.</string>
     <string name="loadingWords">Chargement de plus de mots.</string>
     <string name="loadingHistory">Chargement de plus d\'historique.</string>
     <string name="exporting">Export de</string>
@@ -119,5 +118,7 @@
     <string name="app_name">Dicosaure</string>
     <string name="maximum_translate">Vous ne pouvez pas ajouter plus de 5 transactions.</string>
     <string name="translation_children">Traduction </string>
+    <string name="clear">Nettoyer</string>
+    <string name="oups"></string>
 
 </resources>
