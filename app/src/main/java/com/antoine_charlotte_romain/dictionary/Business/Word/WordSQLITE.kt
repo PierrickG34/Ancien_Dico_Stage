@@ -37,8 +37,8 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
     }*/
 
     fun save(): Int {
-        println(super.toString())
-        return this.db.insert(WordSQLITE.DB_TABLE,
+        return this.db.insert(
+                WordSQLITE.DB_TABLE,
                 WordSQLITE.DB_COLUMN_NOTE to super.note!!,
                 WordSQLITE.DB_COLUMN_IMAGE to super.image!!,
                 WordSQLITE.DB_COLUMN_SOUND to super.sound!!,
