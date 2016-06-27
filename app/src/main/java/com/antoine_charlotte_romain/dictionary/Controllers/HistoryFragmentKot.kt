@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.ProgressDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.support.v4.app.Fragment
@@ -15,6 +16,8 @@ import android.text.format.DateFormat
 import android.view.*
 import android.widget.*
 import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.SearchDateAdapter
+import com.antoine_charlotte_romain.dictionary.Controllers.activities.MainActivityKot
+import com.antoine_charlotte_romain.dictionary.DataModel.DictionaryDataModel
 import com.antoine_charlotte_romain.dictionary.DataModel.SearchDateDataModel
 import com.antoine_charlotte_romain.dictionary.R
 import com.antoine_charlotte_romain.dictionary.business.word.Word
@@ -28,6 +31,7 @@ import java.io.FileInputStream
 import java.sql.Blob
 import java.text.SimpleDateFormat
 import java.util.*
+import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.SearchDateAdapterKot
 
 /**
  * Created by dineen on 20/06/2016.
@@ -44,7 +48,13 @@ class HistoryFragmentKot(): Fragment() {
     private var historyOffset: Int = 0
     private var progressDialog: ProgressDialog? = null
 
-    private var sddm: SearchDateDataModel? = null
+//    private var sddm: SearchDateDataModel? = null
+    private var sddm: WordSQLITE? = null
+
+//    private var mySearchDateList: ArrayList<SearchDate>? = null
+    private var mySearchDateList: List<Word>? = null
+    private var myAdapter: SearchDateAdapterKot? = null
+    private var loadingMore: Boolean = false
 
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -56,7 +66,7 @@ class HistoryFragmentKot(): Fragment() {
         this.resetButton = thisView.findViewById(R.id.buttonReset) as Button
 
         println("HistoryFragmentKot.kt -- Test onCreateView")
-
+        this.sddm = WordSQLITE(context, null, null, null, null, "", null, null)
         initListView()
 
         setHasOptionsMenu(true)
@@ -103,31 +113,19 @@ class HistoryFragmentKot(): Fragment() {
 
         println("HistoryFragmentKot.kt -- Test initListView")
 
-//        var img = BitmapFactory.decodeResource(resources, R.drawable.ic_action_create)
-//        var bos: ByteArrayOutputStream? = ByteArrayOutputStream();
-//        img.compress(Bitmap.CompressFormat.PNG, 100, bos);
-//
-//        val bArray : ByteArray = bos!!.toByteArray()
-//        //val parser = BlobParser.parseRow(bArray)
-//
-//
-//
-//        var test: WordSQLITE? = WordSQLITE(context, "1", "note", bArray, bArray, "headword", null, "2")
-//        test!!.save()
-//        var resss: List<Word>? = null
-//        resss = test!!.selectAll()
-//        println(resss)
-//        Toast.makeText(activity, getString(R.string.historyCleared), Toast.LENGTH_SHORT).show()
-
 //        sddm = SearchDateDataModel(activity)
-//        mySearchDateList = sddm.selectAll(historyLimit, historyOffset)
+        //this.sddm = WordSQLITE(this.context, null, null, null, null, "", null, null)
 
-//        myAdapter = SearchDateAdapter(activity, R.layout.row_history, mySearchDateList)
-//
-//        this.gridViewHistory!!.setAdapter(myAdapter)
+//        mySearchDateList = sddm.selectAll(historyLimit, historyOffset)
+        this.mySearchDateList = this.sddm!!.selectAll(historyLimit, historyOffset)
+
+        myAdapter = SearchDateAdapterKot(R.layout.row_history, mySearchDateList, context, 0, null)
+
+
+        this.gridViewHistory!!.setAdapter(myAdapter)
         this.gridViewHistory!!.setTextFilterEnabled(true)
 
-//        this.gridViewHistory!!.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id -> seeWord(position) })
+        this.gridViewHistory!!.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id -> seeWord(position) })
 
         this.gridViewHistory!!.setOnScrollListener(object : AbsListView.OnScrollListener {
 
@@ -148,11 +146,11 @@ class HistoryFragmentKot(): Fragment() {
             private fun isScrollCompleted() {
                 if (this.currentVisibleItemCount > 0 && this.currentScrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                     val lastInScreen = currentFirstVisibleItem + currentVisibleItemCount
-//                    if (lastInScreen == mySearchDateList.size && !loadingMore && !allLoaded) {
-//                        progressDialog!!.show()
-//                        val thread = Thread(null, loadMoreHistory)
-//                        thread.start()
-//                    }
+                    if (lastInScreen == mySearchDateList!!.size && !loadingMore && !allLoaded) {
+                        progressDialog!!.show()
+                        val thread = Thread(null, loadMoreHistory)
+                        thread.start()
+                    }
                 }
             }
         })
@@ -167,22 +165,23 @@ class HistoryFragmentKot(): Fragment() {
 
             override fun afterTextChanged(s: Editable?) {
 //                if (s != null) {
-//                    mySearchDateList.clear()
-//                    val tempList: ArrayList<SearchDate>
+//                    (mySearchDateList as MutableList<Word>).clear()
+//                    val tempList: ArrayList<Word>
 //
 //                    if (s.length > 0) {
 //                        val search = s.toString()
 //                        tempList = sddm.select(search)
+//                        // TODO just need to implement the method.
 //                    } else {
 //                        historyOffset = 0
-//                        tempList = sddm.selectAll(historyLimit, historyOffset)
+//                        tempList = (sddm as WordSQLITE).selectAll(historyLimit, historyOffset) as ArrayList<Word>
 //                        allLoaded = false
 //                    }
 //
 //                    for (i in tempList.indices) {
-//                        mySearchDateList.add(tempList[i])
+//                        (mySearchDateList as MutableList<Word>).add(tempList[i])
 //                    }
-//                    myAdapter.notifyDataSetChanged()
+//                    (myAdapter as SearchDateAdapterKot).notifyDataSetChanged()
 //                }
             }
         })
@@ -259,6 +258,24 @@ class HistoryFragmentKot(): Fragment() {
     }
 
     /**
+     * This function launches the view details of a word and allows to modify it
+     * @param position the position in the listView of the word the user want to see more details or to modify
+     */
+    fun seeWord(position: Int) {
+        val wordDetailIntent = Intent(activity, WordActivity::class.java)
+
+//        wordDetailIntent.putExtra(MainActivityKot.EXTRA_WORD, mySearchDateList.get(position).getWord())
+        val ddm = DictionaryDataModel(activity)
+//        wordDetailIntent.putExtra(MainActivityKot.EXTRA_DICTIONARY, ddm.select(mySearchDateList.get(position).getWord().getDictionaryID()))
+
+        startActivity(wordDetailIntent)
+
+//        if (historySearch.getText().toString().trim { it <= ' ' }.length > 0) {
+//            historySearch.setText("")
+//        }
+    }
+
+    /**
      * This function is used to clear the search history of the app
      */
     private fun clearHistory() {
@@ -273,6 +290,43 @@ class HistoryFragmentKot(): Fragment() {
         alert.setNegativeButton(R.string.cancel) { dialog, whichButton -> }
 
         alert.show()
+    }
+
+    /**
+     * This thread is launch when the user scroll to the end of the list and it load more history
+     */
+    private val loadMoreHistory = Runnable {
+//        loadingMore = true
+//        var tempList = ArrayList<SearchDate>()
+        try {
+            Thread.sleep(1000)
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+
+        historyOffset += 10
+//        sddm = SearchDateDataModel(activity)
+//        if (historySearch.getText().toString().length == 0) {
+//            tempList = sddm.selectAll(historyLimit, historyOffset)
+//        }
+
+//        actualListSize = mySearchDateList.size
+//        for (i in tempList.indices) {
+//            mySearchDateList.add(tempList[i])
+//        }
+        activity.runOnUiThread(returnRes)
+    }
+
+    /**
+     * This thread tell the adapter that the more words were loaded
+     */
+    private val returnRes = Runnable {
+//        myAdapter.notifyDataSetChanged()
+//        loadingMore = false
+//        if (actualListSize == mySearchDateList.size) {
+//            allLoaded = true
+//        }
+//        progressDialog.dismiss()
     }
 
 
