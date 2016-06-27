@@ -33,7 +33,6 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null,
     var db: SQLiteDatabase = DataBaseHelperKot.getInstance(ctx).readableDatabase
 
     fun save(): Int {
-        //println(super.dateView)
         return this.db.insert(WordSQLITE.DB_TABLE,
                 WordSQLITE.DB_COLUMN_NOTE to super.note!!,
                 WordSQLITE.DB_COLUMN_IMAGE to super.image!!,

@@ -6,6 +6,7 @@ import com.antoine_charlotte_romain.dictionary.DataModel.DataBaseHelperKot
 import com.antoine_charlotte_romain.dictionary.business.dictionary.Dictionary
 import com.antoine_charlotte_romain.dictionary.business.dictionary.DictionarySQLITE
 import com.antoine_charlotte_romain.dictionary.business.word.Word
+import com.antoine_charlotte_romain.dictionary.business.word.WordSQLITE
 import org.jetbrains.anko.db.delete
 import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.db.select
@@ -16,7 +17,7 @@ import java.util.*
 /**
  * Created by dineen on 15/06/2016.
  */
-class TranslateSQLITE : Translate {
+class TranslateSQLITE(ctx : Context, wordTo: Word?, wordFrom: Word?) : Translate(wordTo, wordFrom) {
 
     companion object {
         val DB_TABLE = "TRANSLATE"
@@ -24,11 +25,7 @@ class TranslateSQLITE : Translate {
         val DB_COLUMN_WORDFROM = "wordFrom"
     }
 
-    val db : SQLiteDatabase
-
-    constructor(ctx: Context, wordTo: Word, wordFrom: Word) : super(wordTo, wordFrom) {
-        this.db = DataBaseHelperKot.getInstance(ctx).readableDatabase
-    }
+    val db : SQLiteDatabase = DataBaseHelperKot.getInstance(ctx).readableDatabase
 
     fun save() : Int {
         return this.db.insert(TranslateSQLITE.DB_TABLE,
@@ -38,8 +35,8 @@ class TranslateSQLITE : Translate {
 
     fun delete() : Int {
         return this.db.delete(TranslateSQLITE.DB_TABLE,"",
-                TranslateSQLITE.DB_COLUMN_WORDTO to super.wordTo,
-                TranslateSQLITE.DB_COLUMN_WORDFROM to super.wordFrom)
+                TranslateSQLITE.DB_COLUMN_WORDTO to super.wordTo!!,
+                TranslateSQLITE.DB_COLUMN_WORDFROM to super.wordFrom!!)
     }
 
 
@@ -59,5 +56,13 @@ class TranslateSQLITE : Translate {
             }
         }
         return res
+    }
+
+    fun selectAllTranslations(word : Word) {
+        this.db.select(TranslateSQLITE.DB_TABLE, WordSQLITE.DB_TABLE, WordSQLITE.DB_TABLE + ".*")
+                .where("""${WordSQLITE.DB_TABLE}.${WordSQLITE.DB_COLUMN_ID} = ${TranslateSQLITE.DB_TABLE}.${TranslateSQLITE.DB_COLUMN_WORDTO}""")
+                .exec {
+
+                }
     }
 }

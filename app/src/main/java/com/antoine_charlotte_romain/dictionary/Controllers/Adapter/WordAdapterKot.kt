@@ -1,13 +1,11 @@
 package com.antoine_charlotte_romain.dictionary.Controllers.Adapter
 
 import android.content.Context
-import android.graphics.PorterDuff
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
-import com.antoine_charlotte_romain.dictionary.DataModel.DictionaryDataModel
+import android.widget.ArrayAdapter
+import android.widget.TextView
 import com.antoine_charlotte_romain.dictionary.R
 import com.antoine_charlotte_romain.dictionary.business.word.Word
 import java.util.*
@@ -45,7 +43,7 @@ class WordAdapterKot(context: Context, resource: Int, data: ArrayList<Word>, sel
         return this.allSelected
     }
 
-    /**
+    /*/**
      * This function is used to show the word in the listView each word in a custom layout
      * @param position the position of the item the user is interacting with
      * *
@@ -55,7 +53,7 @@ class WordAdapterKot(context: Context, resource: Int, data: ArrayList<Word>, sel
      * *
      * @return the rowView completed
      */
-    /*override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var convertView = convertView
 
         // Get the data item for this position
@@ -71,10 +69,11 @@ class WordAdapterKot(context: Context, resource: Int, data: ArrayList<Word>, sel
         val subItem = convertView.findViewById(R.id.textSub) as TextView
 
         // Populate the data into the template view using the data object
-        mainItem.setText(word.getHeadword())
-        if (selectedDictionary) {
+        mainItem.setText(word.headword)
+        if (this.selectedDictionary) {
             subItem.setText(word.getTranslation())
-        } else {
+        }
+        else {
             val ddm = DictionaryDataModel(context)
             subItem.setText(ddm.select(word.getDictionaryID()).getTitle())
         }
