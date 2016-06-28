@@ -29,9 +29,10 @@ class SearchDateAdapterKot(layoutResourceId: Int?, asd: List<Word>?, context: Co
         return this.asd!!.get(position)
     }
 
-    override fun getItemId(position: Int): Long {
-        return position as Long
-    }
+//    override fun getItemId(position: Int): Long {
+//        TODO Reimplement this strange method ?
+//        return position as Long
+//    }
 
     /**
      * This function is used to show the word in the listView each word in a custom layout "row_word"

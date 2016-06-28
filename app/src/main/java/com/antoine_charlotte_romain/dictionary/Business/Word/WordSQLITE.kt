@@ -50,7 +50,11 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null,
     fun select(search : String) : List<Word> {
         var res: MutableList<Word> = ArrayList<Word>()
         var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
-        val c = this.db.select(WordSQLITE.DB_TABLE).exec {
+        val c = this.db.select(WordSQLITE.DB_TABLE)
+                .where("""${WordSQLITE.DB_COLUMN_HEADWORD} LIKE "${search}%"
+                    OR ${WordSQLITE.DB_COLUMN_DATE} LIKE "%${search}%" """)
+                .orderBy(WordSQLITE.DB_COLUMN_DATE ,SqlOrderDirection.DESC)
+                .exec {
             while (this.moveToNext()) {
                 var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
                 var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())
@@ -64,17 +68,7 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null,
             }
         }
         return res
-        // TODO Ecrire la requete
-//        private val SQL_SELECT_SEARCH_DATE_FROM_WORD_OR_DATE =
-//
-//                " SELECT sd." + SearchDateEntry._ID + " FROM " + SearchDateEntry.TABLE_NAME +
-//                " sd INNER JOIN " + WordDataModel.WordEntry.TABLE_NAME + " w ON sd." +
-//                SearchDateEntry.COLUMN_NAME_WORD_ID + "=w." + WordDataModel.WordEntry._ID +
-//                " WHERE w." + WordDataModel.WordEntry.COLUMN_NAME_HEADWORD + " LIKE ?" +
-//                OR sd." + SearchDateEntry.COLUMN_NAME_SEARCH_DATE + " LIKE ? ORDER BY "
-//                + SearchDateEntry.COLUMN_NAME_SEARCH_DATE + " DESC;"
-
-    }
+     }
 
     fun selectAll(): List<Word> {
         var res: MutableList<Word> = ArrayList<Word>()

@@ -164,25 +164,24 @@ class HistoryFragmentKot(): Fragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-//                if (s != null) {
-//                    (mySearchDateList as MutableList<Word>).clear()
-//                    val tempList: ArrayList<Word>
-//
-//                    if (s.length > 0) {
-//                        val search = s.toString()
-//                        tempList = sddm.select(search)
-//                        // TODO just need to implement the method.
-//                    } else {
-//                        historyOffset = 0
-//                        tempList = (sddm as WordSQLITE).selectAll(historyLimit, historyOffset) as ArrayList<Word>
-//                        allLoaded = false
-//                    }
-//
-//                    for (i in tempList.indices) {
-//                        (mySearchDateList as MutableList<Word>).add(tempList[i])
-//                    }
-//                    (myAdapter as SearchDateAdapterKot).notifyDataSetChanged()
-//                }
+                if (s != null) {
+                    (mySearchDateList as MutableList<Word>).clear()
+                    val tempList: ArrayList<Word>
+
+                    if (s.length > 0) {
+                        val search = s.toString()
+                        tempList = (sddm as WordSQLITE).select(search) as ArrayList<Word>
+                    } else {
+                        historyOffset = 0
+                        tempList = (sddm as WordSQLITE).selectAll(historyLimit, historyOffset) as ArrayList<Word>
+                        allLoaded = false
+                    }
+
+                    for (i in tempList.indices) {
+                        (mySearchDateList as MutableList<Word>).add(tempList[i])
+                    }
+                    (myAdapter as SearchDateAdapterKot).notifyDataSetChanged()
+                }
             }
         })
 
