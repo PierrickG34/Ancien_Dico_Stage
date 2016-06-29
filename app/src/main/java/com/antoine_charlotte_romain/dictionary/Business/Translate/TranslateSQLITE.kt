@@ -11,6 +11,7 @@ import org.jetbrains.anko.db.delete
 import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.db.select
 import org.jetbrains.anko.db.update
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -29,14 +30,14 @@ class TranslateSQLITE(ctx : Context, wordTo: Word?, wordFrom: Word?) : Translate
 
     fun save() : Int {
         return this.db.insert(TranslateSQLITE.DB_TABLE,
-                TranslateSQLITE.DB_COLUMN_WORDTO to super.wordTo!!,
-                TranslateSQLITE.DB_COLUMN_WORDFROM to super.wordFrom!!).toInt()
+                TranslateSQLITE.DB_COLUMN_WORDTO to super.wordTo!!.idWord!!,
+                TranslateSQLITE.DB_COLUMN_WORDFROM to super.wordFrom!!.idWord!!).toInt()
     }
 
     fun delete() : Int {
         return this.db.delete(TranslateSQLITE.DB_TABLE,"",
-                TranslateSQLITE.DB_COLUMN_WORDTO to super.wordTo!!,
-                TranslateSQLITE.DB_COLUMN_WORDFROM to super.wordFrom!!)
+                TranslateSQLITE.DB_COLUMN_WORDTO to super.wordTo!!.idWord!!,
+                TranslateSQLITE.DB_COLUMN_WORDFROM to super.wordFrom!!.idWord!!)
     }
 
 
@@ -44,8 +45,8 @@ class TranslateSQLITE(ctx : Context, wordTo: Word?, wordFrom: Word?) : Translate
         super.wordTo = wordToNew
         super.wordFrom = wordFromNew
         return this.db.update(TranslateSQLITE.DB_TABLE,
-                TranslateSQLITE.DB_COLUMN_WORDTO to super.wordTo!!,
-                TranslateSQLITE.DB_COLUMN_WORDFROM to super.wordFrom!!).exec()
+                TranslateSQLITE.DB_COLUMN_WORDTO to super.wordTo!!.idWord!!,
+                TranslateSQLITE.DB_COLUMN_WORDFROM to super.wordFrom!!.idWord!!).exec()
     }
 
     fun selectAll(): List<Translate> {
@@ -58,11 +59,4 @@ class TranslateSQLITE(ctx : Context, wordTo: Word?, wordFrom: Word?) : Translate
         return res
     }
 
-    fun selectAllTranslations(word : Word) {
-        this.db.select(TranslateSQLITE.DB_TABLE, WordSQLITE.DB_TABLE, WordSQLITE.DB_TABLE + ".*")
-                .where("""${WordSQLITE.DB_TABLE}.${WordSQLITE.DB_COLUMN_ID} = ${TranslateSQLITE.DB_TABLE}.${TranslateSQLITE.DB_COLUMN_WORDTO}""")
-                .exec {
-
-                }
-    }
 }

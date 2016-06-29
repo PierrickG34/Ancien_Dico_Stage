@@ -143,6 +143,7 @@ public class WordAdapter extends ArrayAdapter<Word> {
         }
         else if(layoutResourceId == R.layout.row_delete_word)
         {
+            System.out.println("checkbox");
             final CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.deleteWordBox);
 
             checkBox.setChecked(deleteList.contains(word));

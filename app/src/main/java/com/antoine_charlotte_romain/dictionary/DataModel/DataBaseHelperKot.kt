@@ -34,6 +34,11 @@ class DataBaseHelperKot(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase
         }
     }
 
+    override fun onOpen(db: SQLiteDatabase?) {
+        super.onOpen(db)
+        db!!.execSQL("PRAGMA foreign_keys=ON");
+    }
+
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(
                 """
@@ -53,11 +58,11 @@ class DataBaseHelperKot(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase
                     ${WordSQLITE.DB_COLUMN_NOTE} TEXT NULL,
                     ${WordSQLITE.DB_COLUMN_DATE} DATE NULL,
                     ${WordSQLITE.DB_COLUMN_HEADWORD} TEXT NOT NULL,
-                    ${WordSQLITE.DB_COLUMN_ID_DICTIONARY} DATE NULL,
+                    ${WordSQLITE.DB_COLUMN_ID_DICTIONARY} INTEGER NOT NULL,
                     ${WordSQLITE.DB_COLUMN_IMAGE} BLOB NULL,
                     ${WordSQLITE.DB_COLUMN_SOUND} BLOB NULL,
                     CONSTRAINT pk_word PRIMARY KEY(${WordSQLITE.DB_COLUMN_ID}),
-                    CONSTRAINT fk_word_dictionary FOREIGN KEY(${WordSQLITE.DB_COLUMN_ID_DICTIONARY}) REFERENCES ${DictionarySQLITE.DB_TABLE}(${DictionarySQLITE.DB_COLUMN_ID})
+                    CONSTRAINT fk_word_dictionary FOREIGN KEY(${WordSQLITE.DB_COLUMN_ID_DICTIONARY}) REFERENCES ${DictionarySQLITE.DB_TABLE}(${DictionarySQLITE.DB_COLUMN_ID}) ON DELETE CASCADE
                 );
                 """
         )
@@ -67,8 +72,8 @@ class DataBaseHelperKot(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase
                     ${TranslateSQLITE.DB_COLUMN_WORDTO} INTEGER NOT NULL,
                     ${TranslateSQLITE.DB_COLUMN_WORDFROM} INTEGER NOT NULL,
                     CONSTRAINT pk_translate_word PRIMARY KEY(${TranslateSQLITE.DB_COLUMN_WORDTO}, ${TranslateSQLITE.DB_COLUMN_WORDFROM}),
-                    CONSTRAINT fk_translate_wordTo FOREIGN KEY(${TranslateSQLITE.DB_COLUMN_WORDTO}) REFERENCES ${WordSQLITE.DB_TABLE}(${WordSQLITE.DB_COLUMN_ID}),
-                    CONSTRAINT fk_translate_wordFrom FOREIGN KEY(${TranslateSQLITE.DB_COLUMN_WORDFROM}) REFERENCES ${WordSQLITE.DB_TABLE}(${WordSQLITE.DB_COLUMN_ID})
+                    CONSTRAINT fk_translate_wordTo FOREIGN KEY(${TranslateSQLITE.DB_COLUMN_WORDTO}) REFERENCES ${WordSQLITE.DB_TABLE}(${WordSQLITE.DB_COLUMN_ID}) ON DELETE CASCADE,
+                    CONSTRAINT fk_translate_wordFrom FOREIGN KEY(${TranslateSQLITE.DB_COLUMN_WORDFROM}) REFERENCES ${WordSQLITE.DB_TABLE}(${WordSQLITE.DB_COLUMN_ID}) ON DELETE CASCADE
                 );
                 """
         )
@@ -89,13 +94,13 @@ class DataBaseHelperKot(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase
     }
 
     fun insertTest(ctx : Context) {
-        var dico = DictionarySQLITE(ctx = ctx, inLang = "eng", outLang = "fr")
+        var dico = DictionarySQLITE(ctx = ctx, inLang = "eng", outLang = "fr", id = "1")
         //dico.delete("1")
         Toast.makeText(ctx, """Dictionary=> ${dico.save()}""", Toast.LENGTH_LONG).show();
     }
 
     fun imageTest(ctx : Context) {
-        var img = BitmapFactory.decodeResource(ctx.getResources(), R.drawable.ic_action_create)
+        var img = BitmapFactory.decodeResource(ctx.getResources(), R.drawable.ic_action_create!!)
         var bos: ByteArrayOutputStream? = ByteArrayOutputStream();
         img.compress(Bitmap.CompressFormat.PNG, 100, bos);
 
@@ -105,10 +110,16 @@ class DataBaseHelperKot(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase
         var utilDate : java.util.Date = formatter.parse("2016-11-12")
         var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())
         println("SQL - "+sqlDate)
-        var test: WordSQLITE? = WordSQLITE(ctx, "1", "note", bArray, bArray, "headword", sqlDate, "2")
-        //print("ICIIIIIIIIIIIIIIIIIIII - "+java.sql.Date(Calendar.getInstance().getTime().getTime()))
-        test!!.save()
-        test!!.selectAll()
+        var test1: WordSQLITE? = WordSQLITE(ctx, "1", "note", bArray, bArray, "salut", sqlDate, "1")
+        test1!!.save()
+        var test2 = WordSQLITE(ctx, "2", "note", bArray, bArray, "hi", sqlDate, "1")
+        test2!!.save()
+        var trad = TranslateSQLITE(ctx, test1, test2)
+        var test3 = WordSQLITE(ctx, "3", "note", bArray, bArray, "hola", sqlDate, "1")
+        test3!!.save()
+        var test4 = WordSQLITE(ctx, "4", "note", bArray, bArray, "bye", sqlDate, "1")
+        test4!!.save()
+        trad.save()
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {

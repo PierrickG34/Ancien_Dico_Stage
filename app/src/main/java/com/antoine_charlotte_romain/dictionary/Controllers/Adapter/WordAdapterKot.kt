@@ -1,13 +1,14 @@
 package com.antoine_charlotte_romain.dictionary.Controllers.Adapter
 
 import android.content.Context
+import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.TextView
+import android.widget.*
 import com.antoine_charlotte_romain.dictionary.R
 import com.antoine_charlotte_romain.dictionary.business.word.Word
+import com.antoine_charlotte_romain.dictionary.business.word.WordSQLITE
 import java.util.*
 
 /**
@@ -21,7 +22,7 @@ class WordAdapterKot(context: Context, resource: Int, data: ArrayList<Word>, sel
     var listDelete = ArrayList<Word>()
     var selectedDictionary = selectedDictionary
     var allSelected: Boolean = false
-    var callback: WordAdapterCallback? = null
+    var callback: WordAdapterCallbackKot? = null
 
     override fun getCount(): Int {
         return this.listWord.size
@@ -43,7 +44,7 @@ class WordAdapterKot(context: Context, resource: Int, data: ArrayList<Word>, sel
         return this.allSelected
     }
 
-    /*/**
+    /**
      * This function is used to show the word in the listView each word in a custom layout
      * @param position the position of the item the user is interacting with
      * *
@@ -58,6 +59,7 @@ class WordAdapterKot(context: Context, resource: Int, data: ArrayList<Word>, sel
 
         // Get the data item for this position
         val word = getItem(position)
+        val wordModel = WordSQLITE(this.ctx, word.idWord, word.note, word.image, word.sound, word.headword, word.dateView, word.idDictionary)
 
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
@@ -71,18 +73,17 @@ class WordAdapterKot(context: Context, resource: Int, data: ArrayList<Word>, sel
         // Populate the data into the template view using the data object
         mainItem.setText(word.headword)
         if (this.selectedDictionary) {
-            subItem.setText(word.getTranslation())
+            subItem.setText(wordModel.getAllTranslationText())
         }
         else {
-            val ddm = DictionaryDataModel(context)
-            subItem.setText(ddm.select(word.getDictionaryID()).getTitle())
+            subItem.setText(wordModel.headword)
         }
 
-        if (layoutResourceId == R.layout.row_word) {
+        if (this.layoutResourceId == R.layout.row_word) {
             val menuButton = convertView.findViewById(R.id.imageButtonWord) as ImageButton
             menuButton.setColorFilter(R.color.textColor, PorterDuff.Mode.MULTIPLY)
             menuButton.setOnClickListener { v ->
-                if (!callback.getOpen()) {
+                if (!callback!!.getOpen()) {
                     when (v.id) {
                         R.id.imageButtonWord -> {
                             val popup = PopupMenu(context, v)
@@ -90,33 +91,29 @@ class WordAdapterKot(context: Context, resource: Int, data: ArrayList<Word>, sel
                             popup.show()
                             popup.setOnMenuItemClickListener { item ->
                                 when (item.itemId) {
-                                    R.id.modify -> callback.modifyPressed(position)
-
-                                    R.id.delete -> callback.deletePressed(position)
-
-                                    else -> {
-                                    }
+                                    R.id.modify -> callback!!.modifyPressed(position)
+                                    R.id.delete -> callback!!.deletePressed(position)
                                 }
                                 true
                             }
                         }
-
-                        else -> {
-                        }
                     }
-                } else {
-                    callback.showFloatingMenu(v)
+                }
+                else {
+                    callback!!.showFloatingMenu(v)
                 }
             }
-        } else if (layoutResourceId == R.layout.row_delete_word) {
+        }
+        else if (layoutResourceId == R.layout.row_delete_word) {
             val checkBox = convertView.findViewById(R.id.deleteWordBox) as CheckBox
 
-            checkBox.isChecked = deleteList.contains(word)
+            checkBox.isChecked = this.listDelete.contains(word)
 
             checkBox.setOnClickListener {
                 if (checkBox.isChecked) {
                     addToDeleteList(word)
-                } else {
+                }
+                else {
                     removeFromDeleteList(word)
                 }
             }
@@ -133,5 +130,18 @@ class WordAdapterKot(context: Context, resource: Int, data: ArrayList<Word>, sel
 
         // Return the completed view to render on screen
         return convertView
-    }*/
+    }
+
+    private fun addToDeleteList(w: Word) {
+        if (!this.listDelete.contains(w)) {
+            this.listDelete.add(w)
+            this.callback!!.notifyDeleteListChanged()
+        }
+    }
+
+    private fun removeFromDeleteList(w: Word) {
+        this.listDelete.remove(w)
+        this.allSelected = false
+        this.callback!!.notifyDeleteListChanged()
+    }
 }
