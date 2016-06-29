@@ -122,7 +122,8 @@ public class SearchDateDataModel extends DAOBase{
     public ArrayList<SearchDate> select(String search){
         SQLiteDatabase db = open();
 
-        Cursor c = db.rawQuery(SQL_SELECT_SEARCH_DATE_FROM_WORD_OR_DATE, new String[]{String.valueOf(search) + "%", "%" + String.valueOf(search) + "%"});
+        Cursor c = db.rawQuery(SQL_SELECT_SEARCH_DATE_FROM_WORD_OR_DATE, new String[]{String.valueOf(search) +
+                "%", "%" + String.valueOf(search) + "%"});
 
         ArrayList<SearchDate> listDate = new ArrayList<>();
         while (c.moveToNext()) {

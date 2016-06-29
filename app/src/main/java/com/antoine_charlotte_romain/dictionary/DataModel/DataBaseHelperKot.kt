@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory
 import android.widget.Toast
 import com.antoine_charlotte_romain.dictionary.R
 import com.antoine_charlotte_romain.dictionary.business.dictionary.DictionarySQLITE
+import com.antoine_charlotte_romain.dictionary.business.word.Word
 import com.antoine_charlotte_romain.dictionary.business.word.WordSQLITE
 import com.dicosaure.Business.Translate.TranslateSQLITE
 import org.jetbrains.anko.db.ManagedSQLiteOpenHelper
@@ -103,7 +104,6 @@ class DataBaseHelperKot(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase
         var img = BitmapFactory.decodeResource(ctx.getResources(), R.drawable.ic_action_create!!)
         var bos: ByteArrayOutputStream? = ByteArrayOutputStream();
         img.compress(Bitmap.CompressFormat.PNG, 100, bos);
-
         val bArray : ByteArray = bos!!.toByteArray()
 
         var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
@@ -120,6 +120,39 @@ class DataBaseHelperKot(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase
         var test4 = WordSQLITE(ctx, "4", "note", bArray, bArray, "bye", sqlDate, "1")
         test4!!.save()
         trad.save()
+        // Creation of the day's  with the good format for the database
+//        var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+//        var utilDate : java.util.Date = formatter.parse("2016-11-12")
+//        var sqlDate : java.sql.Date = java.sql.Date(Calendar.getInstance().getTime().getTime())
+//        println("DataBaseHelperKot.kt -- salDate -" + sqlDate)
+
+//        var test: WordSQLITE? = WordSQLITE(ctx, "1", "note11", bArray, bArray, "headword11", sqlDate, "11")
+//        test!!.save()
+//        var allWord: List<Word>? = test.selectAll()
+//        println("DataBaseHelperKot.kt -- allWord.size - " + allWord!!.size)
+//        println("DataBaseHelperKot.kt -- allWord - " + allWord)
+//
+//        var orderBy: WordSQLITE? = WordSQLITE(ctx, "1", "note1", bArray, bArray, "headword1", sqlDate, "1")
+//        orderBy!!.save()
+//        var historyLimit = 10
+//        var historyOffset = 3
+//        var allWordOrderBy: List<Word>? = orderBy.selectAll(historyOffset, historyLimit)
+//        println("DataBaseHelperKot.kt -- allWordOrderBy.size - " + allWordOrderBy!!.size)
+//        println("DataBaseHelperKot.kt -- allWordOrderBy - " + allWordOrderBy)
+
+
+
+        /*TEST SELECT BY DATE
+        var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+        var formatDateBefore : java.util.Date = formatter.parse("2016-06-22")
+        var formatDateAfter : java.util.Date = formatter.parse("2016-06-24")
+        var dateBefore : java.sql.Date = java.sql.Date(formatDateBefore.getTime())
+        var dateAfter : java.sql.Date = java.sql.Date(formatDateAfter.getTime())
+        println("DataBaseHelperKot.kt -- dateBefore - " + dateBefore)
+        println("DataBaseHelperKot.kt -- dateAfter - " + dateAfter)
+
+        var allWordBetweenDate: List<Word>? = test.selectByDate(dateBefore, dateAfter)
+        println("DataBaseHelperKot.kt -- allWordBetweenDate - " + allWordBetweenDate)*/
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {

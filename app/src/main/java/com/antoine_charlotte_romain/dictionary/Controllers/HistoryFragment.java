@@ -116,6 +116,7 @@ public class HistoryFragment extends Fragment {
         progressDialog.getWindow().setGravity(Gravity.BOTTOM);
 
         sddm = new SearchDateDataModel(getActivity());
+        sddm = new SearchDateDataModel(getActivity());
         mySearchDateList = sddm.selectAll(historyLimit, historyOffset);
 
         myAdapter = new SearchDateAdapter(getActivity(), R.layout.row_history, mySearchDateList);
