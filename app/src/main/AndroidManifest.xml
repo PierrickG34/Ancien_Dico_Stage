@@ -41,7 +41,16 @@
                 android:value=".Controllers.activities.MainActivityKot" />
         </activity>
         <activity
-            android:name=".Controllers.WordActivity"
+            android:name=".Controllers.activities.dictionary.ListWordsActivityKot"
+            android:label="@string/list_words_activity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".Controllers.activities.MainActivityKot" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Controllers.activities.MainActivityKot" />
+        </activity>
+        <activity
+            android:name=".Controllers.WordActivityKot"
             android:label="@string/details"
             android:parentActivityName=".Controllers.ListWordsActivity" >
             <meta-data

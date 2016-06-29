@@ -3,8 +3,11 @@ package com.antoine_charlotte_romain.dictionary.business.dictionary
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import com.antoine_charlotte_romain.dictionary.DataModel.DataBaseHelperKot
+import com.antoine_charlotte_romain.dictionary.business.word.Word
+import com.antoine_charlotte_romain.dictionary.business.word.WordSQLITE
 import org.jetbrains.anko.db.*
 import java.io.Serializable
+import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -37,13 +40,39 @@ class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String?
 
     fun selectAll(): List<Dictionary> {
         var res : MutableList<Dictionary> = ArrayList<Dictionary>()
-        val c = this.db.select(DictionarySQLITE.DB_TABLE).exec {
+        val c = this.db.select(DictionarySQLITE.DB_TABLE)
+                .orderBy(DictionarySQLITE.DB_COLUMN_INLANG)
+                .exec {
             while(this.moveToNext()) {
                 res.add(Dictionary(id = this.getString(this.getColumnIndex("id")),
                         inLang = this.getString(this.getColumnIndex("inLang")),
                         outLang = this.getString(this.getColumnIndex("outLang"))))
             }
         }
+        return res
+    }
+
+    fun selectAllWords(): List<Word> {
+        var res: MutableList<Word> = ArrayList<Word>()
+        var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+        this.db.select("""${DictionarySQLITE.DB_TABLE}, ${WordSQLITE.DB_TABLE}""", "${WordSQLITE.DB_TABLE}.*")
+                .where("""${WordSQLITE.DB_COLUMN_ID_DICTIONARY} = ${super.idDictionary}""")
+                .distinct()
+                .orderBy(WordSQLITE.DB_COLUMN_HEADWORD)
+                .exec {
+                    while (this.moveToNext()) {
+                        var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                        var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())
+                        res.add(Word(
+                                idWord = this.getString(this.getColumnIndex("id")),
+                                note = this.getString(this.getColumnIndex("note")),
+                                image = this.getBlob(this.getColumnIndex("image")),
+                                sound = this.getBlob(this.getColumnIndex("sound")),
+                                headword = this.getString(this.getColumnIndex("headword")),
+                                dateView = sqlDate,
+                                idDictionary = this.getString(this.getColumnIndex("idDictionary"))))
+                    }
+                }
         return res
     }
 
@@ -84,7 +113,15 @@ class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String?
 
 
     fun read() {
-        throw UnsupportedOperationException()
+        val c = this.db.select(DictionarySQLITE.DB_TABLE)
+                .where("""${DictionarySQLITE.DB_COLUMN_ID} = ${super.idDictionary}""")
+                .exec {
+                    while(this.moveToNext()) {
+                        super.idDictionary = this.getString(this.getColumnIndex("id"))
+                        super.inLang = this.getString(this.getColumnIndex("inLang"))
+                        super.outLang = this.getString(this.getColumnIndex("outLang"))
+                    }
+        }
     }
 
 }

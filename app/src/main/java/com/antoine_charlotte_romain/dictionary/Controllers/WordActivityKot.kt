@@ -3,17 +3,16 @@ package com.antoine_charlotte_romain.dictionary.Controllers
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
+import android.support.annotation.IdRes
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RelativeLayout
@@ -43,9 +42,11 @@ class WordActivityKot : AppCompatActivity() {
     private var wdm: WordSQLITE? = null
     private var selectedWord: Word? = null
     private var selectedDictionary: Dictionary? = null
+    private var selectedWordSQLLite : WordSQLITE? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        println("JE PASSE DANS WORDACTIVITKOT")
         setContentView(R.layout.word)
 
         toolbar = findViewById(R.id.tool_bar) as Toolbar?
@@ -55,8 +56,19 @@ class WordActivityKot : AppCompatActivity() {
 
         val intent = intent
         selectedWord = intent.getSerializableExtra(MainActivityKot.EXTRA_WORD) as Word
-        selectedDictionary = intent.getSerializableExtra(MainActivityKot.EXTRA_DICTIONARY) as Dictionary
+        println("idWord : "+ (selectedWord as Word).idWord)
+        println("note : "+ (selectedWord as Word).note)
+        println("image : "+ (selectedWord as Word).image)
+        println("sound : "+ (selectedWord as Word).sound)
+        println("headword : "+ (selectedWord as Word).headword)
+        println("dateView : "+ (selectedWord as Word).dateView)
+        println("idDictionary : "+ (selectedWord as Word).idDictionary)
 
+        selectedWordSQLLite = WordSQLITE(applicationContext, (selectedWord as Word).idWord, (selectedWord as Word).note, (selectedWord as Word).image, (selectedWord as Word).sound, (selectedWord as Word).headword, (selectedWord as Word).dateView, (selectedWord as Word).idDictionary)
+        println("selectedDictionary "+ intent.getSerializableExtra(MainActivityKot.EXTRA_DICTIONARY))
+        selectedDictionary = Dictionary(null,null,intent.getSerializableExtra(MainActivityKot.EXTRA_DICTIONARY).toString())
+        //selectedDictionary = intent.getSerializableExtra(MainActivityKot.EXTRA_DICTIONARY) as Dictionary
+        println("selectedDictionary "+selectedDictionary)
         dictionaryText = findViewById(R.id.editTextDictionary) as EditText?
         headwordText = findViewById(R.id.editTextHeadword) as EditText?
         translationText = findViewById(R.id.editTextTranslation1) as EditText?
@@ -175,7 +187,7 @@ class WordActivityKot : AppCompatActivity() {
         }
         headwordText!!.isEnabled = false
         if (translationText!!.text.toString().trim { it <= ' ' }.length <= 0) {
-            translationText!!.setText(selectedWord!!.getTranslation())
+            translationText!!.setText(selectedWordSQLLite!!.getAllTranslationText())
         }
         if (noteText!!.text.toString().trim { it <= ' ' }.length <= 0) {
             noteText!!.setText(selectedWord!!.note)
@@ -183,8 +195,7 @@ class WordActivityKot : AppCompatActivity() {
 
         supportActionBar!!.setTitle(getString(R.string.details) + " : " + selectedWord!!.headword)
 
-        val sddm = WordSQLITE(applicationContext, null, null, null, null, (selectedWord as Word).headword, null, null)
-        sddm.save()
+        (selectedWordSQLLite as WordSQLITE).save()
     }
 
     /**
@@ -231,7 +242,7 @@ class WordActivityKot : AppCompatActivity() {
     private fun updateWord() {
         wdm = WordSQLITE(applicationContext, null, null, null, null, "", null, null)
 //        selectedWord!!.setTranslation(translationText!!.text.toString())
-        wdm!!.update(noteText!!.text.toString(), (selectedWord as Word).image, (selectedWord as Word).sound, (selectedWord as Word).headword, (selectedWord as Word).dateView, (selectedWord as Word).idDictionary)
+        wdm!!.update(noteText!!.text.toString(), (selectedWord as Word).image, (selectedWord as Word).sound, (selectedWord as Word).headword!!, (selectedWord as Word).dateView, (selectedWord as Word).idDictionary)
         Toast.makeText(this, selectedWord!!.headword + getString(R.string.updated), Toast.LENGTH_LONG).show()
         finish()
     }

@@ -1,5 +1,6 @@
 package com.antoine_charlotte_romain.dictionary.Controllers
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.DialogInterface
@@ -20,6 +21,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.*
 import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.DictionaryAdapterCallbackKot
 import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.DictionaryAdapterKot
+import com.antoine_charlotte_romain.dictionary.Controllers.activities.dictionary.ListWordsActivityKot
 import com.antoine_charlotte_romain.dictionary.Controllers.Lib.HeaderGridView
 import com.antoine_charlotte_romain.dictionary.Controllers.activities.MainActivityKot
 import com.antoine_charlotte_romain.dictionary.business.dictionary.Dictionary
@@ -108,6 +110,11 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         this.v = inflater!!.inflate(R.layout.fragment_home, container, false)
+        return v
+    }
+
+    override fun onStart() {
+        super.onStart()
         super.setHasOptionsMenu(true)
         this.state = NORMAL_STATE
 
@@ -115,8 +122,6 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
         this.initFloatingActionButton()
         this.initGridView()
         this.initEditText()
-
-        return v
     }
 
     /**
@@ -124,8 +129,7 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
      */
     private fun initData() {
         this.dictionaryModel = DictionarySQLITE(this.context)
-        println(this.dictionaryModel!!.selectAll())
-        this.dictionaries!!.addAll(this.dictionaryModel!!.selectAll())
+        this.dictionaries = ArrayList<Dictionary>(this.dictionaryModel!!.selectAll())
         this.dictionariesDisplay = ArrayList<Dictionary>(dictionaries)
     }
 
@@ -490,11 +494,11 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
 
     override fun read(position: Int) {
         //Set object on the cell
-        val intent = Intent(this.getActivity(), ListWordsActivity::class.java) //TO DO
+        val intent = Intent(this.getActivity(), ListWordsActivityKot::class.java) //TO DO
         if (position != -1) {
             intent.putExtra(MainActivityKot.EXTRA_DICTIONARY, this.dictionariesDisplay!!.get(position))
         }
-        //startActivity(intent) //A virer
+        startActivity(intent)
 
         //set searchBox into empty
         if (this.searchBox!!.getText().toString().trim { it <= ' ' }.length > 0) {
@@ -581,16 +585,16 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
 //                }
 //            }
 //
-//            if (ddm.insert(d) == 1) {
-//                dictionariesDisplay.add(d)
-//                dictionaries.add(d)
-//                if (searchBox.getText().toString().trim { it <= ' ' }.length > 0) {
-//                    searchBox.setText("")
-//                }
-//
-//                ImportUtility.importCSV(d, data.data, c, handler)
-//            } else
-//                Toast.makeText(activity, R.string.dictionary_not_added, Toast.LENGTH_SHORT).show()
+////            if (this.insert(d) == 1) {
+////                dictionariesDisplay.add(d)
+////                dictionaries.add(d)
+////                if (searchBox.getText().toString().trim { it <= ' ' }.length > 0) {
+////                    searchBox.setText("")
+////                }
+////
+////                //ImportUtility.importCSV(d, data.data, c, handler)
+////            } else
+////                Toast.makeText(activity, R.string.dictionary_not_added, Toast.LENGTH_SHORT).show()
 //        }
     }
 
