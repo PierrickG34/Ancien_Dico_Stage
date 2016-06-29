@@ -103,10 +103,10 @@ class DataBaseHelperKot(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase
         val bArray : ByteArray = bos!!.toByteArray()
 
         // Creation of the day's  with the good format for the database
-//        var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
-//        var utilDate : java.util.Date = formatter.parse("2016-11-12")
+        var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+        var utilDate : java.util.Date = formatter.parse("2016-11-12")
         var sqlDate : java.sql.Date = java.sql.Date(Calendar.getInstance().getTime().getTime())
-//        println("DataBaseHelperKot.kt -- salDate -" + sqlDate)
+        println("DataBaseHelperKot.kt -- salDate -" + sqlDate)
 
         var test: WordSQLITE? = WordSQLITE(ctx, "1", "note11", bArray, bArray, "headword11", sqlDate, "11")
         test!!.save()
@@ -119,22 +119,31 @@ class DataBaseHelperKot(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase
         var historyLimit = 10
         var historyOffset = 3
         var allWordOrderBy: List<Word>? = orderBy.selectAll(historyOffset, historyLimit)
-        println("DataBaseHelperKot.kt -- allWordOrderBy.size - " + allWordOrderBy!!.size)
-        println("DataBaseHelperKot.kt -- allWordOrderBy - " + allWordOrderBy)
+//        println("DataBaseHelperKot.kt -- allWordOrderBy.size - " + allWordOrderBy!!.size)
+//        println("DataBaseHelperKot.kt -- allWordOrderBy - " + allWordOrderBy)
 
 
 
-        /*TEST SELECT BY DATE
-        var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
-        var formatDateBefore : java.util.Date = formatter.parse("2016-06-22")
-        var formatDateAfter : java.util.Date = formatter.parse("2016-06-24")
+        //TEST SELECT BY DATE
+//        var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+        var formatDateBefore : java.util.Date = formatter.parse("2016-06-28")
+        var formatDateAfter : java.util.Date = formatter.parse("2016-06-20")
         var dateBefore : java.sql.Date = java.sql.Date(formatDateBefore.getTime())
         var dateAfter : java.sql.Date = java.sql.Date(formatDateAfter.getTime())
         println("DataBaseHelperKot.kt -- dateBefore - " + dateBefore)
         println("DataBaseHelperKot.kt -- dateAfter - " + dateAfter)
 
-        var allWordBetweenDate: List<Word>? = test.selectByDate(dateBefore, dateAfter)
-        println("DataBaseHelperKot.kt -- allWordBetweenDate - " + allWordBetweenDate)*/
+        var allWordBetweenDate: List<Word>? = test.selectBetweenDate(dateBefore, dateAfter)
+        println("DataBaseHelperKot.kt -- allWordBetweenDate.size - " + allWordBetweenDate!!.size)
+        println("DataBaseHelperKot.kt -- allWordBetweenDate - " + allWordBetweenDate)
+
+        var allWordBeforeDate: List<Word>? = test.selectBeforeDate(dateBefore)
+        println("DataBaseHelperKot.kt -- allWordBeforeDate.size - " + allWordBeforeDate!!.size)
+        println("DataBaseHelperKot.kt -- allWordBeforeDate - " + allWordBeforeDate)
+
+        var allWordAfterDate: List<Word>? = test.selectAfterDate(dateAfter)
+        println("DataBaseHelperKot.kt -- allWordAfterDate.size - " + allWordAfterDate!!.size)
+        println("DataBaseHelperKot.kt -- allWordAfterDate - " + allWordAfterDate)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {

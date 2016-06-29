@@ -77,6 +77,12 @@ class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String?
         }
     }
 
+    fun selectDictionary(idDictionary: String): Int {
+        return this.db.delete(DictionarySQLITE.DB_TABLE,
+                """${DictionarySQLITE.DB_COLUMN_ID} = ${idDictionary}""")
+    }
+
+
     fun read() {
         throw UnsupportedOperationException()
     }

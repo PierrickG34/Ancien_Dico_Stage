@@ -30,7 +30,7 @@ class SearchDateAdapterKot(layoutResourceId: Int?, asd: List<Word>?, context: Co
     }
 
     override fun getItemId(position: Int): Long {
-        return position as Long
+        return position.toLong()
     }
 
     /**

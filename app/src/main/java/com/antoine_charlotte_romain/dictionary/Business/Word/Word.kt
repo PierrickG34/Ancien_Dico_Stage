@@ -1,5 +1,6 @@
 package  com.antoine_charlotte_romain.dictionary.business.word
 
+import com.dicosaure.Business.Translate.Translate
 import java.io.Serializable
 import java.sql.Blob
 import java.sql.Date
@@ -27,6 +28,10 @@ open class Word(idWord: String? = null, note : String? = null, image : ByteArray
                 "headword='$headword', " +
                 "dateView=$dateView, " +
                 "idDictionary=$idDictionary)"
+    }
+
+    fun getWord(): Word {
+        return this
     }
 
 }
