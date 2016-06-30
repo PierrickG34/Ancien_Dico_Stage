@@ -29,6 +29,9 @@ class SearchDateAdapterKot(layoutResourceId: Int?, asd: List<Word>?, context: Co
         return this.asd!!.get(position)
     }
 
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
 //    override fun getItemId(position: Int): Long {
 //        TODO Reimplement this strange method ?
 //        return position as Long

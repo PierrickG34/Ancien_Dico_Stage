@@ -11,7 +11,7 @@ open class Dictionary : Serializable {
     var outLang : String? = null
     var idDictionary : String? = null
 
-    constructor(inLang : String?, outLang: String?, id: String?) {
+    constructor(inLang : String? = null, outLang: String? = null, id: String? = null) {
         if (inLang != null && outLang != null) {
             this.inLang = inLang.toUpperCase()
             this.outLang = outLang.toUpperCase()
@@ -20,7 +20,7 @@ open class Dictionary : Serializable {
     }
 
     fun getNameDictionary() : String {
-        return """${this.inLang} -> ${this.outLang}"""
+        return """${this.inLang} -> ${this.outLang}""".toUpperCase()
     }
 
     override fun toString(): String {
