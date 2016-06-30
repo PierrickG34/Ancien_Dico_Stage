@@ -23,6 +23,7 @@ import com.antoine_charlotte_romain.dictionary.business.dictionary.DictionarySQL
 
 /**
  * Created by dineen on 20/06/2016.
+ * This class permit to search a word in the historic of the search
  */
 class HistoryFragmentKot(): Fragment() {
 
@@ -36,10 +37,8 @@ class HistoryFragmentKot(): Fragment() {
     private var historyOffset: Int = 0
     private var progressDialog: ProgressDialog? = null
 
-    //    private var sddm: SearchDateDataModel? = null
     private var sddm: WordSQLITE? = null
 
-    //    private var mySearchDateList: ArrayList<SearchDate>? = null
     private var mySearchDateList: MutableList<Word>? = null
     private var myAdapter: SearchDateAdapterKot? = null
     private var loadingMore: Boolean = false
@@ -54,7 +53,6 @@ class HistoryFragmentKot(): Fragment() {
         this.advancedSearchButton = thisView.findViewById(R.id.buttonAdvancedSearch) as Button
         this.resetButton = thisView.findViewById(R.id.buttonReset) as Button
 
-        println("HistoryFragmentKot.kt -- Test onCreateView")
         this.sddm = WordSQLITE(context, null, null, null, null, "", null, null)
         initListView()
 
@@ -86,7 +84,6 @@ class HistoryFragmentKot(): Fragment() {
     /**
      * Function that load all the search history on the database and show it on the listView
      */
-
     private fun initListView() {
         this.historyLimit = 10
         this.historyOffset = 0
@@ -98,8 +95,6 @@ class HistoryFragmentKot(): Fragment() {
         this.progressDialog!!.setIndeterminate(true)
         this.progressDialog!!.setCancelable(false)
         this.progressDialog!!.window.setGravity(Gravity.BOTTOM)
-
-        println("HistoryFragmentKot.kt -- Test initListView")
 
         this.mySearchDateList = this.sddm!!.selectAll(historyLimit, historyOffset)
 
@@ -147,15 +142,17 @@ class HistoryFragmentKot(): Fragment() {
             override fun onTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
             }
 
-            override fun afterTextChanged(s: Editable?) {
-                if (s != null) {
+            override fun afterTextChanged(string: Editable?) {
+                if (string != null) {
                     (mySearchDateList as MutableList<Word>).clear()
                     val tempList: ArrayList<Word>
 
-                    if (s.length > 0) {
-                        val search = s.toString()
+                    if (string.length > 0) {
+                        val search = string.toString()
+                        println("if")
                         tempList = (sddm as WordSQLITE).select(search) as ArrayList<Word>
                     } else {
+                        println("else")
                         historyOffset = 0
                         tempList = (sddm as WordSQLITE).selectAll(historyLimit, historyOffset) as ArrayList<Word>
                         allLoaded = false
@@ -179,12 +176,28 @@ class HistoryFragmentKot(): Fragment() {
             val dialogView = inflater.inflate(R.layout.history_advanced_search_dialog, null)
             dialogBuilder.setView(dialogView)
 
-            val dateBeforeEditText = dialogView.findViewById(R.id.editTextBefore) as EditText
             val dateAfterEditText = dialogView.findViewById(R.id.editTextAfter) as EditText
-            dateBeforeEditText.inputType = InputType.TYPE_NULL
+            val dateBeforeEditText = dialogView.findViewById(R.id.editTextBefore) as EditText
             dateAfterEditText.inputType = InputType.TYPE_NULL
+            dateBeforeEditText.inputType = InputType.TYPE_NULL
 
             val myCalendar = Calendar.getInstance()
+
+            val dateAfterCalendar = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                myCalendar.set(Calendar.YEAR, year)
+                myCalendar.set(Calendar.MONTH, monthOfYear)
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+                val myFormat = "yyyy-MM-dd"
+                dateAfter = SimpleDateFormat(myFormat, Locale.US).format(myCalendar.time)
+
+                dateAfterEditText.setText(dateAfter)
+            }
+
+            dateAfterEditText.setOnClickListener {
+                DatePickerDialog(activity, dateAfterCalendar, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show()
+            }
 
             val dateBeforeCalendar = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 myCalendar.set(Calendar.YEAR, year)
@@ -203,53 +216,48 @@ class HistoryFragmentKot(): Fragment() {
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show()
             }
 
-            val dateAfterCalendar = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                myCalendar.set(Calendar.YEAR, year)
-                myCalendar.set(Calendar.MONTH, monthOfYear)
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-
-                val myFormat = "yyyy-MM-dd"
-                dateAfter = SimpleDateFormat(myFormat, Locale.US).format(myCalendar.time)
-
-                dateAfterEditText.setText(dateAfter)
-            }
-
-            dateAfterEditText.setOnClickListener {
-                DatePickerDialog(activity, dateAfterCalendar, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show()
-            }
-
-
-
             dialogBuilder.setTitle(R.string.advanced_search)
 
             dialogBuilder.setPositiveButton(R.string.search) { dialog, which ->
-//                var formatter: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
-//                var dateBeforeFormat: java.util.Date = formatter.parse(dateBefore)
-//                var dateBeforeDATE: java.sql.Date = java.sql.Date(dateBeforeFormat.time)
-//                var dateAfterFormat: java.util.Date = formatter.parse(dateAfter)
-//                var dateAfterDATE: java.sql.Date = java.sql.Date(dateAfterFormat.time)
-//
-//                (mySearchDateList as MutableList<Word>).clear()
-//                val tempList: MutableList<Word>? = null
-//
-//                if (dateAfter == null) {
-//                    val tempList = (sddm as WordSQLITE).selectBeforeDate(dateBeforeDATE)
-//                }
-//                else if (dateBefore == null) {
-//                    val tempList = (sddm as WordSQLITE).selectAfterDate(dateAfterDATE)
-//                }
-//                else {
-//                    val tempList = (sddm as WordSQLITE).selectBetweenDate(dateBeforeDATE, dateAfterDATE)
-//                }
-//                if (tempList != null) {
-//                    for (i in tempList.indices) {
-//                        (mySearchDateList as MutableList<Word>).add(tempList.get(i))
-//                    }
-//                }
-//                (myAdapter as SearchDateAdapterKot).notifyDataSetChanged()
-//                allLoaded = true
-//                dialog.cancel()
+                var formatter: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+                var dateBeforeFormat: java.util.Date
+                var dateBeforeDATE: java.sql.Date
+                var dateAfterFormat: java.util.Date
+                var dateAfterDATE: java.sql.Date
+
+                (mySearchDateList as MutableList<Word>).clear()
+                var tempList: MutableList<Word>? = null
+
+                if (dateAfter == null) {
+                    if (dateBefore != null) {
+                        dateBeforeFormat = formatter.parse(dateBefore)
+                        dateBeforeDATE = java.sql.Date(dateBeforeFormat.time)
+                        tempList = (sddm as WordSQLITE).selectBeforeDate(dateBeforeDATE)
+                    }
+                }
+                else if (dateBefore == null) {
+                    if (dateAfter != null) {
+                        dateAfterFormat = formatter.parse(dateAfter)
+                        dateAfterDATE = java.sql.Date(dateAfterFormat.time)
+                        tempList = (sddm as WordSQLITE).selectAfterDate(dateAfterDATE)
+
+                    }
+                }
+                else {
+                    dateBeforeFormat = formatter.parse(dateBefore)
+                    dateBeforeDATE = java.sql.Date(dateBeforeFormat.time)
+                    dateAfterFormat = formatter.parse(dateAfter)
+                    dateAfterDATE = java.sql.Date(dateAfterFormat.time)
+                    tempList = (sddm as WordSQLITE).selectBetweenDate(dateBeforeDATE, dateAfterDATE)
+                }
+                if (tempList != null) {
+                    for (i in (tempList as MutableList<Word>).indices) {
+                        (mySearchDateList as MutableList<Word>).add((tempList as MutableList<Word>).get(i))
+                    }
+                }
+                (myAdapter as SearchDateAdapterKot).notifyDataSetChanged()
+                allLoaded = true
+                dialog.cancel()
             }
 
             dialogBuilder.setNegativeButton(R.string.cancel) { dialog, which -> dialog.cancel() }
@@ -287,7 +295,7 @@ class HistoryFragmentKot(): Fragment() {
             alert.setMessage(getString(R.string.clearHistory) + " ?")
             alert.setPositiveButton(getString(R.string.clear)) { dialog, whichButton ->
                 makeText(activity, getString(R.string.historyCleared), Toast.LENGTH_SHORT).show()
-                //sddm.deleteAll()
+                sddm!!.deleteAll()
                 initListView();
             }
 
