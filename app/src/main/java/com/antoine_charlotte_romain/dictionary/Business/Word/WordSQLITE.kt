@@ -1,9 +1,11 @@
 package  com.antoine_charlotte_romain.dictionary.business.word
 
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import com.antoine_charlotte_romain.dictionary.DataModel.DataBaseHelperKot
 import com.antoine_charlotte_romain.dictionary.DataModel.WordDataModel
+import com.antoine_charlotte_romain.dictionary.Utilities.StringsUtility
 import com.antoine_charlotte_romain.dictionary.business.dictionary.Dictionary
 import org.jetbrains.anko.db.*
 import java.sql.Blob
@@ -129,4 +131,81 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null,
     fun modify() {
         throw UnsupportedOperationException()
     }
+
+    fun selectHeadword(begin: String, middle: String, end: String, dictionaryID: Long): MutableList<Word>
+    {
+
+        var res: MutableList<Word> = ArrayList<Word>()
+        var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val search = StringsUtility.removeAccents("$begin%$middle%$end")
+        val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_ID_DICTIONARY} = '${dictionaryID}') AND (${WordSQLITE.DB_COLUMN_HEADWORD} = '${search}')""").exec {
+            while (this.moveToNext()) {
+                var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())
+                res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
+                        note = this.getString(this.getColumnIndex("note")),
+                        image = this.getBlob(this.getColumnIndex("image")),
+                        sound = this.getBlob(this.getColumnIndex("sound")),
+                        headword = this.getString(this.getColumnIndex("headword")),
+                        dateView = sqlDate,
+                        idDictionary = this.getString(this.getColumnIndex("idDictionary"))))
+            }
+        }
+        return res
+    }
+
+    /**
+     * Find a word in a dictionary with the beginning, the middle and the end of its headword, translation or note
+     * @param begin the start of the headword, translation or note
+     * *
+     * @param middle the middle of the headword, translation or note
+     * *
+     * @param end the end of the headword, translation or note
+     * *
+     * @param dictionaryID the ID of the dictionary in we wish we are searching (set this param to Word.ALL_DICTIONARIES to look in all the dictionaries)
+     * *
+     * @return A list of word which have this begin, this middle and this end in the headword, translation or note
+     */
+    fun selectWholeWord(begin: String, middle: String, end: String, dictionaryID: Long): MutableList<Word> {
+
+        var res: MutableList<Word> = ArrayList<Word>()
+        var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val search = StringsUtility.removeAccents("$begin%$middle%$end")
+        val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_ID_DICTIONARY} = '${dictionaryID}') AND (${WordSQLITE.DB_COLUMN_HEADWORD} = '${search}')""").exec {
+            while (this.moveToNext()) {
+                var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())
+                res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
+                        note = this.getString(this.getColumnIndex("note")),
+                        image = this.getBlob(this.getColumnIndex("image")),
+                        sound = this.getBlob(this.getColumnIndex("sound")),
+                        headword = this.getString(this.getColumnIndex("headword")),
+                        dateView = sqlDate,
+                        idDictionary = this.getString(this.getColumnIndex("idDictionary"))))
+            }
+        }
+        return res
+    }
+
+
+   /* fun selectWholeWord(begin: String, middle: String, end: String, dictionaryID: Long): ArrayList<Word> {
+        val db = open()
+
+        val search = StringsUtility.removeAccents("$begin%$middle%$end")
+        val c: Cursor
+        if (dictionaryID == Word.ALL_DICTIONARIES.toLong()) {
+            c = db.rawQuery(SQL_SELECT_WORD_WITH_BEGIN_MIDDLE_END_WHOLEWORD, arrayOf(search, search, search))
+        } else {
+            c = db.rawQuery(SQL_SELECT_WORD_WITH_BEGIN_MIDDLE_END_WHOLEWORD_AND_DICTIONARY, arrayOf(search, search, search, dictionaryID.toString()))
+        }
+
+        val listWord = ArrayList<Word>()
+        while (c.moveToNext()) {
+            val w = select(c.getLong(c.getColumnIndexOrThrow(WordEntry._ID)))
+            listWord.add(w)
+        }
+        c.close()
+        return listWord
+    }*/
+
 }

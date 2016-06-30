@@ -1,8 +1,10 @@
 package com.antoine_charlotte_romain.dictionary.business.dictionary
 
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import com.antoine_charlotte_romain.dictionary.DataModel.DataBaseHelperKot
+import com.antoine_charlotte_romain.dictionary.Utilities.StringsUtility
 import org.jetbrains.anko.db.*
 import java.io.Serializable
 import java.util.*
@@ -77,8 +79,24 @@ class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String?
         }
     }
 
+    fun getIdByName(name : String) : Long
+    {
+        var id : Long? = null
+        val c = this.db.select(DictionarySQLITE.DB_TABLE).exec {
+            if("""${inLang} -> ${outLang}""" == name)
+                id = idDictionary as Long
+            else
+                while(this.moveToNext() && """${inLang} -> ${outLang}""" == name) {
+                    if ("""${inLang} -> ${outLang}""" == name)
+                        id = idDictionary as Long
+                }
+        }
+        return id!!
+    }
+
     fun read() {
         throw UnsupportedOperationException()
     }
+
 
 }

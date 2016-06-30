@@ -62,7 +62,8 @@ class TranslateSQLITE(ctx : Context, wordTo: Word?, wordFrom: Word?) : Translate
         this.db.select(TranslateSQLITE.DB_TABLE, WordSQLITE.DB_TABLE, WordSQLITE.DB_TABLE + ".*")
                 .where("""${WordSQLITE.DB_TABLE}.${WordSQLITE.DB_COLUMN_ID} = ${TranslateSQLITE.DB_TABLE}.${TranslateSQLITE.DB_COLUMN_WORDTO}""")
                 .exec {
-
                 }
     }
+
+
 }
