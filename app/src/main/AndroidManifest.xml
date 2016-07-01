@@ -50,7 +50,7 @@
                 android:value=".Controllers.activities.MainActivityKot" />
         </activity>
         <activity
-            android:name=".Controllers.WordActivity"
+            android:name=".Controllers.WordActivityKot"
             android:label="@string/details"
             android:parentActivityName=".Controllers.ListWordsActivity" >
             <meta-data

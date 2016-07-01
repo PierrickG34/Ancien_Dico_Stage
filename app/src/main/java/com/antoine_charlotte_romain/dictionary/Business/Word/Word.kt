@@ -1,5 +1,6 @@
 package  com.antoine_charlotte_romain.dictionary.business.word
 
+import com.dicosaure.Business.Translate.Translate
 import java.io.Serializable
 import java.sql.Blob
 import java.sql.Date
@@ -28,6 +29,7 @@ open class Word(idWord: String? = null, note : String? = null, image : ByteArray
                 "dateView=$dateView, " +
                 "idDictionary=$idDictionary)"
     }
+
 
     override fun equals(other: Any?): Boolean {
         val word = other!! as Word
