@@ -130,6 +130,7 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
     private fun initData() {
         this.dictionaryModel = DictionarySQLITE(this.context)
         this.dictionaries = ArrayList<Dictionary>(this.dictionaryModel!!.selectAll())
+        println(dictionaries)
         this.dictionariesDisplay = ArrayList<Dictionary>(dictionaries)
     }
 
@@ -506,9 +507,13 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
         }
     }
 
-    //To do
     override fun export(position: Int) {
-        throw UnsupportedOperationException()
+        val exportCSVintent = Intent(this.activity, CSVExportKot::class.java)
+        exportCSVintent.putExtra(MainActivityKot.EXTRA_DICTIONARY, this.dictionariesDisplay[position])
+        startActivity(exportCSVintent)
+        if (this.searchBox!!.getText().toString().trim { it <= ' ' }.length > 0) {
+            this.searchBox!!.setText("")
+        }
     }
 
     override fun notifyDeleteListChanged() {
@@ -563,39 +568,41 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        //If we are importing a file
-//        if (requestCode == SELECT_FILE && resultCode == Activity.RESULT_OK) {
-//            //Creating the file
-//            val fileUri = data!!.data
-//            val fileName = fileUri.lastPathSegment
-//
-//            //Creating ta dictionary named like the file (without the extension)
-//            val d = Dictionary(fileName.substring(0, fileName.indexOf(".")))
-//
-//            val c = activity
-//
-//            //Handling the end of the import
-//            val handler = object : Handler() {
-//                override fun handleMessage(msg: Message) {
-//                    val intent = Intent(c, ListWordsActivity::class.java)
-//                    intent.putExtra(MainActivityKot.EXTRA_DICTIONARY, d)
-//                    intent.putExtra(MainActivityKot.EXTRA_RENAME, true)
-//                    c.startActivity(intent)
-//                }
-//            }
-//
-////            if (this.insert(d) == 1) {
-////                dictionariesDisplay.add(d)
-////                dictionaries.add(d)
-////                if (searchBox.getText().toString().trim { it <= ' ' }.length > 0) {
-////                    searchBox.setText("")
-////                }
-////
-////                //ImportUtility.importCSV(d, data.data, c, handler)
-////            } else
-////                Toast.makeText(activity, R.string.dictionary_not_added, Toast.LENGTH_SHORT).show()
-//        }
+        super.onActivityResult(requestCode, resultCode, data)
+        //If we are importing a file
+        if (requestCode == SELECT_FILE && resultCode == Activity.RESULT_OK) {
+            //Creating the file
+            val fileUri = data!!.data
+            val fileName = fileUri.lastPathSegment
+
+            //Creating ta dictionary named like the file (without the extension)
+            val d = DictionarySQLITE(this.context, fileName.split(".")[0].split(" -> ")[0], fileName.split(".")[0].split(" -> ")[1])
+
+            val c = this.activity
+
+            //Handling the end of the import
+            val handler = object : Handler() {
+                override fun handleMessage(msg: Message) {
+                    val intent = Intent(c, ListWordsActivityKot::class.java)
+                    intent.putExtra(MainActivityKot.EXTRA_DICTIONARY, d)
+                    intent.putExtra(MainActivityKot.EXTRA_RENAME, true)
+                    c.startActivity(intent)
+                }
+            }
+            d.save()
+            //if (d.save() > 0) {
+                this.dictionariesDisplay.add(d)
+                this.dictionaries.add(d)
+                if (this.searchBox!!.getText().toString().trim { it <= ' ' }.length > 0) {
+                    this.searchBox!!.setText("")
+                }
+                val import = ImportCSVKot()
+                import.importCSV(d, data.data, c, handler)
+            //}
+            //else {
+               // Toast.makeText(activity, R.string.dictionary_not_added, Toast.LENGTH_SHORT).show()
+            //}
+        }
     }
 
     override fun onCreateOptionsMenu(m: Menu?, inflater: MenuInflater?) {

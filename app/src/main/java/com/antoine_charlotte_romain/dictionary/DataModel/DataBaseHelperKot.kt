@@ -5,18 +5,14 @@ import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.widget.Toast
-import com.antoine_charlotte_romain.dictionary.R
 import com.antoine_charlotte_romain.dictionary.business.dictionary.DictionarySQLITE
-import com.antoine_charlotte_romain.dictionary.business.word.Word
 import com.antoine_charlotte_romain.dictionary.business.word.WordSQLITE
 import com.dicosaure.Business.Translate.TranslateSQLITE
 import org.jetbrains.anko.db.ManagedSQLiteOpenHelper
 import org.jetbrains.anko.db.dropTable
-import org.jetbrains.anko.db.insert
-import org.jetbrains.anko.db.select
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
-import java.util.*
+import com.antoine_charlotte_romain.dictionary.R
 
 /**
  * Created by dineen on 13/06/2016.
@@ -59,11 +55,12 @@ class DataBaseHelperKot(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase
                     ${WordSQLITE.DB_COLUMN_NOTE} TEXT NULL,
                     ${WordSQLITE.DB_COLUMN_DATE} DATE NULL,
                     ${WordSQLITE.DB_COLUMN_HEADWORD} TEXT NOT NULL,
-                    ${WordSQLITE.DB_COLUMN_ID_DICTIONARY} INTEGER NOT NULL,
+                    ${WordSQLITE.DB_COLUMN_ID_DICTIONARY} INTEGER NULL,
                     ${WordSQLITE.DB_COLUMN_IMAGE} BLOB NULL,
                     ${WordSQLITE.DB_COLUMN_SOUND} BLOB NULL,
                     CONSTRAINT pk_word PRIMARY KEY(${WordSQLITE.DB_COLUMN_ID}),
-                    CONSTRAINT fk_word_dictionary FOREIGN KEY(${WordSQLITE.DB_COLUMN_ID_DICTIONARY}) REFERENCES ${DictionarySQLITE.DB_TABLE}(${DictionarySQLITE.DB_COLUMN_ID}) ON DELETE CASCADE
+                    CONSTRAINT fk_word_dictionary FOREIGN KEY(${WordSQLITE.DB_COLUMN_ID_DICTIONARY}) REFERENCES ${DictionarySQLITE.DB_TABLE}(${DictionarySQLITE.DB_COLUMN_ID}) ON DELETE CASCADE,
+                    CONSTRAINT unique_word UNIQUE(${WordSQLITE.DB_COLUMN_HEADWORD}, ${WordSQLITE.DB_COLUMN_ID_DICTIONARY})
                 );
                 """
         )
@@ -76,6 +73,12 @@ class DataBaseHelperKot(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase
                     CONSTRAINT fk_translate_wordTo FOREIGN KEY(${TranslateSQLITE.DB_COLUMN_WORDTO}) REFERENCES ${WordSQLITE.DB_TABLE}(${WordSQLITE.DB_COLUMN_ID}) ON DELETE CASCADE,
                     CONSTRAINT fk_translate_wordFrom FOREIGN KEY(${TranslateSQLITE.DB_COLUMN_WORDFROM}) REFERENCES ${WordSQLITE.DB_TABLE}(${WordSQLITE.DB_COLUMN_ID}) ON DELETE CASCADE
                 );
+                """
+        )
+        db.execSQL(
+                """
+                INSERT INTO ${DictionarySQLITE.DB_TABLE}
+                VALUES (0, 'translate', 'translate');
                 """
         )
     }
@@ -110,15 +113,17 @@ class DataBaseHelperKot(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase
         var utilDate : java.util.Date = formatter.parse("2016-11-12")
         var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())
         println("SQL - "+sqlDate)
-        var test1: WordSQLITE? = WordSQLITE(ctx, "1", "note", bArray, bArray, "salut", sqlDate, "1")
+        var test1: WordSQLITE? = WordSQLITE(ctx, "1", "note", bArray, bArray, "Bye", sqlDate, "1")
         test1!!.save()
-        var test2 = WordSQLITE(ctx, "2", "note", bArray, bArray, "hi", sqlDate, "1")
+        var test2 = WordSQLITE(ctx, "2", "note", bArray, bArray, "Au revoir", sqlDate, "0")
         test2!!.save()
         var trad = TranslateSQLITE(ctx, test1, test2)
-        var test3 = WordSQLITE(ctx, "3", "note", bArray, bArray, "hola", sqlDate, "1")
+        var test3 = WordSQLITE(ctx, "3", "note", bArray, bArray, "Hello", sqlDate, "1")
         test3!!.save()
-        var test4 = WordSQLITE(ctx, "4", "note", bArray, bArray, "bye", sqlDate, "1")
+        var test4 = WordSQLITE(ctx, "4", "note", bArray, bArray, "Bonjour", sqlDate, "0")
         test4!!.save()
+        trad.save()
+        trad = TranslateSQLITE(ctx, test3, test4)
         trad.save()
         // Creation of the day's  with the good format for the database
 //        var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
