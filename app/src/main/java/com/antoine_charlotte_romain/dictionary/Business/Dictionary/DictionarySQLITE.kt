@@ -114,6 +114,17 @@ class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String?
                 """${DictionarySQLITE.DB_COLUMN_ID} = ${idDictionary}""")
     }
 
+    fun readByInLangOutLang() {
+        val c = this.db.select(DictionarySQLITE.DB_TABLE)
+                .where("""(${DictionarySQLITE.DB_COLUMN_INLANG} = '${inLang}') AND (${DictionarySQLITE.DB_COLUMN_OUTLANG} = '${outLang}')""")
+                .exec {
+                    while(this.moveToNext()) {
+                        super.idDictionary = this.getString(this.getColumnIndex("id"))
+                        super.inLang = this.getString(this.getColumnIndex("inLang"))
+                        super.outLang = this.getString(this.getColumnIndex("outLang"))
+                    }
+                }
+    }
 
     fun read() {
         val c = this.db.select(DictionarySQLITE.DB_TABLE)

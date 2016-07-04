@@ -726,20 +726,7 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
 
             //Handling the end of the import
             val import = ImportCSVKot()
-            val handler = object : Handler() {
-                override fun handleMessage(msg: Message) {
-                    recreate()
-                    //Creating an AlertDialog to show the updated words
-                    val builder = AlertDialog.Builder(this@ListWordsActivityKot)
-                    builder.setTitle(R.string.csv_imported)
-                    builder.setMessage("""${import.addedWords} ${getString(R.string.nb_added_words)}""")
-                    builder.setNegativeButton(R.string.returnString
-                    ) { dialog, which -> dialog.cancel() }
-                    val alertDialog = builder.create()
-                    alertDialog.show()
-                }
-            }
-            import.importCSV(DictionarySQLITE(this.ctx, this.selectedDictionary!!.inLang, this.selectedDictionary!!.outLang, this.selectedDictionary!!.idDictionary), data.data, c, handler)
+            var importExec = import.importCSV(DictionarySQLITE(this.ctx, this.selectedDictionary!!.inLang, this.selectedDictionary!!.outLang, this.selectedDictionary!!.idDictionary), data.data, c)
         }
         else if ((requestCode == NEW_WORD || requestCode == DELETE_WORD) && resultCode == Activity.RESULT_OK) {
             this.myWordsList.clear()

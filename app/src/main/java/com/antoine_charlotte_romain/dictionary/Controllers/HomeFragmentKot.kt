@@ -580,6 +580,18 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
 
             val c = this.activity
 
+            if (d.save() < 0) {
+                d.readByInLangOutLang()
+                println(d)
+            }
+            this.dictionariesDisplay.add(d)
+            this.dictionaries.add(d)
+            if (this.searchBox!!.getText().toString().trim { it <= ' ' }.length > 0) {
+                this.searchBox!!.setText("")
+            }
+            val import = ImportCSVKot()
+            import.importCSV(d, data.data, c)
+
             //Handling the end of the import
             val handler = object : Handler() {
                 override fun handleMessage(msg: Message) {
@@ -589,19 +601,7 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
                     c.startActivity(intent)
                 }
             }
-            d.save()
-            //if (d.save() > 0) {
-                this.dictionariesDisplay.add(d)
-                this.dictionaries.add(d)
-                if (this.searchBox!!.getText().toString().trim { it <= ' ' }.length > 0) {
-                    this.searchBox!!.setText("")
-                }
-                val import = ImportCSVKot()
-                import.importCSV(d, data.data, c, handler)
-            //}
-            //else {
-               // Toast.makeText(activity, R.string.dictionary_not_added, Toast.LENGTH_SHORT).show()
-            //}
+            handler.sendEmptyMessage(0)
         }
     }
 
