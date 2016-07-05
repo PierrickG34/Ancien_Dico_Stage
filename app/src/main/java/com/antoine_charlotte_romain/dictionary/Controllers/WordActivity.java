@@ -67,7 +67,7 @@ public class WordActivity  extends AppCompatActivity {
 
         dictionaryText = (EditText) findViewById(R.id.editTextDictionary);
         headwordText = (EditText) findViewById(R.id.editTextHeadword);
-        translationText = (EditText) findViewById(R.id.editTextTranslation1);
+        //translationText = (EditText) findViewById(R.id.editTextTranslation);
         noteText = (EditText) findViewById(R.id.editTextNote);
         word_layout = (RelativeLayout) findViewById(R.id.word_layout) ;
 

@@ -10,8 +10,6 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Point
 import android.os.Bundle
-import android.os.Handler
-import android.os.Message
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
@@ -23,17 +21,18 @@ import android.util.TypedValue
 import android.view.*
 import android.view.animation.OvershootInterpolator
 import android.widget.*
-import com.antoine_charlotte_romain.dictionary.Controllers.*
 import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.WordAdapterCallbackKot
 import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.WordAdapterKot
+import com.antoine_charlotte_romain.dictionary.Controllers.CSVExportKot
+import com.antoine_charlotte_romain.dictionary.Controllers.ImportCSVKot
+import com.antoine_charlotte_romain.dictionary.Controllers.WordActivity
+import com.antoine_charlotte_romain.dictionary.Controllers.WordActivityKot
 import com.antoine_charlotte_romain.dictionary.Controllers.activities.MainActivityKot
-import com.antoine_charlotte_romain.dictionary.DataModel.WordDataModel
 import com.antoine_charlotte_romain.dictionary.R
-import com.antoine_charlotte_romain.dictionary.Utilities.ImportUtility
 import com.antoine_charlotte_romain.dictionary.Utilities.KeyboardUtility
+import com.antoine_charlotte_romain.dictionary.business.dictionary.Dictionary
 import com.antoine_charlotte_romain.dictionary.business.dictionary.DictionarySQLITE
 import com.antoine_charlotte_romain.dictionary.business.word.Word
-import com.antoine_charlotte_romain.dictionary.business.dictionary.Dictionary
 import com.antoine_charlotte_romain.dictionary.business.word.WordSQLITE
 import org.jetbrains.anko.ctx
 import java.util.*
@@ -314,7 +313,7 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
         if (this.isOpen) {
             showFloatingMenu(view)
         }
-        val newWordIntent = Intent(this, WordActivity::class.java)
+        val newWordIntent = Intent(this, WordActivityKot::class.java)
 
         newWordIntent.putExtra(MainActivityKot.EXTRA_DICTIONARY, this.selectedDictionary)
 
@@ -496,7 +495,7 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
      */
     private fun modify(position: Int) {
         //TODO
-        val wordDetailIntent = Intent(this, WordActivity::class.java)
+        val wordDetailIntent = Intent(this, WordActivityKot::class.java)
 
         wordDetailIntent.putExtra(MainActivityKot.EXTRA_WORD, this.myWordsList[position])
         if (this.selectedDictionary != null) {
