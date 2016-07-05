@@ -74,6 +74,10 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         return res
      }
 
+    /**
+     * Select all word and order by headword in the database where the date is not null
+     * @return MutableList of Word
+     */
     fun selectAll(): MutableList<Word> {
         var res: MutableList<Word> = ArrayList<Word>()
         var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
@@ -96,6 +100,10 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         return res
     }
 
+    /**
+     * Select all word with limit and offset and order by headword in the database where the date is not null
+     * @return MutableList of word
+     */
     fun selectAll(historyLimit: Int, historyOffset: Int): MutableList<Word> {
         var res: MutableList<Word> = ArrayList<Word>()
         var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
@@ -119,8 +127,10 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         return res
     }
 
-
-
+    /**
+     * Select all translation for a word
+     * @return List of Word
+     */
     fun selectAllTranslations() : List<Word> {
         var res: MutableList<Word> = ArrayList<Word>()
         var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
@@ -157,7 +167,7 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
      * Select all word between two dates
      * @param beforeDate Date before
      * @param afterDate Date after
-     * @return List of Word between the dates
+     * @return MutableList of Word between the dates
      */
     fun selectBetweenDate(beforeDate: Date, afterDate: Date): MutableList<Word> {
         var res: MutableList<Word> = ArrayList<Word>()
@@ -183,7 +193,7 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
     /**
      * Select all word before the date
      * @param beforeDate Date before
-     * @return List of Word before the date
+     * @return MutableList of Word before the date
      */
     fun selectBeforeDate(beforeDate: Date): MutableList<Word> {
         println(beforeDate)
@@ -211,7 +221,7 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
     /**
      * Select all word after the date
      * @param afterDate Date after
-     * @return List of Word after the date
+     * @return MutableList of Word after the date
      */
     fun selectAfterDate(afterDate: Date): MutableList<Word> {
         println(dateView)
@@ -236,12 +246,26 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         return res
     }
 
+    /**
+     * Delete a word
+     * @param id of the word to delete
+     */
     fun delete(id: String): Int {
         return this.db.delete(WordSQLITE.DB_TABLE,
                 """${WordSQLITE.DB_COLUMN_ID} = '${id}'""")
     }
 
 
+    /**
+     * Update a word
+     * @param noteNew the new note
+     * @param imageNew the new image
+     * @param soundNew the new sound
+     * @param headwordNew the new headword
+     * @param dateViewNew the new ddate
+     * @param idDictionaryNew the new dictionnary
+     * @return an int if the request work
+     */
     fun update(noteNew : String? = null,
                imageNew : ByteArray? = null, soundNew : ByteArray? = null, headwordNew: String,
                dateViewNew: Date? = null, idDictionaryNew: String? = null): Int {
@@ -262,6 +286,10 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
                     .exec()
     }
 
+    /**
+     * Change the date attribute to 'null' for all word
+     * @return The value if the request work
+     */
     fun deleteAll() : Int {
         return this.db.update(WordSQLITE.DB_TABLE,
                 WordSQLITE.DB_COLUMN_DATE to "null")
