@@ -73,6 +73,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Controllers.ListWordsActivity" />
         </activity>
+        <activity
+            android:name=".Controllers.CSVExportKot"
+            android:label="@string/title_activity_csvexport"
+            android:parentActivityName=".Controllers.activities.dictionary.ListWordsActivityKot" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Controllers.activities.dictionary.ListWordsActivityKot" />
+        </activity>
 
         <!-- external libraries -->
         <activity android:name="net.rdrei.android.dirchooser.DirectoryChooserActivity" />

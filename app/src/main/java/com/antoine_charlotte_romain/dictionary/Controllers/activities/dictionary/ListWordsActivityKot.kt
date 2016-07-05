@@ -23,11 +23,9 @@ import android.util.TypedValue
 import android.view.*
 import android.view.animation.OvershootInterpolator
 import android.widget.*
+import com.antoine_charlotte_romain.dictionary.Controllers.*
 import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.WordAdapterCallbackKot
 import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.WordAdapterKot
-import com.antoine_charlotte_romain.dictionary.Controllers.CSVExportActivity
-import com.antoine_charlotte_romain.dictionary.Controllers.HomeFragmentKot
-import com.antoine_charlotte_romain.dictionary.Controllers.WordActivity
 import com.antoine_charlotte_romain.dictionary.Controllers.activities.MainActivityKot
 import com.antoine_charlotte_romain.dictionary.DataModel.WordDataModel
 import com.antoine_charlotte_romain.dictionary.R
@@ -37,6 +35,7 @@ import com.antoine_charlotte_romain.dictionary.business.dictionary.DictionarySQL
 import com.antoine_charlotte_romain.dictionary.business.word.Word
 import com.antoine_charlotte_romain.dictionary.business.dictionary.Dictionary
 import com.antoine_charlotte_romain.dictionary.business.word.WordSQLITE
+import org.jetbrains.anko.ctx
 import java.util.*
 
 /**
@@ -334,7 +333,7 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
         if (this.isOpen) {
             showFloatingMenu(view)
         }
-        val exportCSVintent = Intent(this, CSVExportActivity::class.java)
+        val exportCSVintent = Intent(this, CSVExportKot::class.java)
         exportCSVintent.putExtra(MainActivityKot.EXTRA_DICTIONARY, this.selectedDictionary)
 
         startActivity(exportCSVintent)
@@ -349,7 +348,6 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
      * @param view
      */
     fun importCsv(view: View) {
-        //TODO
         if (this.isOpen) {
             showFloatingMenu(view)
         }
@@ -363,7 +361,7 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
         sIntent.putExtra("CONTENT_TYPE", "text/comma-separated-values")
         sIntent.addCategory(Intent.CATEGORY_DEFAULT)
 
-        if (packageManager.resolveActivity(sIntent, 0) != null) {
+        if (this.packageManager.resolveActivity(sIntent, 0) != null) {
             startActivityForResult(sIntent, SELECT_FILE)
         } else {
             startActivityForResult(intent, SELECT_FILE)
@@ -727,21 +725,8 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
             val c = this
 
             //Handling the end of the import
-            val handler = object : Handler() {
-                override fun handleMessage(msg: Message) {
-                    recreate()
-                    //Creating an AlertDialog to show the updated words
-                    val builder = AlertDialog.Builder(this@ListWordsActivityKot)
-                    builder.setTitle(R.string.csv_imported)
-                    builder.setMessage("""${ImportUtility.addedWords} ${getString(R.string.nb_added_words)} ${ImportUtility.updatedWords.size} ${getString(R.string.updated_words)}""")
-                    builder.setNegativeButton(R.string.returnString
-                    ) { dialog, which -> dialog.cancel() }
-                    val alertDialog = builder.create()
-                    alertDialog.show()
-                }
-            }
-
-            //ImportUtility.importCSV(this.selectedDictionary, data.data, c, handler) TODO
+            val import = ImportCSVKot()
+            var importExec = import.importCSV(DictionarySQLITE(this.ctx, this.selectedDictionary!!.inLang, this.selectedDictionary!!.outLang, this.selectedDictionary!!.idDictionary), data.data, c)
         }
         else if ((requestCode == NEW_WORD || requestCode == DELETE_WORD) && resultCode == Activity.RESULT_OK) {
             this.myWordsList.clear()

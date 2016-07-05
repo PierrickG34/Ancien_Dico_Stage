@@ -12,7 +12,7 @@ import java.util.*
 open class Word(idWord: String? = null, note : String? = null, image : ByteArray? = null, sound : ByteArray? = null, headword
 : String? = null, dateView: Date? = null, idDictionary: String? = null) : Serializable {
 
-    val idWord : String? = idWord
+    var idWord : String? = idWord
     var note : String? = note
     var image : ByteArray? = image
     var sound : ByteArray? = sound

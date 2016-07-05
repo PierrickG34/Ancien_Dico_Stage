@@ -26,12 +26,11 @@ class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String?
 
     fun save() : Int {
         var log = this.db.insert(DictionarySQLITE.DB_TABLE,
-            DictionarySQLITE.DB_COLUMN_INLANG to super.inLang!!,
-            DictionarySQLITE.DB_COLUMN_OUTLANG to super.outLang!!).toInt()
+                DictionarySQLITE.DB_COLUMN_INLANG to super.inLang!!,
+                DictionarySQLITE.DB_COLUMN_OUTLANG to super.outLang!!).toInt()
         if (log > 0) {
             this.db.select(DictionarySQLITE.DB_TABLE,"last_insert_rowid() AS rowid").exec {
                 this.moveToLast()
-                println(this.getString(this.getColumnIndex("rowid")))
                 super.idDictionary = this.getString(this.getColumnIndex("rowid"))
             }
         }
@@ -41,14 +40,15 @@ class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String?
     fun selectAll(): List<Dictionary> {
         var res : MutableList<Dictionary> = ArrayList<Dictionary>()
         val c = this.db.select(DictionarySQLITE.DB_TABLE)
+                .where("""${DictionarySQLITE.DB_COLUMN_ID} != 0""")
                 .orderBy(DictionarySQLITE.DB_COLUMN_INLANG)
                 .exec {
-            while(this.moveToNext()) {
-                res.add(Dictionary(id = this.getString(this.getColumnIndex("id")),
-                        inLang = this.getString(this.getColumnIndex("inLang")),
-                        outLang = this.getString(this.getColumnIndex("outLang"))))
-            }
-        }
+                    while(this.moveToNext()) {
+                        res.add(Dictionary(id = this.getString(this.getColumnIndex("id")),
+                                inLang = this.getString(this.getColumnIndex("inLang")),
+                                outLang = this.getString(this.getColumnIndex("outLang"))))
+                    }
+                }
         return res
     }
 
@@ -61,8 +61,11 @@ class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String?
                 .orderBy(WordSQLITE.DB_COLUMN_HEADWORD)
                 .exec {
                     while (this.moveToNext()) {
-                        var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
-                        var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())
+                        var sqlDate : java.sql.Date? = null
+                        if (!this.isNull(this.getColumnIndex("dateView"))) {
+                            var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                            sqlDate = java.sql.Date(utilDate.getTime())
+                        }
                         res.add(Word(
                                 idWord = this.getString(this.getColumnIndex("id")),
                                 note = this.getString(this.getColumnIndex("note")),
@@ -111,6 +114,17 @@ class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String?
                 """${DictionarySQLITE.DB_COLUMN_ID} = ${idDictionary}""")
     }
 
+    fun readByInLangOutLang() {
+        val c = this.db.select(DictionarySQLITE.DB_TABLE)
+                .where("""(${DictionarySQLITE.DB_COLUMN_INLANG} = '${inLang}') AND (${DictionarySQLITE.DB_COLUMN_OUTLANG} = '${outLang}')""")
+                .exec {
+                    while(this.moveToNext()) {
+                        super.idDictionary = this.getString(this.getColumnIndex("id"))
+                        super.inLang = this.getString(this.getColumnIndex("inLang"))
+                        super.outLang = this.getString(this.getColumnIndex("outLang"))
+                    }
+                }
+    }
 
     fun read() {
         val c = this.db.select(DictionarySQLITE.DB_TABLE)
@@ -121,7 +135,7 @@ class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String?
                         super.inLang = this.getString(this.getColumnIndex("inLang"))
                         super.outLang = this.getString(this.getColumnIndex("outLang"))
                     }
-        }
+                }
     }
 
 }
