@@ -101,7 +101,8 @@ class DataBaseHelperKot(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase
     }
 
     fun imageTest(ctx : Context) {
-        var img = BitmapFactory.decodeResource(ctx.getResources(), R.drawable.ic_action_create!!)
+
+       var img = BitmapFactory.decodeResource(ctx.getResources(), R.drawable.ic_action_create!!)
         var bos: ByteArrayOutputStream? = ByteArrayOutputStream();
         img.compress(Bitmap.CompressFormat.PNG, 100, bos);
         val bArray : ByteArray = bos!!.toByteArray()
@@ -110,16 +111,27 @@ class DataBaseHelperKot(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase
         var utilDate : java.util.Date = formatter.parse("2016-11-12")
         var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())
         println("SQL - "+sqlDate)
+        var testIntelligent : WordSQLITE? = WordSQLITE(ctx, "7", "note", bArray, bArray, "Poopy", sqlDate, "1")
+        var testIntelligentTrad : WordSQLITE? = WordSQLITE(ctx, "5", "note", bArray, bArray, "Chier", sqlDate, "1")
+        testIntelligent!!.save()
+        var tradIntelligente = TranslateSQLITE(ctx, testIntelligent, testIntelligentTrad)
+        tradIntelligente.save() /*
         var test1: WordSQLITE? = WordSQLITE(ctx, "1", "note", bArray, bArray, "sqlDate", sqlDate, "1")
         test1!!.save()
         var test2 = WordSQLITE(ctx, "2", "note", bArray, bArray, "hi", sqlDate, "1")
         test2!!.save()
         var trad = TranslateSQLITE(ctx, test1, test2)
-        var test3 = WordSQLITE(ctx, "3", "note", bArray, bArray, "hola", sqlDate, "1")
+        var test3 = WordSQLITE(ctx, "3", "bonjour", bArray, bArray, "hola", sqlDate, "1")
         test3!!.save()
         var test4 = WordSQLITE(ctx, "4", "note", bArray, bArray, "bye", sqlDate, "1")
         test4!!.save()
         var trad2 = TranslateSQLITE(ctx, test1, test3)
+        var testIntelligentTrad : WordSQLITE? = WordSQLITE(ctx, "5", "note", bArray, bArray, "Chier", sqlDate, "1")
+        var testIntelligent : WordSQLITE? = WordSQLITE(ctx, "6", "note", bArray, bArray, "Poop", sqlDate, "1")
+        testIntelligentTrad!!.save()
+        testIntelligent!!.save()
+        var tradIntelligente = TranslateSQLITE(ctx, testIntelligent, testIntelligentTrad)
+        tradIntelligente!!.save()
         trad2.save()
         trad.save()
         println("getAllTranslationText :" + test1.getAllTranslationText())
@@ -128,6 +140,7 @@ class DataBaseHelperKot(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase
         var utilDate1 : java.util.Date = formatter1.parse("2016-11-12")
         var sqlDate1 : java.sql.Date = java.sql.Date(Calendar.getInstance().getTime().getTime())
         println("DataBaseHelperKot.kt -- salDate -" + sqlDate)
+
 
         var test: WordSQLITE? = WordSQLITE(ctx, "1", "note11", bArray, bArray, "headword11", sqlDate1, "11")
         test!!.save()
@@ -180,7 +193,7 @@ class DataBaseHelperKot(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase
 //
 ////        var allWordAfterDate: List<Word>? = test.selectAfterDate(dateAfter)
 //        println("DataBaseHelperKot.kt -- allWordAfterDate.size - " + allWordAfterDate!!.size)
-//        println("DataBaseHelperKot.kt -- allWordAfterDate - " + allWordAfterDate)
+//        println("DataBaseHelperKot.kt -- allWordAfterDate - " + allWordAfterDate)*/
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {

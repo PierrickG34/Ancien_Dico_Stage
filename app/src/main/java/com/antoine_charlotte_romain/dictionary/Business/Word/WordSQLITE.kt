@@ -3,6 +3,7 @@ package  com.antoine_charlotte_romain.dictionary.business.word
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.util.Log
 import com.antoine_charlotte_romain.dictionary.DataModel.DataBaseHelperKot
 import com.antoine_charlotte_romain.dictionary.DataModel.WordDataModel
 import com.antoine_charlotte_romain.dictionary.Utilities.StringsUtility
@@ -37,6 +38,11 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
     }
 
     var db: SQLiteDatabase = DataBaseHelperKot.getInstance(ctx).readableDatabase
+
+    /**
+     * Save the word in the database
+     * @return an int which indicates if the Word had been inserted in the databases
+     */
 
     fun save(): Int {
         return this.db.insert(WordSQLITE.DB_TABLE,
@@ -261,11 +267,28 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         return res
     }
 
+
+    /**
+     * Delete a word in the database in function of its id
+     * @param id the string containing the id
+     * @return  an int which indicates if the Word had been deleted in the database
+     */
+
     fun delete(id: String): Int {
         return this.db.delete(WordSQLITE.DB_TABLE,
                 """${WordSQLITE.DB_COLUMN_ID} = '${id}'""")
     }
 
+    /**
+     * Update a word in the database in function of the entry parameters
+     * @param noteNew the new note that will replace the old one. If it is null, nothing is done.
+     * @param imageNew the new image that will replace the old one. If it is null, nothing is done.
+     * @param soundNew the new sound that will replace the old one. If it is null, nothing is done.
+     * @param headwordNew the new headword that will replace the old one. If it is null, nothing is done.
+     * @param dateViewNew the new date (last date the word was searched) that will replace the old one. If it is null, nothing is done.
+     * @param idDictionaryNew the new dictionnary id  that will replace the old one. If it is null, nothing is done.
+     * @return  an int which indicates if the Word had been updated in the database
+     */
 
     fun update(noteNew : String? = null,
                imageNew : ByteArray? = null, soundNew : ByteArray? = null, headwordNew: String,
@@ -287,16 +310,48 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
                     .exec()
     }
 
-    fun selectHeadword(begin: String, middle: String, end: String, dictionaryID: Long): MutableList<Word>
-    {
+    /**
+     * Find a word in all the dictionaries with the beginning, the middle and the end of its headword
+     * @param begin the start of the headword
+     * @param middle the middle of the headword
+     * @param end the end of the headword
+     * @return A list of word which have this begin, this middle and this end in the headword
+     */
 
+    fun selectHeadword(begin: String, middle: String, end: String): MutableList<Word>
+    {
         var res: MutableList<Word> = ArrayList<Word>()
         var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
-        val search = StringsUtility.removeAccents("$begin%$middle%$end")
-        val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_ID_DICTIONARY} = '${dictionaryID}') AND (${WordSQLITE.DB_COLUMN_HEADWORD} = '${search}')""").exec {
+            val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_HEADWORD} LIKE '$begin%$middle%$end')""").exec {
+                while (this.moveToNext()) {
+                    var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                    var sqlDate: java.sql.Date = java.sql.Date(utilDate.getTime())
+                    res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
+                            note = this.getString(this.getColumnIndex("note")),
+                            image = this.getBlob(this.getColumnIndex("image")),
+                            sound = this.getBlob(this.getColumnIndex("sound")),
+                            headword = this.getString(this.getColumnIndex("headword")),
+                            dateView = sqlDate,
+                            idDictionary = this.getString(this.getColumnIndex("idDictionary"))))
+                }
+            }
+        return res
+    }
+    /**
+     * Find a word in a dictionary with the beginning, the middle and the end of its headword
+     * @param begin the start of the headword
+     * @param middle the middle of the headword
+     * @param end the end of the headword
+     * @param dictionaryID the ID of the dictionary in we wish we are searching
+     * @return A list of word which have this begin, this middle and this end in the headword
+     */
+    fun selectHeadwordByIdDico(begin: String, middle: String, end: String, dictionaryID: Long): MutableList<Word>{
+        var res: MutableList<Word> = ArrayList<Word>()
+        var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_ID_DICTIONARY} = '${dictionaryID}') AND (${WordSQLITE.DB_COLUMN_HEADWORD} LIKE '$begin%$middle%$end')""").exec {
             while (this.moveToNext()) {
-                var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
-                var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())
+                var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                var sqlDate: java.sql.Date = java.sql.Date(utilDate.getTime())
                 res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
                         note = this.getString(this.getColumnIndex("note")),
                         image = this.getBlob(this.getColumnIndex("image")),
@@ -343,25 +398,343 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
     }
 
 
-   /* fun selectWholeWord(begin: String, middle: String, end: String, dictionaryID: Long): ArrayList<Word> {
-        val db = open()
-
-        val search = StringsUtility.removeAccents("$begin%$middle%$end")
-        val c: Cursor
-        if (dictionaryID == Word.ALL_DICTIONARIES.toLong()) {
-            c = db.rawQuery(SQL_SELECT_WORD_WITH_BEGIN_MIDDLE_END_WHOLEWORD, arrayOf(search, search, search))
-        } else {
-            c = db.rawQuery(SQL_SELECT_WORD_WITH_BEGIN_MIDDLE_END_WHOLEWORD_AND_DICTIONARY, arrayOf(search, search, search, dictionaryID.toString()))
+    /**
+     * Find a word in all the dictionaries with exactly the specified headword
+     * @param headWord the headword of the word we want to find
+     * *
+     * *
+     * @return A list of word which have exactly this headword
+     */
+    fun selectWholeHeadword(headWord: String): MutableList<Word> {
+        var headWord = headWord
+        var res: MutableList<Word> = ArrayList<Word>()
+        var formatter: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+        headWord = StringsUtility.removeAccents(headWord)
+        val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_HEADWORD} = '${headWord}')""").exec {
+            while (this.moveToNext()) {
+                var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                var sqlDate: java.sql.Date = java.sql.Date(utilDate.getTime())
+                res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
+                        note = this.getString(this.getColumnIndex("note")),
+                        image = this.getBlob(this.getColumnIndex("image")),
+                        sound = this.getBlob(this.getColumnIndex("sound")),
+                        headword = this.getString(this.getColumnIndex("headword")),
+                        dateView = sqlDate,
+                        idDictionary = this.getString(this.getColumnIndex("idDictionary"))))
+            }
         }
+        return res
+    }
 
-        val listWord = ArrayList<Word>()
-        while (c.moveToNext()) {
-            val w = select(c.getLong(c.getColumnIndexOrThrow(WordEntry._ID)))
-            listWord.add(w)
+    /**
+     * Find a word in a dictionary with exactly the specified headword
+     * @param headWord the headword of the word we want to find
+     * *
+     * @param dictionaryID the ID of the dictionary in which we are searching
+     * *
+     * @return A list of word which have exactly this headword in the selected dictionary
+     */
+    fun selectWholeHeadwordByIdDico(headWord: String, dictionaryID: Long): MutableList<Word> {
+        var headWord = headWord
+        var res: MutableList<Word> = ArrayList<Word>()
+        var formatter: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+        headWord = StringsUtility.removeAccents(headWord)
+            val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_ID_DICTIONARY} = '${dictionaryID}') AND (${WordSQLITE.DB_COLUMN_HEADWORD} = '${headWord}')""").exec {
+                while (this.moveToNext()) {
+                    var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                    var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())
+                    res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
+                            note = this.getString(this.getColumnIndex("note")),
+                            image = this.getBlob(this.getColumnIndex("image")),
+                            sound = this.getBlob(this.getColumnIndex("sound")),
+                            headword = this.getString(this.getColumnIndex("headword")),
+                            dateView = sqlDate,
+                            idDictionary = this.getString(this.getColumnIndex("idDictionary"))))
+                }
+            }
+        return res
+    }
+
+    /**
+     * Find a word in a dictionary which contains exactly the noteword (part of the note)
+     * @param noteword the part of the note of the word we want to find
+     * @return A list of word which have exactly this part of note
+     */
+    fun selectWholeNote(noteword: String): MutableList<Word> {
+        var noteWord = noteword
+        var res: MutableList<Word> = ArrayList<Word>()
+        var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+        noteWord = StringsUtility.removeAccents(noteWord)
+            val c = this.db.select(WordSQLITE.DB_TABLE).exec {
+                while (this.moveToNext()) {
+                    var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                    var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())
+                    var note = this.getString(this.getColumnIndex("note"))
+                    if ((this.getString(this.getColumnIndex("note")).contains(noteWord, true)))
+                    {
+                        res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
+                                note = this.getString(this.getColumnIndex("note")),
+                                image = this.getBlob(this.getColumnIndex("image")),
+                                sound = this.getBlob(this.getColumnIndex("sound")),
+                                headword = this.getString(this.getColumnIndex("headword")),
+                                dateView = sqlDate,
+                                idDictionary = this.getString(this.getColumnIndex("idDictionary"))))
+                    }
+                }
+            }
+        return res
+    }
+
+    /**
+     * Find a word in a dictionary which contains exactly the noteword (part of the note)
+     * @param noteword the part of the note of the word we want to find
+     * @param dictionaryID the ID of the dictionary in which we are searching
+     * @return A list of word which have exactly this part of note in the selected dictionary
+     */
+    fun selectWholeNoteByIdDico(noteword: String, dictionaryID: Long): MutableList<Word> {
+        var noteWord = noteword
+        var res: MutableList<Word> = ArrayList<Word>()
+        var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+        noteWord = StringsUtility.removeAccents(noteWord)
+        val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_ID_DICTIONARY} = '${dictionaryID}')""").exec {
+            while (this.moveToNext()) {
+                var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                var sqlDate: java.sql.Date = java.sql.Date(utilDate.getTime())
+                var note = this.getString(this.getColumnIndex("note"))
+                if ((this.getString(this.getColumnIndex("note")).contains(noteWord, true))) {
+                    res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
+                            note = this.getString(this.getColumnIndex("note")),
+                            image = this.getBlob(this.getColumnIndex("image")),
+                            sound = this.getBlob(this.getColumnIndex("sound")),
+                            headword = this.getString(this.getColumnIndex("headword")),
+                            dateView = sqlDate,
+                            idDictionary = this.getString(this.getColumnIndex("idDictionary"))))
+                }
+            }
         }
-        c.close()
-        return listWord
-    }*/
+    return res
+    }
 
+    /**
+     * Find a word in all the dictionaries the input string exactly in the headword or partly in the note
+     * @param stringToFind the string to find in the note or the headword
+     * @return A list of word which have exactly this part of note or the headword
+     */
 
+    fun selectWholeNoteOrHeadword(stringToFind: String): MutableList<Word> {
+        var res: MutableList<Word> = ArrayList<Word>()
+        var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+        var stringToFind = StringsUtility.removeAccents(stringToFind)
+            val c = this.db.select(WordSQLITE.DB_TABLE).exec {
+                while (this.moveToNext()) {
+                    var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                    var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())
+                    var note = this.getString(this.getColumnIndex("note"))
+                    if ( (this.getString(this.getColumnIndex("note")).contains(stringToFind, true)).or((this.getString(this.getColumnIndex("headword")).equals(stringToFind)) ))
+                    {
+                        res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
+                                note = this.getString(this.getColumnIndex("note")),
+                                image = this.getBlob(this.getColumnIndex("image")),
+                                sound = this.getBlob(this.getColumnIndex("sound")),
+                                headword = this.getString(this.getColumnIndex("headword")),
+                                dateView = sqlDate,
+                                idDictionary = this.getString(this.getColumnIndex("idDictionary"))))
+                    }
+                }
+            }
+        return res
+    }
+
+    /**
+     * Find a word in a dictionary the input string exactly in the headword or partly in the note
+     * @param stringToFind the string to find in the note or the headword
+     * @param dictionaryID the ID of the dictionary in which we are searching
+     * @return A list of word which have exactly this part of note or the headword in the selected dictionary
+     */
+
+    fun selectWholeNoteOrHeadwordByIdDico(stringToFind: String, dictionaryID: Long): MutableList<Word> {
+        var res: MutableList<Word> = ArrayList<Word>()
+        var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+        var stringToFind = StringsUtility.removeAccents(stringToFind)
+        val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_ID_DICTIONARY} = '${dictionaryID}')""").exec {
+            while (this.moveToNext()) {
+                var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                var sqlDate: java.sql.Date = java.sql.Date(utilDate.getTime())
+                var note = this.getString(this.getColumnIndex("note"))
+                if ( (this.getString(this.getColumnIndex("note")).contains(stringToFind, true)).or((this.getString(this.getColumnIndex("headword")).equals(stringToFind)) )) {
+                    res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
+                            note = this.getString(this.getColumnIndex("note")),
+                            image = this.getBlob(this.getColumnIndex("image")),
+                            sound = this.getBlob(this.getColumnIndex("sound")),
+                            headword = this.getString(this.getColumnIndex("headword")),
+                            dateView = sqlDate,
+                            idDictionary = this.getString(this.getColumnIndex("idDictionary"))))
+                }
+            }
+        }
+    return res
+    }
+
+    /**
+     * Find a word in all the dictionaries with the beginning, the middle and the end of its headword or note
+     * @param begin the start of the string to find
+     * @param middle the middle of the string to find
+     * @param end the end of the string to find
+     * @return A list of word which have this begin, this middle and this end in the headword or in the note
+     */
+
+    fun selectNoteOrHeadword(begin: String, middle: String, end: String): MutableList<Word> {
+        var res: MutableList<Word> = ArrayList<Word>()
+        var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+            val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_HEADWORD} LIKE '$begin%$middle%$end') OR (${WordSQLITE.DB_COLUMN_NOTE} LIKE '$begin%$middle%$end')""").exec {
+                while (this.moveToNext()) {
+                    var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                    var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())
+                    var note = this.getString(this.getColumnIndex("note"))
+                    res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
+                            note = this.getString(this.getColumnIndex("note")),
+                            image = this.getBlob(this.getColumnIndex("image")),
+                            sound = this.getBlob(this.getColumnIndex("sound")),
+                            headword = this.getString(this.getColumnIndex("headword")),
+                            dateView = sqlDate,
+                            idDictionary = this.getString(this.getColumnIndex("idDictionary"))))
+                }
+            }
+
+        return res
+    }
+
+    /**
+     * Find a word in a dictionary with the beginning, the middle and the end of its headword or note
+     * @param begin the start of the string to find
+     * @param middle the middle of the string to find
+     * @param end the end of the string to find
+     * @param dictionaryID the ID of the dictionary in we wish we are searching
+     * @return A list of word which have this begin, this middle and this end in the headword or in the note in ther+ selected dictionary
+     */
+    fun selectNoteOrHeadwordByIdDico(begin: String, middle: String, end: String, dictionaryID: Long): MutableList<Word> {
+        var res: MutableList<Word> = ArrayList<Word>()
+        var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_ID_DICTIONARY} = '${dictionaryID}') AND ((${WordSQLITE.DB_COLUMN_HEADWORD} LIKE '$begin%$middle%$end') OR (${WordSQLITE.DB_COLUMN_NOTE} LIKE '$begin%$middle%$end' ))""").exec {
+            while (this.moveToNext()) {
+                var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                var sqlDate: java.sql.Date = java.sql.Date(utilDate.getTime())
+                var note = this.getString(this.getColumnIndex("note"))
+                res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
+                        note = this.getString(this.getColumnIndex("note")),
+                        image = this.getBlob(this.getColumnIndex("image")),
+                        sound = this.getBlob(this.getColumnIndex("sound")),
+                        headword = this.getString(this.getColumnIndex("headword")),
+                        dateView = sqlDate,
+                        idDictionary = this.getString(this.getColumnIndex("idDictionary"))))
+            }
+        }
+    return res
+    }
+
+    /**
+     *  Return a word in function of an id
+     *  @param wordId id of the word to find
+     *  @return the word which has the wordId as id
+     */
+    fun getWordById(wordId: String): Word
+    {
+        var res: MutableList<Word> = ArrayList<Word>()
+        var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+            val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_ID} = '${wordId}')""").exec {
+                while (this.moveToNext()) {
+                    var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                    var sqlDate: java.sql.Date = java.sql.Date(utilDate.getTime())
+                    res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
+                            note = this.getString(this.getColumnIndex("note")),
+                            image = this.getBlob(this.getColumnIndex("image")),
+                            sound = this.getBlob(this.getColumnIndex("sound")),
+                            headword = this.getString(this.getColumnIndex("headword")),
+                            dateView = sqlDate,
+                            idDictionary = this.getString(this.getColumnIndex("idDictionary"))))
+                }
+            }
+        return res.component1()
+    }
+
+    /**
+     *  Find a word in function of an id in a specific dictionary
+     *  @param wordId id of the word to find
+     *  @param dictionaryID id of the dictionary in which we want to find the word
+     *  @return the word which has the wordId as id and a specific dictionary
+     */
+    fun getWordByIdByIdDico(wordId: String, dictionaryID: Long): Word{
+        var res: MutableList<Word> = ArrayList<Word>()
+        var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_ID_DICTIONARY} = '${dictionaryID}') AND (${WordSQLITE.DB_COLUMN_ID} = '${wordId}')""").exec {
+            while (this.moveToNext()) {
+                var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                var sqlDate: java.sql.Date = java.sql.Date(utilDate.getTime())
+                res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
+                        note = this.getString(this.getColumnIndex("note")),
+                        image = this.getBlob(this.getColumnIndex("image")),
+                        sound = this.getBlob(this.getColumnIndex("sound")),
+                        headword = this.getString(this.getColumnIndex("headword")),
+                        dateView = sqlDate,
+                        idDictionary = this.getString(this.getColumnIndex("idDictionary"))))
+            }
+        }
+    return res.component1()
+    }
+
+    /**
+     * Find a word in all the dictionaries with the beginning, the middle and the end of its note
+     * @param begin the start of the note
+     * @param middle the middle of the note
+     * @param end the end of the note
+     * @return A list of word which have this begin, this middle and this end in the note
+     */
+
+    fun selectNote(begin: String, middle: String, end: String): MutableList<Word> {
+
+        var res: MutableList<Word> = ArrayList<Word>()
+        var formatter: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+            val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_NOTE} LIKE '$begin%$middle%$end')""").exec {
+                while (this.moveToNext()) {
+                    var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                    var sqlDate: java.sql.Date = java.sql.Date(utilDate.getTime())
+                    res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
+                            note = this.getString(this.getColumnIndex("note")),
+                            image = this.getBlob(this.getColumnIndex("image")),
+                            sound = this.getBlob(this.getColumnIndex("sound")),
+                            headword = this.getString(this.getColumnIndex("headword")),
+                            dateView = sqlDate,
+                            idDictionary = this.getString(this.getColumnIndex("idDictionary"))))
+                }
+            }
+            return res
+    }
+
+    /**
+     * Find a word in a dictionary with the beginning, the middle and the end of its note
+     * @param begin the start of the note
+     * @param middle the middle of the note
+     * @param end the end of the note
+     * @param dictionaryID the ID of the dictionary in we wish we are searching
+     * @return A list of word which have this begin, this middle and this end in the note in a specific dictionary
+     */
+
+    fun selectNoteByIdDico(begin: String, middle: String, end: String, dictionaryID: Long): MutableList<Word> {
+        var res: MutableList<Word> = ArrayList<Word>()
+        var formatter: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_ID_DICTIONARY} = '${dictionaryID}') AND (${WordSQLITE.DB_COLUMN_NOTE} LIKE '$begin%$middle%$end')""").exec {
+            while (this.moveToNext()) {
+                var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                var sqlDate: java.sql.Date = java.sql.Date(utilDate.getTime())
+                res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
+                        note = this.getString(this.getColumnIndex("note")),
+                        image = this.getBlob(this.getColumnIndex("image")),
+                        sound = this.getBlob(this.getColumnIndex("sound")),
+                        headword = this.getString(this.getColumnIndex("headword")),
+                        dateView = sqlDate,
+                        idDictionary = this.getString(this.getColumnIndex("idDictionary"))))
+            }
+        }
+        return res
+    }
 }

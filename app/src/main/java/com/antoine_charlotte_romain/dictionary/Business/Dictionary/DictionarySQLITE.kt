@@ -3,6 +3,7 @@ package com.antoine_charlotte_romain.dictionary.business.dictionary
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.util.Log
 import com.antoine_charlotte_romain.dictionary.DataModel.DataBaseHelperKot
 
 import com.antoine_charlotte_romain.dictionary.Utilities.StringsUtility
@@ -116,14 +117,17 @@ class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String?
     {
         var id : Long? = null
         val c = this.db.select(DictionarySQLITE.DB_TABLE).exec {
-            if("""${inLang} -> ${outLang}""" == name)
-                id = idDictionary as Long
-            else
-                while(this.moveToNext() && """${inLang} -> ${outLang}""" == name) {
-                    if ("""${inLang} -> ${outLang}""" == name)
-                        id = idDictionary as Long
+            var inlang: String
+            var outlang: String
+                while (this.moveToNext()) {
+                    inlang = this.getString(this.getColumnIndex("inLang"))
+                    outlang = this.getString(this.getColumnIndex("outLang"))
+                    if ("""${inlang} -> ${outlang}""" == name) {
+                        id = (this.getString(this.getColumnIndex("id")).toLong())
+                        Log.d("mytag2", "$id")
+                    }
                 }
-        }
+            }
         return id!!
     }
 

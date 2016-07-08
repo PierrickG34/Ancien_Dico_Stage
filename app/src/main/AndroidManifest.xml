@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:allowBackup="true"
@@ -58,7 +59,7 @@
                 android:value=".Controllers.ListWordsActivity" />
         </activity>
         <activity
-            android:name=".Controllers.AdvancedSearchResultActivity"
+            android:name=".Controllers.AdvancedSearchResultActivityKot"
             android:label="@string/title_activity_advanced_search_result"
             android:parentActivityName=".Controllers.activities.MainActivityKot" >
             <meta-data

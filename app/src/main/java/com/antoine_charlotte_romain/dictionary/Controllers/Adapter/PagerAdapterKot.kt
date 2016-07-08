@@ -25,7 +25,7 @@ class PagerAdapterKot(fm: FragmentManager, icons: IntArray) : FragmentStatePager
         else if (position == 1) {
             return HistoryFragmentKot()
         } else {
-            return SearchFragment()
+            return SearchFragmentKot()
         }
     }
 
