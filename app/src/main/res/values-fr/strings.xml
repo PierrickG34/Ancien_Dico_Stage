@@ -116,7 +116,7 @@
     <string name="delete_progress">Suppression en cours</string>
     <string name="see_updated">Voir les mots mis à jour</string>
     <string name="app_name">Dicosaure</string>
-    <string name="maximum_translate">Vous ne pouvez pas ajouter plus de 5 transactions.</string>
+    <string name="maximum_translate">Vous ne pouvez pas ajouter plus de 5 traductions.</string>
     <string name="translation_children">Traduction </string>
     <string name="clear">Nettoyer</string>
     <string name="oups"></string>

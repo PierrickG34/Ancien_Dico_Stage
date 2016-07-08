@@ -29,14 +29,15 @@ class WordActivityKot : AppCompatActivity() {
 
     private var dictionaryText: EditText? = null
     private var headwordText: EditText? = null
-    private var translationText: EditText? = null
+    //private var translationText: EditText? = null
     private var noteText: EditText? = null
     private var toolbar: Toolbar? = null
     private var saveButton: MenuItem? = null
+    private var nbChilds : Int? = null
     private val addButton: Button? = null
 
     private var layoutTranslations: RelativeLayout? = null
-    private val addTranslationButton: FloatingActionButton? = null
+    private var addTranslationButton: FloatingActionButton? = null
     private var word_layout: RelativeLayout? = null
 
     private var wdm: WordSQLITE? = null
@@ -46,94 +47,99 @@ class WordActivityKot : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        println("JE PASSE DANS WORDACTIVITKOT")
         setContentView(R.layout.word)
 
-        toolbar = findViewById(R.id.tool_bar) as Toolbar?
+        this.toolbar = findViewById(R.id.tool_bar) as Toolbar?
         setSupportActionBar(toolbar)
-        supportActionBar!!.setTitle(R.string.details)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        this.supportActionBar!!.setTitle(R.string.details)
+        this.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         val intent = intent
-        selectedWord = intent.getSerializableExtra(MainActivityKot.EXTRA_WORD) as Word
-        println("idWord : "+ (selectedWord as Word).idWord)
-        println("note : "+ (selectedWord as Word).note)
-        println("image : "+ (selectedWord as Word).image)
-        println("sound : "+ (selectedWord as Word).sound)
-        println("headword : "+ (selectedWord as Word).headword)
-        println("dateView : "+ (selectedWord as Word).dateView)
-        println("idDictionary : "+ (selectedWord as Word).idDictionary)
+        this.selectedWord = intent.getSerializableExtra(MainActivityKot.EXTRA_WORD) as Word
 
-        selectedWordSQLLite = WordSQLITE(applicationContext, (selectedWord as Word).idWord, (selectedWord as Word).note, (selectedWord as Word).image, (selectedWord as Word).sound, (selectedWord as Word).headword, (selectedWord as Word).dateView, (selectedWord as Word).idDictionary)
-        println("selectedDictionary "+ intent.getSerializableExtra(MainActivityKot.EXTRA_DICTIONARY))
-        selectedDictionary = Dictionary(null,null,intent.getSerializableExtra(MainActivityKot.EXTRA_DICTIONARY).toString())
-        //selectedDictionary = intent.getSerializableExtra(MainActivityKot.EXTRA_DICTIONARY) as Dictionary
-        println("selectedDictionary "+selectedDictionary)
-        dictionaryText = findViewById(R.id.editTextDictionary) as EditText?
-        headwordText = findViewById(R.id.editTextHeadword) as EditText?
-        translationText = findViewById(R.id.editTextTranslation1) as EditText?
-        noteText = findViewById(R.id.editTextNote) as EditText?
-        word_layout = findViewById(R.id.word_layout) as RelativeLayout?
+        this.selectedWordSQLLite = WordSQLITE(this.applicationContext, (this.selectedWord as Word).idWord, (this.selectedWord as Word).note,
+                (this.selectedWord as Word).image, (this.selectedWord as Word).sound, (this.selectedWord as Word).headword, (this.selectedWord as Word).dateView,
+                (this.selectedWord as Word).idDictionary)
+        this.selectedDictionary = intent.getSerializableExtra(MainActivityKot.EXTRA_DICTIONARY) as Dictionary
+        this.dictionaryText = findViewById(R.id.editTextDictionary) as EditText?
+        this.headwordText = findViewById(R.id.editTextHeadword) as EditText?
+        //this.translationText = findViewById(R.id.editTextTranslation1) as EditText?
+        this.noteText = findViewById(R.id.editTextNote) as EditText?
+        this.word_layout = findViewById(R.id.word_layout) as RelativeLayout?
 
+        this.layoutTranslations = findViewById(R.id.layoutTranslations) as RelativeLayout?
+        //this.nbChilds = this.layoutTranslations!!.childCount
 
+        this.addTranslationButton = findViewById(R.id.add_button1) as FloatingActionButton?
+        this.addTranslationButton!!.setOnClickListener(object : View.OnClickListener {
 
-        layoutTranslations = findViewById(R.id.layoutTranslations) as RelativeLayout?
-
-        //    addTranslationButton = (FloatingActionButton) findViewById(R.id.add_button1);
-        //    addTranslationButton.setOnClickListener(new OnClickListener() {
-        //        /** This function is called when the user clicks on the add Button.
-        //         *  It adds a new EditText unless the number of EditText is superior to 5.
-        //         */
-//        fun onClick(v: View) {
-//            val enfants = layoutTranslations!!.childCount
-//            println("enfants - " + enfants)
-//            val lEditText = EditText(applicationContext)
-//            val removeButton = findViewById(R.id.remove_button1)
-//            if (enfants == 3) {
-//                removeButton!!.visibility = View.INVISIBLE
-//            }
-//            val relativeParams = RelativeLayout.LayoutParams(headwordText!!.width, headwordText!!.height)
-//            when (v.id) {
-//                R.id.add_button1 -> {
-//                    if (enfants < 6) {
-//                        @IdRes val id = enfants + 1
-//                        lEditText.id = id
+            /** This function is called when the user clicks on the add Button.
+             * It adds a new EditText unless the number of EditText is superior to 5.
+             */
+            override fun onClick(v: View) {
+                addTranslationField(null)
+            }
+//                val lEditText = EditText(applicationContext)
+//                nbChilds = layoutTranslations!!.getChildCount()
+//                if (nbChilds < 6) {
+//                    @IdRes val id = nbChilds + 1
+//                    lEditText.id = id
+//                    val relativeParams = RelativeLayout.LayoutParams(headwordText!!.getWidth(), headwordText!!.getHeight())
+//                    lEditText.setTextColor(Color.BLACK)
+//                    lEditText.background.setColorFilter(Color.parseColor("#6d6d6d"), PorterDuff.Mode.SRC_ATOP)
 //
-//                        lEditText.setTextColor(Color.BLACK)
-//                        lEditText.background.setColorFilter(Color.parseColor("#6d6d6d"), PorterDuff.Mode.SRC_ATOP)
-//
-//                        if (enfants == 2) {
-//                            relativeParams.addRule(RelativeLayout.BELOW, R.id.editTextTranslation1)
-//                            lEditText.setHintTextColor(Color.parseColor("#6d6d6d"))
-//                            lEditText.hint = resources.getString(R.string.translation_children) + " " + enfants
-//                            removeButton!!.visibility = View.INVISIBLE
-//
-//                        } else {
-//                            relativeParams.addRule(RelativeLayout.BELOW, (layoutTranslations as RelativeLayout).getChildAt(enfants - 1).id)
-//                            lEditText.setHintTextColor(Color.parseColor("#777777"))
-//                            lEditText.hint = resources.getString(R.string.translation_children) + " " + enfants
-//                        }
-//                        layoutTranslations.addView(lEditText, relativeParams)
-//                        removeButton!!.visibility = View.VISIBLE
-//                    } else {
-//                        Toast.makeText(applicationContext, R.string.maximum_translate, Toast.LENGTH_SHORT).show()
+//                    if (nbChilds == 2) {
+//                        relativeParams.addRule(RelativeLayout.BELOW, R.id.editTextTranslation1)
+//                        lEditText.setHintTextColor(Color.parseColor("#6d6d6d"))
+//                        lEditText.hint = resources.getString(R.string.translation_children) + " " + nbChilds
 //                    }
-//                }
-//                R.id.remove_button1 -> {
-//                    @IdRes val id = enfants
-//                    if (enfants != 2) {
-//                        (findViewById(id)!!.parent as ViewManager).removeView(findViewById(id))
-//                        findViewById(id)!!.visibility = View.GONE
+//                    else {
+//                        relativeParams.addRule(RelativeLayout.BELOW, layoutTranslations!!.getChildAt(nbChilds - 1).id)
+//                        lEditText.setHintTextColor(Color.parseColor("#777777"))
+//                        lEditText.setText("toto")
+//                        //lEditText.hint = resources.getString(R.string.translation_children) + " " + enfants
 //                    }
+//                    layoutTranslations!!.addView(lEditText, relativeParams)
 //                }
+//                else {
+//                    Toast.makeText(applicationContext, R.string.maximum_translate, Toast.LENGTH_SHORT).show()
+//                }
+//
 //            }
-//        }
+        })
 
         dictionaryText!!.isEnabled = false
         dictionaryText!!.setText((selectedDictionary as Dictionary).getNameDictionary())
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
         setupUI(findViewById(R.id.word_layout)!!)
+    }
+
+    fun addTranslationField(translation : String?) {
+        val lEditText = EditText(this.applicationContext)
+        if (this.layoutTranslations!!.childCount < 6) {
+            val relativeParams = RelativeLayout.LayoutParams(this.headwordText!!.getWidth(), this.headwordText!!.getHeight())
+            lEditText.setTextColor(Color.BLACK)
+            lEditText.background.setColorFilter(Color.parseColor("#6d6d6d"), PorterDuff.Mode.SRC_ATOP)
+            if (this.layoutTranslations!!.childCount == 1) {
+                relativeParams.addRule(RelativeLayout.BELOW, R.id.textViewTranslation)
+            }
+            else {
+                relativeParams.addRule(RelativeLayout.BELOW, this.layoutTranslations!!.getChildAt(this.layoutTranslations!!.childCount - 1).id)
+            }
+            if (translation == null) {
+                lEditText.setHintTextColor(Color.parseColor("#777777"))
+                lEditText.hint = resources.getString(R.string.translation_children) + " " + this.layoutTranslations!!.childCount
+            }
+            else {
+                lEditText.setText(translation)
+            }
+            lEditText.id = this.layoutTranslations!!.childCount
+            this.layoutTranslations!!.addView(lEditText, relativeParams)
+        }
+        else {
+            Toast.makeText(applicationContext, R.string.maximum_translate, Toast.LENGTH_SHORT).show()
+        }
     }
 
     /**
@@ -182,20 +188,22 @@ class WordActivityKot : AppCompatActivity() {
      * This function is called after the onCreate if a word was selected by the user.
      */
     private fun showDetails() {
-        if (headwordText!!.text.toString().trim { it <= ' ' }.length <= 0) {
-            headwordText!!.setText(selectedWord!!.headword)
+        if (this.headwordText!!.text.toString().trim { it <= ' ' }.length <= 0) {
+            this.headwordText!!.setText(this.selectedWord!!.headword)
         }
-        headwordText!!.isEnabled = false
-        if (translationText!!.text.toString().trim { it <= ' ' }.length <= 0) {
-            translationText!!.setText(selectedWordSQLLite!!.getAllTranslationText())
-        }
-        if (noteText!!.text.toString().trim { it <= ' ' }.length <= 0) {
-            noteText!!.setText(selectedWord!!.note)
+        this.headwordText!!.isEnabled = false
+        //if (this.translationText!!.text.toString().trim { it <= ' ' }.length <= 0) {
+            val translations = this.selectedWordSQLLite!!.selectAllTranslations()
+            for (t in translations) {
+                this.addTranslationField(t.headword)
+            }
+        //}
+        if (this.noteText!!.text.toString().trim { it <= ' ' }.length <= 0) {
+            this.noteText!!.setText(this.selectedWord!!.note)
         }
 
-        supportActionBar!!.setTitle(getString(R.string.details) + " : " + selectedWord!!.headword)
-
-        (selectedWordSQLLite as WordSQLITE).save()
+        this.supportActionBar!!.setTitle(getString(R.string.details) + " : " + this.selectedWord!!.headword)
+        (this.selectedWordSQLLite as WordSQLITE).save()
     }
 
     /**
@@ -210,9 +218,9 @@ class WordActivityKot : AppCompatActivity() {
             isReady = true
         }
         headwordText!!.isFocusable = true
-        if (translationText!!.text.toString().trim { it <= ' ' }.length <= 0) {
-            translationText!!.setText("")
-        }
+        //if (translationText!!.text.toString().trim { it <= ' ' }.length <= 0) {
+        //    translationText!!.setText("")
+        //}
         if (noteText!!.text.toString().trim { it <= ' ' }.length <= 0) {
             noteText!!.setText("")
         }

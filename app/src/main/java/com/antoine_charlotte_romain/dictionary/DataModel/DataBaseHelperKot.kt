@@ -5,17 +5,14 @@ import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.widget.Toast
-import com.antoine_charlotte_romain.dictionary.R
 import com.antoine_charlotte_romain.dictionary.business.dictionary.DictionarySQLITE
-import com.antoine_charlotte_romain.dictionary.business.word.Word
 import com.antoine_charlotte_romain.dictionary.business.word.WordSQLITE
 import com.dicosaure.Business.Translate.TranslateSQLITE
 import org.jetbrains.anko.db.ManagedSQLiteOpenHelper
 import org.jetbrains.anko.db.dropTable
-import org.jetbrains.anko.db.insert
-import org.jetbrains.anko.db.select
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
+import com.antoine_charlotte_romain.dictionary.R
 import java.util.*
 
 /**
@@ -59,11 +56,12 @@ class DataBaseHelperKot(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase
                     ${WordSQLITE.DB_COLUMN_NOTE} TEXT NULL,
                     ${WordSQLITE.DB_COLUMN_DATE} DATE NULL,
                     ${WordSQLITE.DB_COLUMN_HEADWORD} TEXT NOT NULL,
-                    ${WordSQLITE.DB_COLUMN_ID_DICTIONARY} INTEGER NOT NULL,
+                    ${WordSQLITE.DB_COLUMN_ID_DICTIONARY} INTEGER NULL,
                     ${WordSQLITE.DB_COLUMN_IMAGE} BLOB NULL,
                     ${WordSQLITE.DB_COLUMN_SOUND} BLOB NULL,
                     CONSTRAINT pk_word PRIMARY KEY(${WordSQLITE.DB_COLUMN_ID}),
-                    CONSTRAINT fk_word_dictionary FOREIGN KEY(${WordSQLITE.DB_COLUMN_ID_DICTIONARY}) REFERENCES ${DictionarySQLITE.DB_TABLE}(${DictionarySQLITE.DB_COLUMN_ID}) ON DELETE CASCADE
+                    CONSTRAINT fk_word_dictionary FOREIGN KEY(${WordSQLITE.DB_COLUMN_ID_DICTIONARY}) REFERENCES ${DictionarySQLITE.DB_TABLE}(${DictionarySQLITE.DB_COLUMN_ID}) ON DELETE CASCADE,
+                    CONSTRAINT unique_word UNIQUE(${WordSQLITE.DB_COLUMN_HEADWORD}, ${WordSQLITE.DB_COLUMN_ID_DICTIONARY})
                 );
                 """
         )
@@ -76,6 +74,12 @@ class DataBaseHelperKot(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase
                     CONSTRAINT fk_translate_wordTo FOREIGN KEY(${TranslateSQLITE.DB_COLUMN_WORDTO}) REFERENCES ${WordSQLITE.DB_TABLE}(${WordSQLITE.DB_COLUMN_ID}) ON DELETE CASCADE,
                     CONSTRAINT fk_translate_wordFrom FOREIGN KEY(${TranslateSQLITE.DB_COLUMN_WORDFROM}) REFERENCES ${WordSQLITE.DB_TABLE}(${WordSQLITE.DB_COLUMN_ID}) ON DELETE CASCADE
                 );
+                """
+        )
+        db.execSQL(
+                """
+                INSERT INTO ${DictionarySQLITE.DB_TABLE}
+                VALUES (0, 'translate', 'translate');
                 """
         )
     }
@@ -98,55 +102,49 @@ class DataBaseHelperKot(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase
         var dico = DictionarySQLITE(ctx = ctx, inLang = "eng", outLang = "fr", id = "1")
         //dico.delete("1")
         Toast.makeText(ctx, """Dictionary=> ${dico.save()}""", Toast.LENGTH_LONG).show();
+        println("DataBaseHelperKot.kt -- TOUS LES DICOS - "+dico.selectAll())
     }
 
     fun imageTest(ctx : Context) {
-
-       var img = BitmapFactory.decodeResource(ctx.getResources(), R.drawable.ic_action_create!!)
+        var img = BitmapFactory.decodeResource(ctx.getResources(), R.drawable.ic_action_create!!)
         var bos: ByteArrayOutputStream? = ByteArrayOutputStream();
         img.compress(Bitmap.CompressFormat.PNG, 100, bos);
         val bArray : ByteArray = bos!!.toByteArray()
 
         var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
         var utilDate : java.util.Date = formatter.parse("2016-11-12")
-        var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())
+//        var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())
+        var sqlDate : java.sql.Date = java.sql.Date(Calendar.getInstance().getTime().getTime())
         println("SQL - "+sqlDate)
-        var testIntelligent : WordSQLITE? = WordSQLITE(ctx, "7", "note", bArray, bArray, "Poopy", sqlDate, "1")
-        var testIntelligentTrad : WordSQLITE? = WordSQLITE(ctx, "5", "note", bArray, bArray, "Chier", sqlDate, "1")
-        testIntelligent!!.save()
-        var tradIntelligente = TranslateSQLITE(ctx, testIntelligent, testIntelligentTrad)
-        tradIntelligente.save() /*
         var test1: WordSQLITE? = WordSQLITE(ctx, "1", "note", bArray, bArray, "sqlDate", sqlDate, "1")
         test1!!.save()
-        var test2 = WordSQLITE(ctx, "2", "note", bArray, bArray, "hi", sqlDate, "1")
+        var test2 = WordSQLITE(ctx, "2", "note", bArray, bArray, "Au revoir", sqlDate, "0")
         test2!!.save()
-        var trad = TranslateSQLITE(ctx, test1, test2)
-        var test3 = WordSQLITE(ctx, "3", "bonjour", bArray, bArray, "hola", sqlDate, "1")
+//        var trad = TranslateSQLITE(ctx, test1, test2)
+        var test3 = WordSQLITE(ctx, "3", "note", bArray, bArray, "hola", sqlDate, "1")
         test3!!.save()
-        var test4 = WordSQLITE(ctx, "4", "note", bArray, bArray, "bye", sqlDate, "1")
+        var test4 = WordSQLITE(ctx, "4", "note", bArray, bArray, "Bonjour", sqlDate, "0")
         test4!!.save()
         var trad2 = TranslateSQLITE(ctx, test1, test3)
-        var testIntelligentTrad : WordSQLITE? = WordSQLITE(ctx, "5", "note", bArray, bArray, "Chier", sqlDate, "1")
-        var testIntelligent : WordSQLITE? = WordSQLITE(ctx, "6", "note", bArray, bArray, "Poop", sqlDate, "1")
-        testIntelligentTrad!!.save()
-        testIntelligent!!.save()
-        var tradIntelligente = TranslateSQLITE(ctx, testIntelligent, testIntelligentTrad)
-        tradIntelligente!!.save()
         trad2.save()
-        trad.save()
-        println("getAllTranslationText :" + test1.getAllTranslationText())
+//        trad.save()
+//        println("getAllTranslationText :" + test1.getAllTranslationText())
         // Creation of the day's  with the good format for the database
         var formatter1 : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
         var utilDate1 : java.util.Date = formatter1.parse("2016-11-12")
         var sqlDate1 : java.sql.Date = java.sql.Date(Calendar.getInstance().getTime().getTime())
-        println("DataBaseHelperKot.kt -- salDate -" + sqlDate)
-
-
-        var test: WordSQLITE? = WordSQLITE(ctx, "1", "note11", bArray, bArray, "headword11", sqlDate1, "11")
-        test!!.save()
-        var allWord: List<Word>? = test.selectAll()
-        println("DataBaseHelperKot.kt -- allWord.size - " + allWord!!.size)
-        println("DataBaseHelperKot.kt -- allWord - " + allWord)
+//        println("DataBaseHelperKot.kt -- salDate -" + sqlDate)
+//
+        var test: WordSQLITE? = WordSQLITE(ctx, "1premier", "premiereNote", bArray, bArray, "premierHeadzord", sqlDate1, "1")
+        //test!!.save()
+        //var allWord: List<Word>? = test.selectAll()
+        //println("DataBaseHelperKot.kt -- allWord.size - " + allWord!!.size)
+        //println("DataBaseHelperKot.kt -- allWord - " + allWord)
+//        test.deleteAll()
+//        println("Apres avoir deleteAll")
+//        allWord = test.selectAll()
+//        println("DataBaseHelperKot.kt -- allWord.size - " + allWord!!.size)
+//        println("DataBaseHelperKot.kt -- allWord - " + allWord)
 
 //        var orderBy: WordSQLITE? = WordSQLITE(ctx, "1", "note1", bArray, bArray, "headword1", sqlDate, "1")
 //        orderBy!!.save()
@@ -176,24 +174,24 @@ class DataBaseHelperKot(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase
 
         //TEST SELECT BY DATE
 //        var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
-        var formatDateBefore : java.util.Date = formatter.parse("2016-06-28")
-        var formatDateAfter : java.util.Date = formatter.parse("2016-06-20")
-        var dateBefore : java.sql.Date = java.sql.Date(formatDateBefore.getTime())
-        var dateAfter : java.sql.Date = java.sql.Date(formatDateAfter.getTime())
-        println("DataBaseHelperKot.kt -- dateBefore - " + dateBefore)
-        println("DataBaseHelperKot.kt -- dateAfter - " + dateAfter)
-
+//        var formatDateBefore : java.util.Date = formatter.parse("2016-06-29")
+//        var formatDateAfter : java.util.Date = formatter.parse("2016-07-01")
+//        var dateBefore : java.sql.Date = java.sql.Date(formatDateBefore.getTime())
+//        var dateAfter : java.sql.Date = java.sql.Date(formatDateAfter.getTime())
+//        println("DataBaseHelperKot.kt -- dateBefore - " + dateBefore)
+//        println("DataBaseHelperKot.kt -- dateAfter - " + dateAfter)
+//
 //        var allWordBetweenDate: List<Word>? = test.selectBetweenDate(dateBefore, dateAfter)
 //        println("DataBaseHelperKot.kt -- allWordBetweenDate.size - " + allWordBetweenDate!!.size)
 //        println("DataBaseHelperKot.kt -- allWordBetweenDate - " + allWordBetweenDate)
-//
-////        var allWordBeforeDate: List<Word>? = test.selectBeforeDate(dateBefore)
+////
+//        var allWordBeforeDate: List<Word>? = test.selectBeforeDate(dateAfter)
 //        println("DataBaseHelperKot.kt -- allWordBeforeDate.size - " + allWordBeforeDate!!.size)
 //        println("DataBaseHelperKot.kt -- allWordBeforeDate - " + allWordBeforeDate)
 //
-////        var allWordAfterDate: List<Word>? = test.selectAfterDate(dateAfter)
+//        var allWordAfterDate: List<Word>? = test.selectAfterDate(dateBefore)
 //        println("DataBaseHelperKot.kt -- allWordAfterDate.size - " + allWordAfterDate!!.size)
-//        println("DataBaseHelperKot.kt -- allWordAfterDate - " + allWordAfterDate)*/
+//        println("DataBaseHelperKot.kt -- allWordAfterDate - " + allWordAfterDate)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {

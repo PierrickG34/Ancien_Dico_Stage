@@ -88,20 +88,6 @@
 
             />
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/editTextTranslation1"
-            android:layout_below="@+id/textViewTranslation"
-            android:inputType="textCapSentences|text"
-            android:layout_alignLeft="@+id/textViewTranslation"
-            android:layout_alignStart="@+id/textViewTranslation"
-            android:layout_alignRight="@+id/textViewTranslation"
-            android:layout_alignEnd="@+id/textViewTranslation"
-            android:imeOptions="flagNoExtractUi"
-            android:hint="@string/translation_children"
-            android:visibility="visible" />
-
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
