@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.SimpleAdapter
 import com.antoine_charlotte_romain.dictionary.Controllers.activities.MainActivityKot

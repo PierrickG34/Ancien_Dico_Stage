@@ -314,7 +314,7 @@ class HistoryFragmentKot(): Fragment() {
                     tempList = (sddm as WordSQLITE).selectAfterDate(dateAfterDATE)
                 }
                 // Both dates
-                else {
+                else if (dateBefore != null && dateAfter != null) {
                     dateBeforeFormat = formatter.parse(dateBefore)
                     dateBeforeDATE = java.sql.Date(dateBeforeFormat.time)
                     dateAfterFormat = formatter.parse(dateAfter)
@@ -341,7 +341,10 @@ class HistoryFragmentKot(): Fragment() {
         })
 
         // Call the initListView method when the user click on the reset button
-        this.resetButton!!.setOnClickListener(View.OnClickListener { initListView() })
+        this.resetButton!!.setOnClickListener(View.OnClickListener {
+            initListView()
+            this.historySearch!!.setText("")
+        })
     }
 
     /**
@@ -357,8 +360,8 @@ class HistoryFragmentKot(): Fragment() {
 
         startActivity(wordDetailIntent)
 
-        if (historySearch!!.getText().toString().trim { it <= ' ' }.length > 0) {
-            historySearch!!.setText("")
+        if (this.historySearch!!.getText().toString().trim { it <= ' ' }.length > 0) {
+            this.historySearch!!.setText("")
         }
     }
 

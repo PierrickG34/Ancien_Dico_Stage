@@ -228,8 +228,6 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
      * @return MutableList of Word before the date
      */
     fun selectBeforeDate(beforeDate: Date): MutableList<Word> {
-        println(beforeDate)
-        println(dateView)
         var res: MutableList<Word> = ArrayList<Word>()
         var formatter: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
         val c = this.db.select(WordSQLITE.DB_TABLE)
@@ -256,8 +254,6 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
      * @return MutableList of Word after the date
      */
     fun selectAfterDate(afterDate: Date): MutableList<Word> {
-        println(dateView)
-        println(afterDate)
         var res: MutableList<Word> = ArrayList<Word>()
         var formatter: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
         val c = this.db.select(WordSQLITE.DB_TABLE)
