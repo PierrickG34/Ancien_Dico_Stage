@@ -13,6 +13,7 @@ import org.jetbrains.anko.db.dropTable
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import com.antoine_charlotte_romain.dictionary.R
+import com.antoine_charlotte_romain.dictionary.business.word.Word
 import java.util.*
 
 /**
@@ -135,11 +136,11 @@ class DataBaseHelperKot(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase
         var sqlDate1 : java.sql.Date = java.sql.Date(Calendar.getInstance().getTime().getTime())
 //        println("DataBaseHelperKot.kt -- salDate -" + sqlDate)
 //
-        var test: WordSQLITE? = WordSQLITE(ctx, "1premier", "premiereNote", bArray, bArray, "premierHeadzord", sqlDate1, "1")
-        //test!!.save()
-        //var allWord: List<Word>? = test.selectAll()
-        //println("DataBaseHelperKot.kt -- allWord.size - " + allWord!!.size)
-        //println("DataBaseHelperKot.kt -- allWord - " + allWord)
+//        var test: WordSQLITE? = WordSQLITE(ctx, "1premier", "premiereNote", bArray, bArray, "premierHeadzord", sqlDate1, "1")
+//        test!!.save()
+//        var allWord: List<Word>? = test1.selectAll()
+//        println("DataBaseHelperKot.kt -- allWord.size - " + allWord!!.size)
+//        println("DataBaseHelperKot.kt -- allWord - " + allWord)
 //        test.deleteAll()
 //        println("Apres avoir deleteAll")
 //        allWord = test.selectAll()
