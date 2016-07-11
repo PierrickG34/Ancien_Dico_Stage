@@ -3,7 +3,6 @@ package  com.antoine_charlotte_romain.dictionary.business.word
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import android.util.Log
 import com.antoine_charlotte_romain.dictionary.DataModel.DataBaseHelperKot
 import com.antoine_charlotte_romain.dictionary.DataModel.WordDataModel
 import com.antoine_charlotte_romain.dictionary.Utilities.StringsUtility

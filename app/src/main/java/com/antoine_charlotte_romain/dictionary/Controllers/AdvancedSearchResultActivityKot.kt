@@ -55,31 +55,29 @@ class AdvancedSearchResultActivityKot : AppCompatActivity() {
             // find id of the dictionary
             val id: Long
             val ddm = DictionarySQLITE(this)
-            if(!dico.equals("All")) {
+            if(!dico.equals("All")) {       // Search in a particular dictionary
                 id = ddm.getIdByName(dico)
             }
-            else{
+            else{                           // Search in all the dictionaries
                 id = 0
             }
 
             // search
             wdm = WordSQLITE(this,headword = "test")
             var translat = TranslateSQLITE(this, wdm,wdm)
-            if (partWhole == MainActivityKot.PART_WORD) {
-               // results = wdm!!.selectHeadword(begin, middle, end, id)
-
-                if (searchOption == MainActivityKot.HEADWORD_ONLY) {
+            if (partWhole == MainActivityKot.PART_WORD) {   // Search word by "begin","content","end"
+                if (searchOption == MainActivityKot.HEADWORD_ONLY) {    //Search by the headword
                     if(id == 0L) {
-                        results = wdm!!.selectHeadword(begin, middle,end)
+                        results = wdm!!.selectHeadword(begin, middle,end) // Search in all dictionaries
                     }
                     else{
-                        results = wdm!!.selectHeadwordByIdDico(begin, middle,end, id)
+                        results = wdm!!.selectHeadwordByIdDico(begin, middle,end, id) // Search in the dictionary which have the id "id"
                     }
                 }
-                else if (searchOption == MainActivityKot.ALL_DATA) {
+                else if (searchOption == MainActivityKot.ALL_DATA) {    // Search by headWord, translation and note
                     var words : MutableList<Word>
                     if(id == 0L) {
-                        results = wdm!!.selectNoteOrHeadword(begin, middle,end)
+                        results = wdm!!.selectNoteOrHeadword(begin, middle,end) // Return all the words corresponding to the Note search and headword search
                         words = wdm!!.selectHeadword(begin, middle, end)
                     }
                     else{
@@ -87,55 +85,61 @@ class AdvancedSearchResultActivityKot : AppCompatActivity() {
                         words = wdm!!.selectHeadwordByIdDico(begin, middle, end, id)
                     }
                     var resultTrans: MutableList<Word>? = mutableListOf()
-                    if (!words.isEmpty()) {
-                        val idWord = (words.component1()).idWord
-                        var resultsId = translat!!.selectWordToByWordFrom(idWord!!, id)
-                        var it = resultsId!!.iterator()
-                        var e : Word
-                        while (it.hasNext()) {
-                            if(id == 0L) {
-                                e = wdm!!.getWordById(it.next())
+                    if (!words.isEmpty()) {     // if the search by Headword doesn't return an empty array
+                        var idIt = words!!.iterator()
+                        while(idIt.hasNext())
+                        {
+                            var resultsId = translat!!.selectWordToByWordFrom(idIt.next().idWord!!, id) // return all the id of the word found by search translation
+                            var it = resultsId!!.iterator() // an iterator to parse all the array resultsID (all the id word found by seearch translation)
+                            var e : Word
+                            while (it.hasNext()) { // until there is an other word to iterate
+                                if(id == 0L) {
+                                    e = wdm!!.getWordById(it.next()) // return the word corresponding to the id
+                                }
+                                else{
+                                    e = wdm!!.getWordByIdByIdDico(it.next(), id)
+                                }
+                                resultTrans = resultTrans!!.plus(e) as MutableList<Word>
                             }
-                            else{
-                                e = wdm!!.getWordByIdByIdDico(it.next(), id)
-                            }
-                            resultTrans = resultTrans!!.plus(e) as MutableList<Word>
                         }
                     }
-                    var it = resultTrans?.iterator()
-                    while(it!!.hasNext()) {
+                    var it = resultTrans?.iterator() // an iterator to parse all the array resultsID (all the id word found by seearch translation)
+                    while(it!!.hasNext()) { // this while enables that all research doesn't return the same word two time
                         val el = it.next()
                         if (!results!!.contains(el)) {
                             results = results!!.plus(el) as MutableList<Word>
                         }
                     }
-                    Log.d("allData",results.toString())
                 }
-                else if (searchOption == MainActivityKot.MEANING_ONLY) {
+                else if (searchOption == MainActivityKot.MEANING_ONLY) { // Search by translation
                     var words : MutableList<Word>
                     if(id == 0L) {
-                        words = wdm!!.selectHeadword(begin, middle, end)
+                        words = wdm!!.selectHeadword(begin, middle, end) // return all the word wich contain middle or begin by begin or end by end in all dictionary
                     }
                     else{
-                        words = wdm!!.selectHeadwordByIdDico(begin, middle, end, id)
+                        words = wdm!!.selectHeadwordByIdDico(begin, middle, end, id)// return all the word wich contain middle or begin by begin or end by end in all dictionary
                     }
-                    if (!words.isEmpty()) {
-                        val idWord = (words.component1()).idWord
-                        var resultsId = translat!!.selectWordToByWordFrom(idWord!!, id)
-                        var it = resultsId!!.iterator()
+                    if (!words.isEmpty()) { // if it found words
+                        //val idWord = (words.component1()).idWord // get the id of the word found
+                        var idIt = words!!.iterator()
                         results = mutableListOf()
-                        var e : Word
-                        while(it.hasNext()) {
-                            if(id == 0L) {
-                                e = wdm!!.getWordById(it.next())
+                        while(idIt.hasNext())
+                        {
+                            var resultsId = translat!!.selectWordToByWordFrom((idIt.next()).idWord!!, id)
+                            var it = resultsId!!.iterator()
+                            var e : Word
+                            while(it.hasNext()) {
+                                if(id == 0L) {
+                                    e = wdm!!.getWordById(it.next())
+                                }
+                                else{
+                                    e = wdm!!.getWordByIdByIdDico(it.next(), id)
+                                }
+                                results = results!!.plus(e) as MutableList<Word>
                             }
-                            else{
-                                e = wdm!!.getWordByIdByIdDico(it.next(), id)
-                            }
-                            results = results!!.plus(e) as MutableList<Word>
                         }
                     }
-                } else if (searchOption == MainActivityKot.NOTES_ONLY) {
+                } else if (searchOption == MainActivityKot.NOTES_ONLY) { // Search by note
                     if(id == 0L) {
                         results = wdm!!.selectNote(begin, middle, end)
                     }
@@ -147,7 +151,7 @@ class AdvancedSearchResultActivityKot : AppCompatActivity() {
             }
 
             else {
-                if (searchOption == MainActivityKot.HEADWORD_ONLY) {
+                if (searchOption == MainActivityKot.HEADWORD_ONLY) { // Same thing that search by partWord except here it search by WholeWord
                     if(id == 0L) {
                         results = wdm!!.selectWholeHeadword(end)
                     }
@@ -189,7 +193,6 @@ class AdvancedSearchResultActivityKot : AppCompatActivity() {
                             results = results!!.plus(el) as MutableList<Word>
                         }
                     }
-                        Log.d("allData", results.toString())
 
                 }
                 else if (searchOption == MainActivityKot.MEANING_ONLY) {
