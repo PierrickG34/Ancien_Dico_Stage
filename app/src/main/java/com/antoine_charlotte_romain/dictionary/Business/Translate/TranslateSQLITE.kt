@@ -2,7 +2,6 @@ package com.dicosaure.Business.Translate
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import android.util.Log
 import com.antoine_charlotte_romain.dictionary.DataModel.DataBaseHelperKot
 import com.antoine_charlotte_romain.dictionary.Utilities.StringsUtility
 import com.antoine_charlotte_romain.dictionary.business.dictionary.Dictionary
@@ -72,13 +71,10 @@ class TranslateSQLITE(ctx : Context, wordTo: Word?, wordFrom: Word?) : Translate
         var idWord = idWord
         var dictionaryID = id
         var res: MutableList<String>? = ArrayList<String>()
-        Log.d("selectWordToByWordFrom", "$idWord")
-        Log.d("WordToByWordFromIF", "$dictionaryID")
         val c = this.db.select(TranslateSQLITE.DB_TABLE).where("""(${TranslateSQLITE.DB_COLUMN_WORDFROM} = '${idWord}')""").exec {
             while (this.moveToNext()) {
                 res!!.add(this.getString(this.getColumnIndex("wordTo")))
                 var l = this.getString(this.getColumnIndex("wordTo"))
-                Log.d("WordToByWordFrom ID1", "$l")
             }
         }
         return res

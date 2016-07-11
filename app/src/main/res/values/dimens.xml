@@ -16,6 +16,7 @@
     <dimen name="fab_menuText_margin_bottom">30dp</dimen>
     <dimen name="fab_menuText_margin_right">0dp</dimen>
     <dimen name="textSize">16sp</dimen>
+    <dimen name="smallTextSize">14sp</dimen>
     <dimen name="subTextSize">14sp</dimen>
     <dimen name="buttonTextSize">16sp</dimen>
     <dimen name="bigTextSize">36sp</dimen>
