@@ -89,7 +89,7 @@ class AdvancedSearchResultActivityKot : AppCompatActivity() {
                         var idIt = words!!.iterator()
                         while(idIt.hasNext())
                         {
-                            var resultsId = translat!!.selectWordToByWordFrom(idIt.next().idWord!!, id) // return all the id of the word found by search translation
+                            var resultsId = translat!!.selectListWordsOutLangFromWordInLang(idIt.next().idWord!!, id) // return all the id of the word found by search translation
                             var it = resultsId!!.iterator() // an iterator to parse all the array resultsID (all the id word found by seearch translation)
                             var e : Word
                             while (it.hasNext()) { // until there is an other word to iterate
@@ -125,7 +125,7 @@ class AdvancedSearchResultActivityKot : AppCompatActivity() {
                         results = mutableListOf()
                         while(idIt.hasNext())
                         {
-                            var resultsId = translat!!.selectWordToByWordFrom((idIt.next()).idWord!!, id)
+                            var resultsId = translat!!.selectListWordsOutLangFromWordInLang((idIt.next()).idWord!!, id)
                             var it = resultsId!!.iterator()
                             var e : Word
                             while(it.hasNext()) {
@@ -173,7 +173,7 @@ class AdvancedSearchResultActivityKot : AppCompatActivity() {
                     var resultTrans: MutableList<Word>? = mutableListOf()
                     if (!words.isEmpty()) {
                         val idWord = (words.component1()).idWord
-                        var resultsId = translat!!.selectWordToByWordFrom(idWord!!, id)
+                        var resultsId = translat!!.selectListWordsOutLangFromWordInLang(idWord!!, id)
                         var it = resultsId!!.iterator()
                         var e : Word
                         while (it.hasNext()) {
@@ -206,7 +206,7 @@ class AdvancedSearchResultActivityKot : AppCompatActivity() {
                     if(!words.isEmpty())
                     {
                         val idWord = (words.component1()).idWord
-                        var resultsId = translat!!.selectWordToByWordFrom(idWord!!, id)
+                        var resultsId = translat!!.selectListWordsOutLangFromWordInLang(idWord!!, id)
                         var it = resultsId!!.iterator()
                         results = mutableListOf()
                         var e : Word

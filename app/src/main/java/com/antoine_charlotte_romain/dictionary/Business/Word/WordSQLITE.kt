@@ -19,11 +19,17 @@ import java.sql.Date
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 /**
+ * Eng : This class make the comunication with the SQLite database for the Word class.
+ *       This class use the framework Anko
+ * Fr : Cette classe effectue la comunication avec la base de données pour la classe Word.
+ *      Cette classe utilise le framework Anko.
  * Created by dineen on 15/06/2016.
  */
-class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, image : ByteArray? = null, sound : ByteArray? = null, headword: String? = null, dateView: Date? = null, idDictionary: String? = null)
-: Word(idWord, note, image, sound, headword, dateView, idDictionary) {
+class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, image : ByteArray? = null, sound : ByteArray? = null,
+                 headword: String? = null, dateView: Date? = null, idDictionary: String? = null)
+                 : Word(idWord, note, image, sound, headword, dateView, idDictionary) {
 
     companion object {
         val DB_TABLE = "WORD"
@@ -40,9 +46,8 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
 
     /**
      * Save the word in the database
-     * @return an int which indicates if the Word had been inserted in the databases
+     * @return the row ID of the newly inserted row, or -1 if an error occurred
      */
-
     fun save(): Int {
         var log : Int
         if (super.image == null && super.sound == null && super.dateView == null) {
@@ -77,9 +82,10 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
     }
 
     /**
-     * Select all the searchDate where the headword starts with the string in param or the date contains this string
+     * Select all the searched word where the headword starts with the string in param or the date contains this string
+     *  Ordered by the date
      * @param search the string in which we are wanted to find
-     * @return all the searchDate in which the headword starts with the search string or the date contains this search string
+     * @return MutableList<Word> list of all the Word in which the headword starts with the search string or the date contains this search string
      */
     fun select(search : String) : MutableList<Word> {
         var res: MutableList<Word> = ArrayList<Word>()

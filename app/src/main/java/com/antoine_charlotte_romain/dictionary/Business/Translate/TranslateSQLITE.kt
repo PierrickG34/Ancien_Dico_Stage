@@ -44,7 +44,6 @@ class TranslateSQLITE(ctx : Context, wordTo: Word?, wordFrom: Word?) : Translate
     }
 
     /**
-     * TODO verifier
      * Delete the current translation
      * @return the number of rows affected, 0 otherwise.
      */
@@ -56,7 +55,7 @@ class TranslateSQLITE(ctx : Context, wordTo: Word?, wordFrom: Word?) : Translate
 
     /**
      * Update the class translate and the db
-     * TODO
+     * @return Int ?
      */
     fun update(wordToNew : Word, wordFromNew: Word) : Int {
         super.wordInLang = wordToNew
@@ -80,26 +79,16 @@ class TranslateSQLITE(ctx : Context, wordTo: Word?, wordFrom: Word?) : Translate
     }
 
     /**
-     * TODO je ne comprends pas ce que ca fait -> Fonction useless ?
+     *  Select and return all translations of a word.
+     *  @return MutableList<String>? the list of translations for a word.
      */
-    fun selectAllTranslations(word : Word) {
-        this.db.select(TranslateSQLITE.DB_TABLE, WordSQLITE.DB_TABLE, WordSQLITE.DB_TABLE + ".*")
-                .where("""${WordSQLITE.DB_TABLE}.${WordSQLITE.DB_COLUMN_ID} = ${TranslateSQLITE.DB_TABLE}.${TranslateSQLITE.DB_COLUMN_WORDTO}""")
-                .exec {
-                }
-    }
-
-    /**
-     *
-     */
-    fun selectWordToByWordFrom(idWord: String, id : Long): MutableList<String>? {
+    fun selectListWordsOutLangFromWordInLang(idWord: String, id : Long): MutableList<String>? {
         var idWord = idWord
         var dictionaryID = id
         var res: MutableList<String>? = ArrayList<String>()
         val c = this.db.select(TranslateSQLITE.DB_TABLE).where("""(${TranslateSQLITE.DB_COLUMN_WORDFROM} = '${idWord}')""").exec {
             while (this.moveToNext()) {
                 res!!.add(this.getString(this.getColumnIndex("wordTo")))
-                var l = this.getString(this.getColumnIndex("wordTo"))
             }
         }
         return res

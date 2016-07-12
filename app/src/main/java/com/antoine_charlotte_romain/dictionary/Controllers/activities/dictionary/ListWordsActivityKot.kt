@@ -505,7 +505,6 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
      * @param position the position in the listView of the word the user want to see more details or to modify
      */
     private fun modify(position: Int) {
-        //TODO
         val wordDetailIntent = Intent(this, WordViewKot::class.java)
 
         wordDetailIntent.putExtra(MainActivityKot.EXTRA_WORD, this.myWordsList[position])
