@@ -129,4 +129,5 @@
     <string name="sound_capital"><u>Sound</u></string>
     <string name="play"><u>Play</u></string>
     <string name="no_note"><u>No note</u></string>
+    <string name="record">Record</string>
 </resources>
