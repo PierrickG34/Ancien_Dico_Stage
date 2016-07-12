@@ -116,7 +116,7 @@
             android:src="@drawable/ic_remove_white_24"
             app:borderWidth="0dp"
             app:fabSize="normal"
-            android:visibility="invisible"
+            android:visibility="visible"
             android:layout_marginLeft="10dp"
             android:onClick="onClick"
             android:layout_marginRight="15dp" />

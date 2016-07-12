@@ -3,7 +3,6 @@ package  com.antoine_charlotte_romain.dictionary.business.word
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import android.util.Log
 import com.antoine_charlotte_romain.dictionary.DataModel.DataBaseHelperKot
 import com.antoine_charlotte_romain.dictionary.DataModel.WordDataModel
 import com.antoine_charlotte_romain.dictionary.Utilities.StringsUtility
@@ -113,9 +112,8 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         var res: MutableList<Word> = ArrayList<Word>()
         var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
         val c = this.db.select(WordSQLITE.DB_TABLE)
-                .where("""${WordSQLITE.DB_COLUMN_ID_DICTIONARY} != '0'""")
+                .where("""${WordSQLITE.DB_COLUMN_ID_DICTIONARY} != '0' AND (${WordSQLITE.DB_COLUMN_DATE} != 'null')""")
                 .orderBy(WordSQLITE.DB_COLUMN_HEADWORD)
-                .where("""(${WordSQLITE.DB_COLUMN_DATE} != 'null')""")
                 .exec {
             while (this.moveToNext()) {
                 var sqlDate : java.sql.Date? = null
