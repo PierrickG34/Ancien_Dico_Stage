@@ -33,11 +33,19 @@ class DataBaseHelperKot(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase
         }
     }
 
+    /**
+     * This method opens the DB
+     * @param db the database
+     */
     override fun onOpen(db: SQLiteDatabase?) {
         super.onOpen(db)
         db!!.execSQL("PRAGMA foreign_keys=ON");
     }
 
+    /**
+     * This method initializes the DB
+     * @param db the database
+     */
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(
                 """
@@ -83,20 +91,6 @@ class DataBaseHelperKot(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase
                 VALUES (0, 'translate', 'translate');
                 """
         )
-    }
-
-    fun showTable(ctx : Context) {
-        val c = this.readableDatabase.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
-        if (c.moveToFirst()) {
-            while ( !c.isAfterLast() ) {
-                Toast.makeText(ctx, "Table Name=> " + c.getString(0), Toast.LENGTH_LONG).show();
-                val col = this.readableDatabase.rawQuery("SELECT * FROM ${c.getString(0)}", null);
-                for (table in col.columnNames) {
-                    Toast.makeText(ctx, "Table Name=> " + table, Toast.LENGTH_LONG).show();
-                }
-                c.moveToNext();
-            }
-        }
     }
 
     fun insertTest(ctx : Context) {

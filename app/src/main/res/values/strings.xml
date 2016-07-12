@@ -121,4 +121,12 @@
     <string name="translation_children">Translation </string>
     <string name="clear">Clear</string>
     <string name="oups">historyCleared</string>
+
+    <string name="dictionary_capital"><u>Dictionary</u></string>
+    <string name="word_capital"><u>Word</u></string>
+    <string name="note_capital"><u>Note</u></string>
+    <string name="translation_capital"><u>Translation</u></string>
+    <string name="sound_capital"><u>Sound</u></string>
+    <string name="play"><u>Play</u></string>
+    <string name="no_note"><u>No note</u></string>
 </resources>

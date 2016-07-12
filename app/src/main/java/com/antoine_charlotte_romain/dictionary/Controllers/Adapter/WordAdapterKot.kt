@@ -24,22 +24,44 @@ class WordAdapterKot(context: Context, resource: Int, data: ArrayList<Word>, sel
     var allSelected: Boolean = false
     var callback: WordAdapterCallbackKot? = null
 
+    /**
+     * This method returns the number of words
+     * @return the count
+     */
     override fun getCount(): Int {
         return this.listWord.size
     }
 
+    /**
+     * This method returns the word at a position given in parameter
+     * @param position the position of the word you want
+     * @return the word
+     */
     override fun getItem(position: Int): Word {
         return this.listWord.get(position)
     }
 
+    /**
+     * This method returns the id at a position given in parameter
+     * @param position the position of the id you want
+     * @return the id
+     */
     override fun getItemId(position: Int): Long {
         return position.toLong()
     }
 
+    /**
+     * This method returns the delete list
+     * @return the delete list
+     */
     fun getDeleteList(): ArrayList<Word> {
         return this.listDelete
     }
 
+    /**
+     * Know if all words are selected or not
+     * @return true if all selected, false else
+     */
     fun isAllSelected(): Boolean {
         return this.allSelected
     }
@@ -47,11 +69,8 @@ class WordAdapterKot(context: Context, resource: Int, data: ArrayList<Word>, sel
     /**
      * This function is used to show the word in the listView each word in a custom layout
      * @param position the position of the item the user is interacting with
-     * *
      * @param convertView the rowView
-     * *
      * @param parent the listView
-     * *
      * @return the rowView completed
      */
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -132,6 +151,10 @@ class WordAdapterKot(context: Context, resource: Int, data: ArrayList<Word>, sel
         return convertView
     }
 
+    /**
+     * This method add a word to the delete list
+     * @param w the word you want to add
+     */
     private fun addToDeleteList(w: Word) {
         if (!this.listDelete.contains(w)) {
             this.listDelete.add(w)
@@ -139,6 +162,10 @@ class WordAdapterKot(context: Context, resource: Int, data: ArrayList<Word>, sel
         }
     }
 
+    /**
+     * This method remove a word to the delete list
+     * @param w the word you want to remove
+     */
     private fun removeFromDeleteList(w: Word) {
         this.listDelete.remove(w)
         this.allSelected = false

@@ -44,7 +44,11 @@ class MenuDrawerAdapterKot(titles : Array<String>, icons : IntArray): RecyclerVi
 
     }
 
-    //bind value on the cells
+    /**
+     * Bind values on the cells
+     * @param holder the menu holder
+     * @param position the item position
+     */
     override fun onBindViewHolder(holder: MenuDrawerViewHolder, position: Int) {
         if (holder.holderid == 1) {
             holder.textView!!.setText(this.titles[position - 1])
@@ -55,10 +59,16 @@ class MenuDrawerAdapterKot(titles : Array<String>, icons : IntArray): RecyclerVi
         }
     }
 
+    /**
+     * Return the number of items
+     */
     override fun getItemCount(): Int {
         return this.titles.count() + 1
     }
 
+    /**
+     * Called when creating the view
+     */
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): MenuDrawerViewHolder {
         if (viewType == TYPE_ITEM) {
             val v = LayoutInflater
@@ -76,6 +86,11 @@ class MenuDrawerAdapterKot(titles : Array<String>, icons : IntArray): RecyclerVi
         }
     }
 
+    /**
+     * Get the itemViewType
+     * @param position the item position
+     * @return the itemViewType
+     */
     override fun getItemViewType(position: Int): Int {
         if (position == 0) {
             return TYPE_HEADER
