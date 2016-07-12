@@ -352,6 +352,7 @@ class HistoryFragmentKot(): Fragment() {
      * @param position the position in the listView of the word the user want to see more details or to modify
      */
     fun seeWord(position: Int) {
+        // TODO Look ListWordActivityKot.kt pour le faire.
         val wordDetailIntent = Intent(activity, WordActivityKot::class.java)
 
         wordDetailIntent.putExtra(MainActivityKot.EXTRA_WORD, mySearchDateList!!.get(position))

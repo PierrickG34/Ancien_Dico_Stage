@@ -111,7 +111,7 @@
     <string name="all_rights_reserved">Gearoid O\'NEILL - Tous droits réservés.</string>
     <string name="change_directory">Changer de répertoire</string>
     <string name="directory">Répertoire :</string>
-    <string name="from_csv">A partir d\'un csv</string>
+    <string name="from_csv">Depuis un csv</string>
     <string name="import_progress">Importation en cours</string>
     <string name="delete_progress">Suppression en cours</string>
     <string name="see_updated">Voir les mots mis à jour</string>
@@ -128,4 +128,5 @@
     <string name="sound_capital"><u>Son</u></string>
     <string name="play"><u>Lecture</u></string>
     <string name="no_note"><u>Aucune note</u></string>
+    <string name="record">Enregistret</string>
 </resources>

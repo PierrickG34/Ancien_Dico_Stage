@@ -608,7 +608,7 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
                     var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
                     var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())
                     var note = this.getString(this.getColumnIndex("note"))
-                    if ( (this.getString(this.getColumnIndex("note")).contains(stringToFind, true)).or((this.getString(this.getColumnIndex("headword")).equals(stringToFind)) ))
+                    if ( (this.getString(this.getColumnIndex("note")).contains(stringToFind, true)).or(((this.getString(this.getColumnIndex("headword"))).trim()).equals(stringToFind)) )
                     {
                         res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
                                 note = this.getString(this.getColumnIndex("note")),
@@ -639,7 +639,7 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
                 var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
                 var sqlDate: java.sql.Date = java.sql.Date(utilDate.getTime())
                 var note = this.getString(this.getColumnIndex("note"))
-                if ( (this.getString(this.getColumnIndex("note")).contains(stringToFind, true)).or((this.getString(this.getColumnIndex("headword")).equals(stringToFind)) )) {
+                if ( (this.getString(this.getColumnIndex("note")).contains(stringToFind, true)).or(((this.getString(this.getColumnIndex("headword"))).trim()).equals(stringToFind)) ) {
                     res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
                             note = this.getString(this.getColumnIndex("note")),
                             image = this.getBlob(this.getColumnIndex("image")),
