@@ -121,4 +121,11 @@
     <string name="clear">Nettoyer</string>
     <string name="oups"></string>
 
+    <string name="dictionary_capital"><u>Dictionnaire</u></string>
+    <string name="word_capital"><u>Mot</u></string>
+    <string name="note_capital"><u>Note</u></string>
+    <string name="translation_capital"><u>Traduction</u></string>
+    <string name="sound_capital"><u>Son</u></string>
+    <string name="play"><u>Lecture</u></string>
+    <string name="no_note"><u>Aucune note</u></string>
 </resources>

@@ -21,12 +21,9 @@ import android.util.TypedValue
 import android.view.*
 import android.view.animation.OvershootInterpolator
 import android.widget.*
+import com.antoine_charlotte_romain.dictionary.Controllers.*
 import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.WordAdapterCallbackKot
 import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.WordAdapterKot
-import com.antoine_charlotte_romain.dictionary.Controllers.CSVExportKot
-import com.antoine_charlotte_romain.dictionary.Controllers.ImportCSVKot
-import com.antoine_charlotte_romain.dictionary.Controllers.WordActivity
-import com.antoine_charlotte_romain.dictionary.Controllers.WordActivityKot
 import com.antoine_charlotte_romain.dictionary.Controllers.activities.MainActivityKot
 import com.antoine_charlotte_romain.dictionary.R
 import com.antoine_charlotte_romain.dictionary.Utilities.KeyboardUtility
@@ -313,7 +310,7 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
         if (this.isOpen) {
             showFloatingMenu(view)
         }
-        val newWordIntent = Intent(this, WordActivityKot::class.java)
+        val newWordIntent = Intent(this, WordViewKot::class.java)
 
         newWordIntent.putExtra(MainActivityKot.EXTRA_DICTIONARY, this.selectedDictionary)
 
@@ -495,7 +492,7 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
      */
     private fun modify(position: Int) {
         //TODO
-        val wordDetailIntent = Intent(this, WordActivityKot::class.java)
+        val wordDetailIntent = Intent(this, WordViewKot::class.java)
 
         wordDetailIntent.putExtra(MainActivityKot.EXTRA_WORD, this.myWordsList[position])
         if (this.selectedDictionary != null) {
@@ -716,7 +713,7 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
     }
 
 
-    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         //If we are importing a file
@@ -725,7 +722,7 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
 
             //Handling the end of the import
             val import = ImportCSVKot()
-            var importExec = import.importCSV(DictionarySQLITE(this.ctx, this.selectedDictionary!!.inLang, this.selectedDictionary!!.outLang, this.selectedDictionary!!.idDictionary), data.data, c)
+            var importExec = import.importCSV(DictionarySQLITE(this.ctx, this.selectedDictionary!!.inLang, this.selectedDictionary!!.outLang, this.selectedDictionary!!.idDictionary), data!!.data, c)
         }
         else if ((requestCode == NEW_WORD || requestCode == DELETE_WORD) && resultCode == Activity.RESULT_OK) {
             this.myWordsList.clear()
