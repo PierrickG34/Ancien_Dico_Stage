@@ -36,7 +36,6 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
 
     /**
      * The view corresponding to this fragment.
-
      * @see MainActivityKot
      */
     var v: View? = null
@@ -108,11 +107,17 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
         val SELECT_FILE = 0
     }
 
+    /**
+     * Initialising the view
+     */
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         this.v = inflater!!.inflate(R.layout.fragment_home, container, false)
         return v
     }
 
+    /**
+     * Calling all the init functions
+     */
     override fun onStart() {
         super.onStart()
         super.setHasOptionsMenu(true)
@@ -318,8 +323,6 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
 
         //Dialog negative action
         builder.setNegativeButton(R.string.cancel) { dialog, which -> dialog.cancel() }
-
-        // TO do
         builder.setNeutralButton(R.string.from_csv) { dialog, which ->
             val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.addCategory(Intent.CATEGORY_OPENABLE)
@@ -358,6 +361,10 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
         alertDialog.show()
     }
 
+    /**
+     * Method which allows user to delete a dictionary with his position
+     * @param position the position of the dictionary you want to delete
+     */
     override fun delete(position: Int) {
         val dictionary = this.dictionariesDisplay!!.get(position) //Get dictionary
         this.dictionariesDisplay!!.remove(dictionary) //delete from array
@@ -410,6 +417,10 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
         snack.show()
     }
 
+    /**
+     * Method which allows user to update a dictionary with his position
+     * @param position the position of the dictionary you want to update
+     */
     override fun update(position: Int) {
         val dictionary = this.dictionariesDisplay!!.get(position)//get dictionary
 
@@ -492,10 +503,13 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
         alertDialog.show()
     }
 
-
+    /**
+     * Method which allows user to read a dictionary with his position
+     * @param position the position of the dictionary you want to read
+     */
     override fun read(position: Int) {
         //Set object on the cell
-        val intent = Intent(this.getActivity(), ListWordsActivityKot::class.java) //TO DO
+        val intent = Intent(this.getActivity(), ListWordsActivityKot::class.java)
         if (position != -1) {
             intent.putExtra(MainActivityKot.EXTRA_DICTIONARY, this.dictionariesDisplay!!.get(position))
         }
@@ -507,6 +521,10 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
         }
     }
 
+    /**
+     * Method which allows user to export a dictionary with his position
+     * @param position the position of the dictionary you want to export
+     */
     override fun export(position: Int) {
         val exportCSVintent = Intent(this.activity, CSVExportKot::class.java)
         exportCSVintent.putExtra(MainActivityKot.EXTRA_DICTIONARY, this.dictionariesDisplay[position])
@@ -516,6 +534,9 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
         }
     }
 
+    /**
+     * Changing the view to delete mode
+     */
     override fun notifyDeleteListChanged() {
         //Popup message to delete multi dictionaries
         val s = this.adapter!!.deleteList.size
@@ -527,10 +548,20 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
             this.headerButton!!.setText(R.string.select_all)
     }
 
+    /**
+     * Resuming the view
+     */
     override fun onResume() {
         super.onResume()
     }
 
+    /**
+     * Creating the Context Menu at the top right of the view
+     * @param menu the Context Menu
+     * @param v the current view
+     * @param menuInfo additional information regarding the creation of the Context Menu
+     * @param menuInfo additional information regarding the creation of the Context Menu
+     */
     override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo)
         val info = menuInfo as AdapterView.AdapterContextMenuInfo
@@ -544,6 +575,11 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
         menu.add(Menu.NONE, CONTEXT_MENU_EXPORT, Menu.NONE, R.string.csvexport_export)
     }
 
+    /**
+     * Calling the different functions on dictionaries depending on the user choice
+     * @param item the dictionary menu
+     * @return true if success, false else
+     */
     override fun onContextItemSelected(item: MenuItem?): Boolean {
         val info = item!!.menuInfo as AdapterView.AdapterContextMenuInfo
         when (item.itemId) {
@@ -567,6 +603,12 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
         }
     }
 
+    /**
+     * This function is called when returning to this activity
+     * @param requestCode the int saying if you return from CSV import or not
+     * @param resultCode the int saying if all ended up fine
+     * @param data the CSV informations
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         //If we are importing a file
@@ -575,7 +617,7 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
             val fileUri = data!!.data
             val fileName = fileUri.lastPathSegment
 
-            //Creating ta dictionary named like the file (without the extension)
+            //Creating a dictionary named like the file (without the extension)
             val d = DictionarySQLITE(this.context, fileName.split(".")[0].split(" -> ")[0], fileName.split(".")[0].split(" -> ")[1])
 
             val c = this.activity
@@ -605,12 +647,20 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
         }
     }
 
+    /**
+     * Creating the option menu
+     * @param m the menu
+     * @param inflater the menu options
+     */
     override fun onCreateOptionsMenu(m: Menu?, inflater: MenuInflater?) {
         this.menu = m
         super.onCreateOptionsMenu(this.menu, inflater)
         showMenu()
     }
 
+    /**
+     * Displaying the menu
+     */
     fun showMenu() {
         this.menu!!.clear()
         if (state == NORMAL_STATE) {
@@ -624,6 +674,11 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
         }
     }
 
+    /**
+     * Calling the functions on the dictionary depending on the user choice
+     * @param item the dictionary menu
+     * @return true if success, false else
+     */
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item!!.itemId) {
             R.id.action_add_dictionary -> {

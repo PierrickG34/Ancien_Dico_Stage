@@ -17,6 +17,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 /**
+ * Eng : This class make the comunication with the SQLite database for the Dictionary class
+ *       This class use the framework Anko
+ *       The dictionary 0, contains all translations. It's only for storage.
+ * Fr : Cette classe effectue la comunication avec la base de données pour la classe Dictionary
+ *      Cette classe utilise le framework Anko.
+ *      LE dictionnaire 0 contient toute les traductions, il ne sert donc que pour le stockage.
  * Created by dineen on 14/06/2016.
  */
 class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String? = null, id : String? = null) : Dictionary(inLang = inLang, outLang = outLang, id = id), Serializable {
@@ -28,8 +34,13 @@ class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String?
         val DB_COLUMN_ID = "id"
     }
 
+    //make db not serializable
     @Transient var db : SQLiteDatabase = DataBaseHelperKot.getInstance(ctx).readableDatabase
 
+    /**
+     * This method insert the dictionary in the database
+     * @return Int : the row ID of the newly inserted row, or -1 if an error occurred
+     */
     fun save() : Int {
         var log = this.db.insert(DictionarySQLITE.DB_TABLE,
                 DictionarySQLITE.DB_COLUMN_INLANG to super.inLang!!,
@@ -43,6 +54,10 @@ class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String?
         return log
     }
 
+    /**
+     * Select all existing dictionaries in the database. Except the dico 0 who is for the translations.
+     * @return List<Dictionary> a list who contains all dictionaries.
+     */
     fun selectAll(): List<Dictionary> {
         var res : MutableList<Dictionary> = ArrayList<Dictionary>()
         val c = this.db.select(DictionarySQLITE.DB_TABLE)
@@ -58,9 +73,13 @@ class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String?
         return res
     }
 
+    /**
+     *   @return all the word of the current dictionary
+     */
     fun selectAllWords(): List<Word> {
         var res: MutableList<Word> = ArrayList<Word>()
         var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+
         this.db.select("""${DictionarySQLITE.DB_TABLE}, ${WordSQLITE.DB_TABLE}""", "${WordSQLITE.DB_TABLE}.*")
                 .where("""${WordSQLITE.DB_COLUMN_ID_DICTIONARY} = ${super.idDictionary}""")
                 .distinct()
@@ -85,11 +104,21 @@ class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String?
         return res
     }
 
+    /**
+     * Delete the row of the dictionary with the ID in parameter
+     * @param String : The id of the Dictionary to delete
+     * @return the number of rows affected
+     */
     fun delete(id : String) : Int {
         return this.db.delete(DictionarySQLITE.DB_TABLE,
                 """${DictionarySQLITE.DB_COLUMN_ID} = ${id}""")
     }
 
+    /**
+     * @param String : The inLang
+     * @param String : The outLang
+     * @return true if there is a dictionary with same inLang and outLang in parameter
+     */
     fun existByLang(inLang : String, outLang : String) : Boolean {
         var exist : Boolean = false
         this.db.select(DictionarySQLITE.DB_TABLE)
@@ -100,6 +129,12 @@ class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String?
         return exist
     }
 
+    /**
+     * Change the inLang and the outLang if they are not already existing.
+     * @param String : The new inLang
+     * @param String : The new outLang
+     * @return 1 if inLang and outLang have changed, -1 if there is a dictionary who already have the same InLang and outLang
+     */
     fun update(inLangNew : String, outLangNew : String) : Int {
         super.inLang = inLangNew
         super.outLang = outLangNew
@@ -115,7 +150,11 @@ class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String?
         }
     }
 
-
+    /**
+     * get the id of the dictionary who have the same name.
+     * @param int : name (Like : InLang -> outLang)
+     * @return Long : the id of the dictionary who have the same name as parameter
+     */
     fun getIdByName(name : String) : Long
     {
         var id : Long? = null
@@ -134,12 +173,17 @@ class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String?
         return id!!
     }
 
-
+    /**
+     * TODO il y a une petit soucis sur cette fonction ... non ? =)
+     */
     fun selectDictionary(idDictionary: String): Int {
         return this.db.delete(DictionarySQLITE.DB_TABLE,
                 """${DictionarySQLITE.DB_COLUMN_ID} = ${idDictionary}""")
     }
 
+    /**
+     * Set the idDictionary, inLang  and the outLang to the supper class with the InLang and the OutLang
+     */
     fun readByInLangOutLang() {
         val c = this.db.select(DictionarySQLITE.DB_TABLE)
                 .where("""(${DictionarySQLITE.DB_COLUMN_INLANG} = '${inLang}') AND (${DictionarySQLITE.DB_COLUMN_OUTLANG} = '${outLang}')""")
@@ -152,7 +196,9 @@ class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String?
                 }
     }
 
-
+    /**
+     * Set the idDictionary, inLang  and the outLang to the supper class with the idDictionnary
+     */
     fun read() {
         val c = this.db.select(DictionarySQLITE.DB_TABLE)
                 .where("""${DictionarySQLITE.DB_COLUMN_ID} = ${super.idDictionary}""")

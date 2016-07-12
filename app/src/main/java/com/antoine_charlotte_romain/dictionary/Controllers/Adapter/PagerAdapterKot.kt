@@ -16,7 +16,11 @@ class PagerAdapterKot(fm: FragmentManager, icons: IntArray) : FragmentStatePager
     //Store the icons ids
     internal var icons = icons
 
-    //This method return the fragment for the every position in the View Pager
+    /**
+     * This method return the fragment for the every position in the View Pager
+     * @param position the item position
+     * @return the fragment
+     */
     override fun getItem(position: Int): Fragment {
         if (position == 0) {
             return HomeFragmentKot()
@@ -29,16 +33,27 @@ class PagerAdapterKot(fm: FragmentManager, icons: IntArray) : FragmentStatePager
         }
     }
 
-    // This method return the Number of tabs for the tabs Strip
+    /**
+     * This method return the number of tabs for the tabs Strip
+     * @return the count
+     */
     override fun getCount(): Int {
         return icons.count()
     }
 
-    // This method return the specific tab icon
+    /**
+     * This method return the specific tab icon
+     * @return the tab icon
+     */
     fun getDrawableId(position: Int): Int {
         return icons[position]
     }
 
+    /**
+     * This method return the position of the item specified
+     * @param object the item
+     * @return the item position
+     */
     override fun getItemPosition(`object`: Any?): Int {
         return PagerAdapter.POSITION_NONE
     }

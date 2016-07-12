@@ -110,6 +110,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Controllers.activities.MainActivityKot" />
         </activity>
+        <activity
+            android:name=".Controllers.WordViewKot"
+            android:label="Word View"
+            android:parentActivityName=".Controllers.ListWordsActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Controllers.ListWordsActivity" />
+        </activity>
 
     </application>
 
