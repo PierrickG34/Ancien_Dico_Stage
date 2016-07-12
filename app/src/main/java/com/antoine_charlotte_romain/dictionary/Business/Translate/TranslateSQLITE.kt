@@ -3,6 +3,7 @@ package com.dicosaure.Business.Translate
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import com.antoine_charlotte_romain.dictionary.DataModel.DataBaseHelperKot
+import com.antoine_charlotte_romain.dictionary.Utilities.StringsUtility
 import com.antoine_charlotte_romain.dictionary.business.dictionary.Dictionary
 import com.antoine_charlotte_romain.dictionary.business.dictionary.DictionarySQLITE
 import com.antoine_charlotte_romain.dictionary.business.word.Word
@@ -54,6 +55,26 @@ class TranslateSQLITE(ctx : Context, wordTo: Word?, wordFrom: Word?) : Translate
         val c = this.db.select(TranslateSQLITE.DB_TABLE).exec {
             while(this.moveToNext()) {
                 res.add(Translate(super.wordTo, super.wordFrom))
+            }
+        }
+        return res
+    }
+
+    fun selectAllTranslations(word : Word) {
+        this.db.select(TranslateSQLITE.DB_TABLE, WordSQLITE.DB_TABLE, WordSQLITE.DB_TABLE + ".*")
+                .where("""${WordSQLITE.DB_TABLE}.${WordSQLITE.DB_COLUMN_ID} = ${TranslateSQLITE.DB_TABLE}.${TranslateSQLITE.DB_COLUMN_WORDTO}""")
+                .exec {
+                }
+    }
+
+    fun selectWordToByWordFrom(idWord: String, id : Long): MutableList<String>? {
+        var idWord = idWord
+        var dictionaryID = id
+        var res: MutableList<String>? = ArrayList<String>()
+        val c = this.db.select(TranslateSQLITE.DB_TABLE).where("""(${TranslateSQLITE.DB_COLUMN_WORDFROM} = '${idWord}')""").exec {
+            while (this.moveToNext()) {
+                res!!.add(this.getString(this.getColumnIndex("wordTo")))
+                var l = this.getString(this.getColumnIndex("wordTo"))
             }
         }
         return res

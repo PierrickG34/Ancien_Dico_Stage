@@ -52,7 +52,8 @@
         android:layout_below="@+id/historySearch"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:background="?android:attr/selectableItemBackground"/>
+        android:background="?android:attr/selectableItemBackground"
+        android:textSize="13sp"/>
 
     <Button
         style="@style/borderlessButtonStyle"
@@ -65,6 +66,7 @@
         android:layout_below="@+id/historySearch"
         android:layout_alignLeft="@+id/historySearch"
         android:layout_alignStart="@+id/historySearch"
-        android:background="?android:attr/selectableItemBackground"/>
+        android:background="?android:attr/selectableItemBackground"
+        android:textSize="13sp" />
 
 </RelativeLayout>

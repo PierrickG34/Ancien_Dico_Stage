@@ -1,10 +1,16 @@
 package com.antoine_charlotte_romain.dictionary.business.dictionary
 
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.util.Log
 import com.antoine_charlotte_romain.dictionary.DataModel.DataBaseHelperKot
+
+import com.antoine_charlotte_romain.dictionary.Utilities.StringsUtility
+
 import com.antoine_charlotte_romain.dictionary.business.word.Word
 import com.antoine_charlotte_romain.dictionary.business.word.WordSQLITE
+
 import org.jetbrains.anko.db.*
 import java.io.Serializable
 import java.text.SimpleDateFormat
@@ -109,6 +115,26 @@ class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String?
         }
     }
 
+
+    fun getIdByName(name : String) : Long
+    {
+        var id : Long? = null
+        val c = this.db.select(DictionarySQLITE.DB_TABLE).exec {
+            var inlang: String
+            var outlang: String
+                while (this.moveToNext()) {
+                    inlang = this.getString(this.getColumnIndex("inLang"))
+                    outlang = this.getString(this.getColumnIndex("outLang"))
+                    if ("""${inlang} -> ${outlang}""" == name) {
+                        id = (this.getString(this.getColumnIndex("id")).toLong())
+                        Log.d("mytag2", "$id")
+                    }
+                }
+            }
+        return id!!
+    }
+
+
     fun selectDictionary(idDictionary: String): Int {
         return this.db.delete(DictionarySQLITE.DB_TABLE,
                 """${DictionarySQLITE.DB_COLUMN_ID} = ${idDictionary}""")
@@ -126,6 +152,7 @@ class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String?
                 }
     }
 
+
     fun read() {
         val c = this.db.select(DictionarySQLITE.DB_TABLE)
                 .where("""${DictionarySQLITE.DB_COLUMN_ID} = ${super.idDictionary}""")
@@ -139,3 +166,5 @@ class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String?
     }
 
 }
+
+

@@ -23,11 +23,8 @@ class ImportCSVKot {
 
     /**
      * Open a CSV file and add its word to a dictionary
-
      * @param d The dictionary where the words will be added
-     * *
      * @param uri The CSV file providing the words to add in the dictionary
-     * *
      * @param context Activity which called the method
      */
     fun importCSV(d: DictionarySQLITE, uri: Uri, context: Context) : IntArray {
@@ -124,11 +121,8 @@ class ImportCSVKot {
 
     /**
      * Suppress the simple quotes that circle q word in the CSV file
-     * @param s
-     * *          The word to "clean"
-     * *
-     * @return
-     * *          The word without the simple quotes
+     * @param s The word to "clean"
+     * @return The word without the simple quotes
      */
     private fun extractWord(s: String): String {
         var word = s

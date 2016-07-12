@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import com.antoine_charlotte_romain.dictionary.Controllers.HistoryFragment;
 import com.antoine_charlotte_romain.dictionary.Controllers.HomeFragment;
 import com.antoine_charlotte_romain.dictionary.Controllers.SearchFragment;
+import com.antoine_charlotte_romain.dictionary.Controllers.SearchFragmentKot;
 import com.antoine_charlotte_romain.dictionary.R;
 
 

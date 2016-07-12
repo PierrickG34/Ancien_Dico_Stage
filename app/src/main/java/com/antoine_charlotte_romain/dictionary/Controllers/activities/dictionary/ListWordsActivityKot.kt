@@ -83,6 +83,9 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
     var actualListSize: Int = 0
     var stateMode: Int = 0
 
+    /**
+     * This function is called when the view is created
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.list_words)
@@ -125,7 +128,7 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
 
         if (this.intent.getBooleanExtra(MainActivityKot.EXTRA_RENAME, false)) {
             getIntent().removeExtra(MainActivityKot.EXTRA_RENAME)
-            this.renameDictionary(findViewById(R.id.list_words_layout)!!)
+            this.renameDictionary()
         }
 
 
@@ -166,10 +169,19 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
 
     }
 
+    /**
+     * This function is called when configurations have changed
+     * @param newConfig the new configuration to set
+     */
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
     }
 
+    /**
+     * Creating the options menu
+     * @param menu
+     * @return true if the menu is created, false else
+     */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         this.menu = menu
@@ -179,6 +191,11 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
         return true
     }
 
+    /**
+     * Calling the differents functions depending on the user choice
+     * @param item the user choice
+     * @return true if success, false else
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_export_csv -> {
@@ -197,12 +214,12 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
             }
 
             R.id.action_rename_dictionary -> {
-                this.renameDictionary(findViewById(R.id.list_words_layout)!!)
+                this.renameDictionary()
                 return true
             }
 
             R.id.action_delete_dictionary -> {
-                this.deleteDictionary(findViewById(R.id.list_words_layout)!!)
+                this.deleteDictionary()
                 return true
             }
 
@@ -266,13 +283,10 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
 
     /**
      * This function is called when the user click on an item of the gridView
-     * @param parent
-     * *
-     * @param view
-     * *
-     * @param position
-     * *
-     * @param id
+     * @param parent has to be there for override
+     * @param view has to be there for override
+     * @param position the position of the clicked item
+     * @param id has to be there for override
      */
     override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
         if (!this.isOpen) {
@@ -280,6 +294,9 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
         }
     }
 
+    /**
+     * Function that init the search bar
+     */
     fun initSearch() {
         //Creating the EditText for searching inside the word
         this.filterWords!!.addTextChangedListener(object : TextWatcher {
@@ -304,7 +321,7 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
 
     /**
      * This function is called when the user click on the addWord button, it launch the view newWord
-     * @param view
+     * @param view the current view
      */
     fun newWord(view: View) {
         if (this.isOpen) {
@@ -323,7 +340,7 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
 
     /**
      * This function is called when the user click on the exportCsv button, it launch the view exportACsv
-     * @param view
+     * @param view the current view
      */
     fun exportCsv(view: View) {
         if (this.isOpen) {
@@ -341,7 +358,7 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
 
     /**
      * This function is called when the user click on the importCsv button, it launch the view importACsv
-     * @param view
+     * @param view the current view
      */
     fun importCsv(view: View) {
         if (this.isOpen) {
@@ -370,7 +387,7 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
 
     /**
      * This function launch the activity advancedSearch
-     * @param view
+     * @param view the current view
      */
     fun advancedSearch(view: View) {
         val advancedSearchIntent = Intent(this, MainActivityKot::class.java)
@@ -387,7 +404,7 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
 
     /**
      * This function is used to show or hide the buttons add a word and import a csv after the click on the floatingMenuButton (+)
-     * @param view
+     * @param view the current view
      */
     override fun showFloatingMenu(view: View) {
         if (this.isOpen) {
@@ -422,11 +439,9 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
 
     /**
      * This function creates the contextMenu when an item of the listView is long pressed
-     * @param menu
-     * *
-     * @param v
-     * *
-     * @param menuInfo
+     * @param menu the current contextMenu
+     * @param v the current view
+     * @param menuInfo aditionnal informations on the menu
      */
     override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo) {
         if (!this.isOpen) {
@@ -442,9 +457,8 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
 
     /**
      * This function creates the items of the contextMenu
-     * @param item
-     * *
-     * @return
+     * @param item the item to be created
+     * @return true if success, false else
      */
     override fun onContextItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -512,9 +526,8 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
 
     /**
      * This function allow to rename the current dictionary
-     * @param view
      */
-    fun renameDictionary(view: View) {
+    fun renameDictionary() {
         val layout = LinearLayout(this)
         layout.orientation = LinearLayout.VERTICAL
         layout.setPadding(60, 30, 60, 0)
@@ -543,7 +556,6 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
             val ddm = DictionarySQLITE(this.applicationContext, null, null, this.selectedDictionary!!.idDictionary)
             if(!this.inLangField!!.getText().toString().isEmpty() && !this.outLangField!!.getText().toString().isEmpty()) {
                 if (ddm!!.update(this.inLangField!!.getText().toString(), this.outLangField!!.getText().toString()) > 0) {
-                    //this.adapter!!.notifyDataSetChanged() TODO
 
                     //Set dictionary object
                     this.selectedDictionary!!.inLang = this.inLangField!!.getText().toString()
@@ -590,10 +602,8 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
 
     /**
      * This function delete the current dictionary after a confirmation
-     * @param view
      */
-    fun deleteDictionary(view: View) {
-        println("Delete")
+    fun deleteDictionary() {
         val alert = AlertDialog.Builder(this)
         alert.setMessage(getString(R.string.delete_dictionary) + " ?")
         alert.setPositiveButton(getString(R.string.delete)) { dialog, whichButton ->
@@ -696,8 +706,8 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
     }
 
     /**
-     * This function retunr the value of the boolean open
-     * @return
+     * This function return the value of the boolean open
+     * @return true if succes, false else
      */
     override fun getOpen(): Boolean {
         return this.isOpen
@@ -711,8 +721,13 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
         this.supportActionBar!!.setTitle("""${s} ${getString(R.string.item)}""")
         this.menu!!.findItem(R.id.action_delete_list).isVisible = s > 0
     }
-
-
+    
+    /**
+     * Method called when returning to this activity
+     * @param requestCode the int saying if you return from CSV import or not
+     * @param resultCode the int saying if all ended up fine
+     * @param data the CSV informations
+     */
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -741,35 +756,6 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
     }
 
     /**
-     * This thread is launch when the user scroll to the end of the list and it load more words
-     */
-    private val loadMoreListWords = Runnable {
-        this.loadingMore = true
-        var tempList = ArrayList<Word>()
-        try {
-            Thread.sleep(1000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
-
-        this.wordsOffset += 10
-        this.wdm = WordSQLITE(applicationContext)
-        if (this.filterWords!!.getText().toString().length == 0) {
-            if (this.selectedDictionary == null) {
-                tempList.addAll(this.wdm!!.selectAll())
-            } else {
-                tempList.addAll(this.wdm!!.selectAll())
-            }
-        }
-
-        this.actualListSize = this.myWordsList.size
-        for (i in tempList.indices) {
-            this.myWordsList.add(tempList[i])
-        }
-        runOnUiThread(this.returnRes)
-    }
-
-    /**
      * This thread tell the adapter that the more words were loaded
      */
     private val returnRes = Runnable {
@@ -784,7 +770,6 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
     /**
      * This animation is used to make the floating menu appear
      * @param v the view to make appear
-     * *
      * @param i an int to put a little delay between each animation
      */
     private fun animationOpenMenu(v: View, i: Int) {
@@ -810,7 +795,6 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
     /**
      * This animation is used to make the floating menu disappear
      * @param v the view to make disappear
-     * *
      * @param i an int to put a little delay between each animation
      */
     private fun animationCloseMenu(v: View, i: Int) {
@@ -831,7 +815,7 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
 
     /**
      * This function is used to hide the keyBoard on click outside an editText
-     * @param view
+     * @param view the current view
      */
     private fun setupUI(view: View) {
         //Set up touch listener for non-text box views to hide keyboard.

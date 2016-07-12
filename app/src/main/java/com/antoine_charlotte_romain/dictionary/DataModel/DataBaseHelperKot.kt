@@ -13,6 +13,7 @@ import org.jetbrains.anko.db.dropTable
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import com.antoine_charlotte_romain.dictionary.R
+import com.antoine_charlotte_romain.dictionary.business.word.Word
 import java.util.*
 
 /**
@@ -32,11 +33,19 @@ class DataBaseHelperKot(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase
         }
     }
 
+    /**
+     * This method opens the DB
+     * @param db the database
+     */
     override fun onOpen(db: SQLiteDatabase?) {
         super.onOpen(db)
         db!!.execSQL("PRAGMA foreign_keys=ON");
     }
 
+    /**
+     * This method initializes the DB
+     * @param db the database
+     */
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(
                 """
@@ -84,20 +93,6 @@ class DataBaseHelperKot(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase
         )
     }
 
-    fun showTable(ctx : Context) {
-        val c = this.readableDatabase.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
-        if (c.moveToFirst()) {
-            while ( !c.isAfterLast() ) {
-                Toast.makeText(ctx, "Table Name=> " + c.getString(0), Toast.LENGTH_LONG).show();
-                val col = this.readableDatabase.rawQuery("SELECT * FROM ${c.getString(0)}", null);
-                for (table in col.columnNames) {
-                    Toast.makeText(ctx, "Table Name=> " + table, Toast.LENGTH_LONG).show();
-                }
-                c.moveToNext();
-            }
-        }
-    }
-
     fun insertTest(ctx : Context) {
         var dico = DictionarySQLITE(ctx = ctx, inLang = "eng", outLang = "fr", id = "1")
         //dico.delete("1")
@@ -135,11 +130,11 @@ class DataBaseHelperKot(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase
         var sqlDate1 : java.sql.Date = java.sql.Date(Calendar.getInstance().getTime().getTime())
 //        println("DataBaseHelperKot.kt -- salDate -" + sqlDate)
 //
-        var test: WordSQLITE? = WordSQLITE(ctx, "1premier", "premiereNote", bArray, bArray, "premierHeadzord", sqlDate1, "1")
-        //test!!.save()
-        //var allWord: List<Word>? = test.selectAll()
-        //println("DataBaseHelperKot.kt -- allWord.size - " + allWord!!.size)
-        //println("DataBaseHelperKot.kt -- allWord - " + allWord)
+//        var test: WordSQLITE? = WordSQLITE(ctx, "1premier", "premiereNote", bArray, bArray, "premierHeadzord", sqlDate1, "1")
+//        test!!.save()
+//        var allWord: List<Word>? = test1.selectAll()
+//        println("DataBaseHelperKot.kt -- allWord.size - " + allWord!!.size)
+//        println("DataBaseHelperKot.kt -- allWord - " + allWord)
 //        test.deleteAll()
 //        println("Apres avoir deleteAll")
 //        allWord = test.selectAll()

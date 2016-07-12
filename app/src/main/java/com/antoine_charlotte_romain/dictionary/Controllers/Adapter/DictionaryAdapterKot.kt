@@ -23,10 +23,21 @@ class DictionaryAdapterKot(ctx : Context, layoutRessourceId : Int, data : ArrayL
     var dictionaryCallback : DictionaryAdapterCallbackKot? = null
     var all_selected : Boolean = false
 
+    /**
+     * Set the dictionary callback
+     * @param callback the dictionary callback to be set
+     */
     fun setCallback(callback: DictionaryAdapterCallbackKot) {
         this.dictionaryCallback = callback
     }
 
+    /**
+     * Get the dictionary view
+     * @param position the position of the dictionary you want to display
+     * @param convertView the initial view
+     * @param parent the parent view of convertView
+     * @return the created view
+     */
     override fun getView(position : Int, convertView : View?, parent : ViewGroup) : View {
         var convertView = convertView
         var dictionary = super.getItem(position) //get item
@@ -94,6 +105,10 @@ class DictionaryAdapterKot(ctx : Context, layoutRessourceId : Int, data : ArrayL
 
     }
 
+    /**
+     * Add a dictionary to the delete list
+     * @param d the dictionary to be aded
+     */
     private fun addToDeleteList(d: Dictionary) {
         if (!this.deleteList.contains(d)) {
             this.deleteList.add(d)
@@ -101,12 +116,19 @@ class DictionaryAdapterKot(ctx : Context, layoutRessourceId : Int, data : ArrayL
         }
     }
 
+    /**
+     * Remove a dictionary from the delete list
+     * @param d the dictionary to be removed
+     */
     private fun removeFromDeleteList(d: Dictionary) {
         this.deleteList.remove(d)
         this.all_selected = false
         this.dictionaryCallback!!.notifyDeleteListChanged()
     }
 
+    /**
+     * Select all the dictionaries and add them to the delete list
+     */
     fun selectAll() {
         this.all_selected = !this.all_selected
         if (this.all_selected) {
