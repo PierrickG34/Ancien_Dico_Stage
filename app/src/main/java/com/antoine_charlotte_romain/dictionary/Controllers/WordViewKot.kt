@@ -1,14 +1,17 @@
 package com.antoine_charlotte_romain.dictionary.Controllers
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.widget.ImageView
 import android.widget.TextView
 import com.antoine_charlotte_romain.dictionary.Controllers.activities.MainActivityKot
 import com.antoine_charlotte_romain.dictionary.R
 import com.antoine_charlotte_romain.dictionary.business.dictionary.Dictionary
 import com.antoine_charlotte_romain.dictionary.business.word.Word
 import com.antoine_charlotte_romain.dictionary.business.word.WordSQLITE
+import org.jetbrains.anko.ctx
 
 /**
  * Created by dineen on 11/07/2016.
@@ -52,6 +55,11 @@ class WordViewKot : AppCompatActivity() {
             }
             println(strTranslations)
             translationField.text = strTranslations
+        }
+        //TEST
+        if (this.word!!.image != null) {
+            var img = BitmapFactory.decodeByteArray(this.word!!.image, 0, this.word!!.image!!.size)
+            (super.findViewById(R.id.image_word) as ImageView).setImageBitmap(img)
         }
         //setupUI(findViewById(R.id.word_layout)!!)
     }

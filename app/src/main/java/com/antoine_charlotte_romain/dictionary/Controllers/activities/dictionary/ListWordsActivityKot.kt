@@ -721,7 +721,7 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
         this.supportActionBar!!.setTitle("""${s} ${getString(R.string.item)}""")
         this.menu!!.findItem(R.id.action_delete_list).isVisible = s > 0
     }
-    
+
     /**
      * Method called when returning to this activity
      * @param requestCode the int saying if you return from CSV import or not

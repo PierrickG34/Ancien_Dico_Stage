@@ -89,7 +89,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/image_word"
-                android:src="@color/accent_material_dark"
+                android:src="@color/switch_thumb_normal_material_light"
                 android:layout_columnWeight="0.5"
                 android:layout_rowWeight="1"
                 android:adjustViewBounds="true"

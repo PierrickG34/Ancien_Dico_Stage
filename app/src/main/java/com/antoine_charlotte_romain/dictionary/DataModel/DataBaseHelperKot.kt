@@ -130,8 +130,8 @@ class DataBaseHelperKot(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase
         var sqlDate1 : java.sql.Date = java.sql.Date(Calendar.getInstance().getTime().getTime())
 //        println("DataBaseHelperKot.kt -- salDate -" + sqlDate)
 //
-//        var test: WordSQLITE? = WordSQLITE(ctx, "1premier", "premiereNote", bArray, bArray, "premierHeadzord", sqlDate1, "1")
-//        test!!.save()
+        var test: WordSQLITE? = WordSQLITE(ctx, "1premier", "premiereNote", bArray, bArray, "premierHeadzord", sqlDate1, "1")
+        test!!.save()
 //        var allWord: List<Word>? = test1.selectAll()
 //        println("DataBaseHelperKot.kt -- allWord.size - " + allWord!!.size)
 //        println("DataBaseHelperKot.kt -- allWord - " + allWord)
