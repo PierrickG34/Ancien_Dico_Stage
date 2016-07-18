@@ -19,11 +19,17 @@ import java.sql.Date
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 /**
+ * Eng : This class make the comunication with the SQLite database for the Word class.
+ *       This class use the framework Anko
+ * Fr : Cette classe effectue la comunication avec la base de données pour la classe Word.
+ *      Cette classe utilise le framework Anko.
  * Created by dineen on 15/06/2016.
  */
-class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, image : ByteArray? = null, sound : ByteArray? = null, headword: String? = null, dateView: Date? = null, idDictionary: String? = null)
-: Word(idWord, note, image, sound, headword, dateView, idDictionary) {
+class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, image : ByteArray? = null, sound : ByteArray? = null,
+                 headword: String? = null, dateView: Date? = null, idDictionary: String? = null)
+                 : Word(idWord, note, image, sound, headword, dateView, idDictionary) {
 
     companion object {
         val DB_TABLE = "WORD"
@@ -40,9 +46,8 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
 
     /**
      * Save the word in the database
-     * @return an int which indicates if the Word had been inserted in the databases
+     * @return the row ID of the newly inserted row, or -1 if an error occurred
      */
-
     fun save(): Int {
         var log : Int
         if (super.image == null && super.sound == null && super.dateView == null) {
@@ -77,9 +82,10 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
     }
 
     /**
-     * Select all the searchDate where the headword starts with the string in param or the date contains this string
+     * Select all the searched word where the headword starts with the string in param or the date contains this string
+     *  Ordered by the date
      * @param search the string in which we are wanted to find
-     * @return all the searchDate in which the headword starts with the search string or the date contains this search string
+     * @return MutableList<Word> list of all the Word in which the headword starts with the search string or the date contains this search string
      */
     fun select(search : String) : MutableList<Word> {
         var res: MutableList<Word> = ArrayList<Word>()
@@ -135,6 +141,8 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
 
     /**
      * Select all word with limit and offset and order by headword in the database where the date is not null
+     * @param historyLimit : Int number of result return
+     * @param historyOffset : Int line from which you want a result
      * @return MutableList of word
      */
     fun selectAll(historyLimit: Int, historyOffset: Int): MutableList<Word> {
@@ -164,8 +172,8 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
     }
 
     /**
-     * Select all translation for a word
-     * @return List of Word
+     * Select all translations for a word ordered by headword.
+     * @return  List<Word> A list of all translations of a word.
      */
     fun selectAllTranslations() : List<Word> {
         var res: MutableList<Word> = ArrayList<Word>()
@@ -193,6 +201,10 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         return res
     }
 
+    /**
+     * Return a list of all the translation for the word as a string.
+     * @Return String all the headword of the translation ordered and separated by a space.
+     */
     fun getAllTranslationText() : String {
         var translation = ""
         var translations = this.selectAllTranslations()
@@ -285,16 +297,17 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
      * Delete a word in the database in function of its id
      * @param id the string containing the id
      * @return  an int which indicates if the Word had been deleted in the database
+     *          (the number of row affected, 0 otherwise)
      */
-
-
     fun delete(id: String): Int {
         return this.db.delete(WordSQLITE.DB_TABLE,
                 """${WordSQLITE.DB_COLUMN_ID} = '${id}'""")
     }
 
 
-
+    /**
+     * unimplemented -> Do not use unless you implement it !
+     */
     fun read() {
 //        var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
 //        val c = this.db.select(WordSQLITE.DB_TABLE)
@@ -317,6 +330,9 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
 //                }
     }
 
+    /**
+     * Set all the info to the current Word with the word and the idDictionary
+     */
     fun readByHeadWord() {
         var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
         val c = this.db.select(WordSQLITE.DB_TABLE)
@@ -375,6 +391,7 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
     /**
      * Change the date attribute to 'null' for all word
      * @return The value if the request work
+     * TODO peut etre rename cette fonction ?
      */
     fun deleteAll() : Int {
         return this.db.update(WordSQLITE.DB_TABLE,
@@ -384,12 +401,11 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
 
     /*
      * Find a word in all the dictionaries with the beginning, the middle and the end of its headword
-     * @param begin the start of the headword
-     * @param middle the middle of the headword
-     * @param end the end of the headword
-     * @return A list of word which have this begin, this middle and this end in the headword
+     * @param String : begin the start of the headword
+     * @param Strinng : middle the middle of the headword
+     * @param String : end the end of the headword
+     * @return MutableList<Word> : A list of word which have this begin, this middle and this end in the headword
      */
-
     fun selectHeadword(begin: String, middle: String, end: String): MutableList<Word>
     {
         var res: MutableList<Word> = ArrayList<Word>()
@@ -410,12 +426,12 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         return res
     }
     /**
-     * Find a word in a dictionary with the beginning, the middle and the end of its headword
-     * @param begin the start of the headword
-     * @param middle the middle of the headword
-     * @param end the end of the headword
-     * @param dictionaryID the ID of the dictionary in we wish we are searching
-     * @return A list of word which have this begin, this middle and this end in the headword
+     * Find a word in a dictionary with the beginning, the middle and the end of its headword for one dictionary
+     * @param String : begin the start of the headword
+     * @param Strin : middle the middle of the headword
+     * @param String : end the end of the headword
+     * @param Long : dictionaryID the ID of the dictionary in we wish we are searching
+     * @return MutableList<Word> : A list of word which have this begin, this middle and this end in the headword
      */
     fun selectHeadwordByIdDico(begin: String, middle: String, end: String, dictionaryID: Long): MutableList<Word>{
         var res: MutableList<Word> = ArrayList<Word>()
@@ -437,23 +453,22 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
     }
 
     /**
-     * Find a word in a dictionary with the beginning, the middle and the end of its headword, translation or note
-     * @param begin the start of the headword, translation or note
-     * *
-     * @param middle the middle of the headword, translation or note
-     * *
-     * @param end the end of the headword, translation or note
-     * *
-     * @param dictionaryID the ID of the dictionary in we wish we are searching (set this param to Word.ALL_DICTIONARIES to look in all the dictionaries)
-     * *
-     * @return A list of word which have this begin, this middle and this end in the headword, translation or note
+     * Find a word in a dictionary with the beginning, the middle and the end of its headword or note
+     * @param String : begin the start of the headword, translation or note
+     * @param String : middle the middle of the headword, translation or note
+     * @param String : end the end of the headword, translation or note
+     * @param Long : dictionaryID the ID of the dictionary in we wish we are searching (set this param to Word.ALL_DICTIONARIES to look in all the dictionaries)
+     * @return MutableList<Word> : A list of word which have this begin, this middle and this end in the headword or note
      */
     fun selectWholeWord(begin: String, middle: String, end: String, dictionaryID: Long): MutableList<Word> {
-
         var res: MutableList<Word> = ArrayList<Word>()
         var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
         val search = StringsUtility.removeAccents("$begin%$middle%$end")
-        val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_ID_DICTIONARY} = '${dictionaryID}') AND (${WordSQLITE.DB_COLUMN_HEADWORD} = '${search}')""").exec {
+        val c = this.db.select(WordSQLITE.DB_TABLE)
+                       .where("""(${WordSQLITE.DB_COLUMN_ID_DICTIONARY} = '${dictionaryID}')
+                        AND (${WordSQLITE.DB_COLUMN_HEADWORD} = '${search}')
+                        AND (${WordSQLITE.DB_COLUMN_NOTE} = '${search}')""")
+                       .exec {
             while (this.moveToNext()) {
                 var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
                 var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())
@@ -472,10 +487,8 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
 
     /**
      * Find a word in all the dictionaries with exactly the specified headword
-     * @param headWord the headword of the word we want to find
-     * *
-     * *
-     * @return A list of word which have exactly this headword
+     * @param String : headWord the headword of the word we want to find
+     * @return MutableList<Word> : A list of word which have exactly this headword
      */
     fun selectWholeHeadword(headWord: String): MutableList<Word> {
         var headWord = headWord
@@ -500,11 +513,9 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
 
     /**
      * Find a word in a dictionary with exactly the specified headword
-     * @param headWord the headword of the word we want to find
-     * *
-     * @param dictionaryID the ID of the dictionary in which we are searching
-     * *
-     * @return A list of word which have exactly this headword in the selected dictionary
+     * @param String : headWord the headword of the word we want to find
+     * @param Long : dictionaryID the ID of the dictionary in which we are searching
+     * @return MutableList<Word> :A list of word which have exactly this headword in the selected dictionary
      */
     fun selectWholeHeadwordByIdDico(headWord: String, dictionaryID: Long): MutableList<Word> {
         var headWord = headWord
@@ -529,8 +540,8 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
 
     /**
      * Find a word in a dictionary which contains exactly the noteword (part of the note)
-     * @param noteword the part of the note of the word we want to find
-     * @return A list of word which have exactly this part of note
+     * @param String : noteword the part of the note of the word we want to find
+     * @return MutableList<Word> : A list of word which have exactly this part of note
      */
     fun selectWholeNote(noteword: String): MutableList<Word> {
         var noteWord = noteword
@@ -592,7 +603,6 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
      * @param stringToFind the string to find in the note or the headword
      * @return A list of word which have exactly this part of note or the headword
      */
-
     fun selectWholeNoteOrHeadword(stringToFind: String): MutableList<Word> {
         var res: MutableList<Word> = ArrayList<Word>()
         var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
@@ -623,7 +633,6 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
      * @param dictionaryID the ID of the dictionary in which we are searching
      * @return A list of word which have exactly this part of note or the headword in the selected dictionary
      */
-
     fun selectWholeNoteOrHeadwordByIdDico(stringToFind: String, dictionaryID: Long): MutableList<Word> {
         var res: MutableList<Word> = ArrayList<Word>()
         var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
@@ -649,12 +658,11 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
 
     /**
      * Find a word in all the dictionaries with the beginning, the middle and the end of its headword or note
-     * @param begin the start of the string to find
-     * @param middle the middle of the string to find
-     * @param end the end of the string to find
-     * @return A list of word which have this begin, this middle and this end in the headword or in the note
+     * @param String : begin the start of the string to find
+     * @param String : middle the middle of the string to find
+     * @param String : end the end of the string to find
+     * @return MutableList<Word> : A list of word which have this begin, this middle and this end in the headword or in the note
      */
-
     fun selectNoteOrHeadword(begin: String, middle: String, end: String): MutableList<Word> {
         var res: MutableList<Word> = ArrayList<Word>()
         var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
@@ -678,11 +686,11 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
 
     /**
      * Find a word in a dictionary with the beginning, the middle and the end of its headword or note
-     * @param begin the start of the string to find
-     * @param middle the middle of the string to find
-     * @param end the end of the string to find
-     * @param dictionaryID the ID of the dictionary in we wish we are searching
-     * @return A list of word which have this begin, this middle and this end in the headword or in the note in ther+ selected dictionary
+     * @param String : begin the start of the string to find
+     * @param String : middle the middle of the string to find
+     * @param String : end the end of the string to find
+     * @param Long : dictionaryID the ID of the dictionary in we wish we are searching
+     * @return MutableList<Word> : A list of word which have this begin, this middle and this end in the headword or in the note in ther+ selected dictionary
      */
     fun selectNoteOrHeadwordByIdDico(begin: String, middle: String, end: String, dictionaryID: Long): MutableList<Word> {
         var res: MutableList<Word> = ArrayList<Word>()
@@ -706,8 +714,8 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
 
     /**
      *  Return a word in function of an id
-     *  @param wordId id of the word to find
-     *  @return the word which has the wordId as id
+     *  @param String : wordId id of the word to find
+     *  @return Word : the word which has the wordId as id
      */
     fun getWordById(wordId: String): Word
     {
@@ -731,9 +739,9 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
 
     /**
      *  Find a word in function of an id in a specific dictionary
-     *  @param wordId id of the word to find
-     *  @param dictionaryID id of the dictionary in which we want to find the word
-     *  @return the word which has the wordId as id and a specific dictionary
+     *  @param String : wordId id of the word to find
+     *  @param Long : dictionaryID id of the dictionary in which we want to find the word
+     *  @return Word : the word which has the wordId as id and a specific dictionary
      */
     fun getWordByIdByIdDico(wordId: String, dictionaryID: Long): Word{
         var res: MutableList<Word> = ArrayList<Word>()
@@ -756,14 +764,12 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
 
     /**
      * Find a word in all the dictionaries with the beginning, the middle and the end of its note
-     * @param begin the start of the note
-     * @param middle the middle of the note
-     * @param end the end of the note
-     * @return A list of word which have this begin, this middle and this end in the note
+     * @param String : begin the start of the note
+     * @param String : middle the middle of the note
+     * @param String : end the end of the note
+     * @return MutableList<Word> : A list of word which have this begin, this middle and this end in the note
      */
-
     fun selectNote(begin: String, middle: String, end: String): MutableList<Word> {
-
         var res: MutableList<Word> = ArrayList<Word>()
         var formatter: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
             val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_NOTE} LIKE '$begin%$middle%$end')""").exec {
@@ -784,11 +790,11 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
 
     /**
      * Find a word in a dictionary with the beginning, the middle and the end of its note
-     * @param begin the start of the note
-     * @param middle the middle of the note
-     * @param end the end of the note
-     * @param dictionaryID the ID of the dictionary in we wish we are searching
-     * @return A list of word which have this begin, this middle and this end in the note in a specific dictionary
+     * @param String : begin the start of the note
+     * @param String : middle the middle of the note
+     * @param String : end the end of the note
+     * @param Long : dictionaryID the ID of the dictionary in we wish we are searching
+     * @return MutableList<Word> : A list of word which have this begin, this middle and this end in the note in a specific dictionary
      */
 
     fun selectNoteByIdDico(begin: String, middle: String, end: String, dictionaryID: Long): MutableList<Word> {

@@ -7,6 +7,12 @@ import java.sql.Date
 import java.util.*
 
 /**
+ * Eng : This class is a Word.
+ *       This word contain all the information relative to the word.
+ *       the note, the word, the image and the sound, the last date of consultation or the id of the dictionary.
+ * Fr : Cette classe est un mot.
+ *      Contient toutes les informations relatives au mot.
+ *      Le mot, sa note, une image, un son, la derniere date de consultation ou l'id du dictionnaire.
  * Created by dineen on 15/06/2016.
  */
 open class Word(idWord: String? = null, note : String? = null, image : ByteArray? = null, sound : ByteArray? = null, headword
@@ -20,6 +26,10 @@ open class Word(idWord: String? = null, note : String? = null, image : ByteArray
     var dateView : Date? = dateView
     var idDictionary : String? = idDictionary
 
+    /**
+     * Overide of the toString method. Display all information of a Word.
+     * @return String : Display all information of a Word.
+     */
     override fun toString(): String{
         return "Word(idWord=$idWord, " +
                 "note=$note, " +
@@ -30,9 +40,12 @@ open class Word(idWord: String? = null, note : String? = null, image : ByteArray
                 "idDictionary=$idDictionary)"
     }
 
-
+    /**
+     * Check i
+     */
     override fun equals(other: Any?): Boolean {
         val word = other!! as Word
+        // TODO I think this can crash if you don't give him a Word...
         if (word.idWord  == this.idWord) {
             return true
         }
