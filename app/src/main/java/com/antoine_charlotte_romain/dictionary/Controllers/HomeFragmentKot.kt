@@ -309,13 +309,11 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
                 }
                 else {
                     Snackbar.make((activity as MainActivityKot).rootLayout!!, R.string.dictionary_not_added, Snackbar.LENGTH_LONG)
-                            .setAction(R.string.close_button) { }
                             .show()
                 }
             }
             else {
                 Snackbar.make((activity as MainActivityKot).rootLayout!!, R.string.dictionary_not_added_empty_string, Snackbar.LENGTH_LONG)
-                        .setAction(R.string.close_button) { }
                         .show()
             }
             dialog.cancel()
@@ -372,7 +370,7 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
         this.adapter!!.notifyDataSetChanged()
         this.undo = false
 
-        val snack = Snackbar.make((activity as MainActivityKot).rootLayout, """${dictionary.getNameDictionary()} ${getString(R.string.deleted)}""", Snackbar.LENGTH_LONG)
+        val snack = Snackbar.make((activity as MainActivityKot).rootLayout!!, """${dictionary.getNameDictionary()} ${getString(R.string.deleted)}""", Snackbar.LENGTH_LONG)
                 .setAction(R.string.undo, View.OnClickListener {
                     this.undo = true
                 })
@@ -466,14 +464,14 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
                     }
 
                     Snackbar.make((activity as MainActivityKot).rootLayout!!, R.string.dictionary_renamed, Snackbar.LENGTH_LONG)
-                            .setAction(R.string.close_button) { }.show()
+                            .show()
                 } else {
-                    Snackbar.make((activity as MainActivityKot).rootLayout!!, R.string.dictionary_not_renamed, Snackbar.LENGTH_LONG).setAction(R.string.close_button) { }.show()
+                    Snackbar.make((activity as MainActivityKot).rootLayout!!, R.string.dictionary_not_renamed, Snackbar.LENGTH_LONG)
+                            .show()
                 }
             }
             else {
                 Snackbar.make((activity as MainActivityKot).rootLayout!!, R.string.dictionary_not_renamed, Snackbar.LENGTH_LONG)
-                        .setAction(R.string.close_button) { }
                         .show()
             }
             dialog.cancel()

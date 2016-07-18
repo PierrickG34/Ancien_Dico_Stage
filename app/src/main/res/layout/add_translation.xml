@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/global_layout">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="1"
+        android:rowCount="2"
+        android:layout_centerVertical="true"
+        android:id="@+id/pop_up_layout"
+        android:onClick="completeTranslation">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/translation_capital"
+            android:id="@+id/title_translation"
+            android:gravity="center_horizontal"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_translation"
+            android:gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:hint="@string/add_translation" />
+
+    </GridLayout>
+</RelativeLayout>

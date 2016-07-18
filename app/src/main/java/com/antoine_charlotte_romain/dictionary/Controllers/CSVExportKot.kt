@@ -199,7 +199,7 @@ class CSVExportKot : AppCompatActivity() {
                             try {
                                 startActivity(viewDoc)
                             } catch (e: ActivityNotFoundException) {
-                                Snackbar.make(findViewById(R.id.export_layout), getString(R.string.no_apps), Snackbar.LENGTH_LONG).setAction(R.string.close_button, View.OnClickListener { })
+                                Snackbar.make(findViewById(R.id.export_layout)!!, getString(R.string.no_apps), Snackbar.LENGTH_LONG).setAction(R.string.close_button, View.OnClickListener { })
                                         .show()
 
                             }

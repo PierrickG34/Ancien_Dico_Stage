@@ -56,7 +56,6 @@ class WordViewKot : AppCompatActivity() {
             println(strTranslations)
             translationField.text = strTranslations
         }
-        //TEST
         if (this.word!!.image != null) {
             var img = BitmapFactory.decodeByteArray(this.word!!.image, 0, this.word!!.image!!.size)
             (super.findViewById(R.id.image_word) as ImageView).setImageBitmap(img)

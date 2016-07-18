@@ -118,7 +118,7 @@
 
     <string name="see_updated">See updated words</string>
     <string name="maximum_translate">You can\'t add more than 5 translations.</string>
-    <string name="translation_children">Translation </string>
+    <string name="translation_children">Translation</string>
     <string name="clear">Clear</string>
     <string name="oups">historyCleared</string>
 
@@ -129,4 +129,11 @@
     <string name="sound_capital"><u>Sound</u></string>
     <string name="play"><u>Play</u></string>
     <string name="no_note"><u>No note</u></string>
+    <string name="record">Record</string>
+    <string name="recording">Recording</string>
+    <string name="error_picked_image">You haven\'t picked image</string>
+    <string name="permission_error">You don\'t accept the permissions</string>
+    <string name="add_translation">Add Translation</string>
+    <string name="translation_success">The translation added with success</string>
+    <string name="translation_error">The translation already exists</string>
 </resources>

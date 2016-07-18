@@ -3,11 +3,13 @@ package com.dicosaure.Business.Translate
 import com.antoine_charlotte_romain.dictionary.business.word.Word
 
 /**
+ * Eng : This class is a translation. This is the link between a word and his translation
+ * Fr : Cette classe est une traduction. Il s'agit du lien entre le mot et sa traduction.
  * Created by dineen on 15/06/2016.
  */
-open class Translate(wordTo: Word?, wordFrom: Word?) {
-
-    var wordTo = wordTo
-    var wordFrom = wordFrom
+open class Translate(wordInLang: Word?, wordOutLang: Word?) {
+    //
+    var wordInLang = wordInLang
+    var wordOutLang = wordOutLang
 
 }

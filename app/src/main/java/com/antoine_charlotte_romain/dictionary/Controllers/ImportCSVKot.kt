@@ -56,6 +56,7 @@ class ImportCSVKot {
                 nbLine++
             }
             progress!!.max = nbLine
+            println(nbLine)
 
             //InputStream iss = new BufferedInputStream(new FileInputStream(fileToRead));
             input = context.contentResolver.openInputStream(uri)

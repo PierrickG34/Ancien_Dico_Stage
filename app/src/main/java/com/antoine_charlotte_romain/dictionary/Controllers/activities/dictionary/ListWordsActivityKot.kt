@@ -327,7 +327,8 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
         if (this.isOpen) {
             showFloatingMenu(view)
         }
-        val newWordIntent = Intent(this, WordViewKot::class.java)
+        //val newWordIntent = Intent(this, WordViewKot::class.java)
+        val newWordIntent = Intent(this, WordViewEditKot::class.java)
 
         newWordIntent.putExtra(MainActivityKot.EXTRA_DICTIONARY, this.selectedDictionary)
 
@@ -485,7 +486,7 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
         val pos = position
         val w = this.myWordsList[position]
 
-        Snackbar.make(findViewById(R.id.list_words_layout), w.headword + getString(R.string.deleted), Snackbar.LENGTH_LONG).setAction(R.string.undo, View.OnClickListener {
+        Snackbar.make(findViewById(R.id.list_words_layout)!!, w.headword + getString(R.string.deleted), Snackbar.LENGTH_LONG).setAction(R.string.undo, View.OnClickListener {
             this.myWordsList.add(pos, w)
             this.undo = true
         }).show()
@@ -506,7 +507,8 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
      */
     private fun modify(position: Int) {
         //TODO
-        val wordDetailIntent = Intent(this, WordViewKot::class.java)
+        //val wordDetailIntent = Intent(this, WordViewKot::class.java)
+        val wordDetailIntent = Intent(this, WordViewEditKot::class.java)
 
         wordDetailIntent.putExtra(MainActivityKot.EXTRA_WORD, this.myWordsList[position])
         if (this.selectedDictionary != null) {
@@ -561,18 +563,18 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
                     this.selectedDictionary!!.inLang = this.inLangField!!.getText().toString()
                     this.selectedDictionary!!.outLang = this.outLangField!!.getText().toString()
 
-                    Snackbar.make(findViewById(R.id.list_words_layout), R.string.dictionary_renamed, Snackbar.LENGTH_LONG)
+                    Snackbar.make(findViewById(R.id.list_words_layout)!!, R.string.dictionary_renamed, Snackbar.LENGTH_LONG)
                             .setAction(R.string.close_button) { }.show()
 
                     this.supportActionBar!!.setTitle(this.selectedDictionary!!.getNameDictionary())
 
                     this.myAdapter!!.notifyDataSetChanged()
                 } else {
-                    Snackbar.make(findViewById(R.id.list_words_layout), R.string.dictionary_not_renamed, Snackbar.LENGTH_LONG).setAction(R.string.close_button) { }.show()
+                    Snackbar.make(findViewById(R.id.list_words_layout)!!, R.string.dictionary_not_renamed, Snackbar.LENGTH_LONG).setAction(R.string.close_button) { }.show()
                 }
             }
             else {
-                Snackbar.make(findViewById(R.id.list_words_layout), R.string.dictionary_not_renamed, Snackbar.LENGTH_LONG)
+                Snackbar.make(findViewById(R.id.list_words_layout)!!, R.string.dictionary_not_renamed, Snackbar.LENGTH_LONG)
                         .setAction(R.string.close_button) { }
                         .show()
             }

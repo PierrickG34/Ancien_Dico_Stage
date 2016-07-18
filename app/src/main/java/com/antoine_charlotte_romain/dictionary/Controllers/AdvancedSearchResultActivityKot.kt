@@ -45,12 +45,12 @@ class AdvancedSearchResultActivityKot : AppCompatActivity() {
         // Get data associated to the advanced search
         val intent = intent
         if (intent != null) {
-            val begin = intent.getStringExtra(MainActivityKot.EXTRA_BEGIN_STRING)
-            val middle = intent.getStringExtra(MainActivityKot.EXTRA_MIDDLE_STRING)
-            val end = intent.getStringExtra(MainActivityKot.EXTRA_END_STRING)
+            val begin = (intent.getStringExtra(MainActivityKot.EXTRA_BEGIN_STRING)).trim()
+            val middle = (intent.getStringExtra(MainActivityKot.EXTRA_MIDDLE_STRING)).trim()
+            val end = (intent.getStringExtra(MainActivityKot.EXTRA_END_STRING)).trim()
             val searchOption = intent.getStringExtra(MainActivityKot.EXTRA_SEARCH_DATA)
             val dico = intent.getStringExtra(MainActivityKot.EXTRA_DICTIONARY)
-            val partWhole = intent.getStringExtra(MainActivityKot.EXTRA_PART_OR_WHOLE)
+            val partWhole = (intent.getStringExtra(MainActivityKot.EXTRA_PART_OR_WHOLE)).trim()
 
             // find id of the dictionary
             val id: Long
@@ -158,7 +158,6 @@ class AdvancedSearchResultActivityKot : AppCompatActivity() {
                     else{
                         results = wdm!!.selectWholeHeadwordByIdDico(end,id)
                     }
-
                 }
                 else if (searchOption == MainActivityKot.ALL_DATA) {
                     val words : MutableList<Word>
@@ -193,7 +192,6 @@ class AdvancedSearchResultActivityKot : AppCompatActivity() {
                             results = results!!.plus(el) as MutableList<Word>
                         }
                     }
-
                 }
                 else if (searchOption == MainActivityKot.MEANING_ONLY) {
                     val words : MutableList<Word>
@@ -221,7 +219,6 @@ class AdvancedSearchResultActivityKot : AppCompatActivity() {
                             results = results!!.plus(e) as MutableList<Word>
                         }
                     }
-
                 }
                 else if (searchOption == MainActivityKot.NOTES_ONLY) {
                     if(id == 0L) {
@@ -232,6 +229,7 @@ class AdvancedSearchResultActivityKot : AppCompatActivity() {
                     }
                 }
             }
+            Log.d("ParWholeMean","$results")
 
         }
 
