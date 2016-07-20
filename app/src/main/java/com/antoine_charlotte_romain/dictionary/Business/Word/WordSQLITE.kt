@@ -1,5 +1,6 @@
 package  com.antoine_charlotte_romain.dictionary.business.word
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
@@ -55,13 +56,6 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
                     WordSQLITE.DB_COLUMN_NOTE to super.note!!,
                     WordSQLITE.DB_COLUMN_HEADWORD to super.headword!!,
                     WordSQLITE.DB_COLUMN_ID_DICTIONARY to super.idDictionary!!).toInt()
-            if (log > 0) {
-                this.db.select(WordSQLITE.DB_TABLE,"last_insert_rowid() AS rowid").exec {
-                    this.moveToLast()
-                    super.idWord = this.getString(this.getColumnIndex("rowid"))
-                }
-            }
-            return log
         }
         else {
             log = this.db.insert(WordSQLITE.DB_TABLE,
@@ -71,14 +65,22 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
                     WordSQLITE.DB_COLUMN_HEADWORD to super.headword!!,
                     WordSQLITE.DB_COLUMN_DATE to super.dateView.toString()!!,
                     WordSQLITE.DB_COLUMN_ID_DICTIONARY to super.idDictionary!!).toInt()
-            if (log > 0) {
-                this.db.select(WordSQLITE.DB_TABLE,"last_insert_rowid() AS rowid").exec {
-                    this.moveToLast()
-                    super.idWord = this.getString(this.getColumnIndex("rowid"))
-                }
-            }
-            return log
         }
+        if (log < 0) {
+            this.db.select(WordSQLITE.DB_TABLE, WordSQLITE.DB_COLUMN_ID)
+                    .where("""(${WordSQLITE.DB_COLUMN_HEADWORD} == '${super.headword}') AND (${WordSQLITE.DB_COLUMN_ID_DICTIONARY} == '${super.idDictionary}')""")
+                    .exec {
+                        this.moveToNext()
+                        super.idWord = this.getString(this.getColumnIndex(WordSQLITE.DB_COLUMN_ID))
+                    }
+        }
+        else {
+            this.db.select(WordSQLITE.DB_TABLE,"last_insert_rowid() AS rowid").exec {
+                this.moveToLast()
+                super.idWord = this.getString(this.getColumnIndex("rowid"))
+            }
+        }
+        return log
     }
 
     /**
@@ -109,6 +111,21 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         }
         return res
      }
+
+    /**
+     * @param String : The headword
+     * @param String : Id of dictionary
+     * @return true if the word exist
+     */
+    fun existByIdDictionaryAndHeadword() : Boolean {
+        var exist : Boolean = false
+        this.db.select(WordSQLITE.DB_TABLE)
+                .where("""(${WordSQLITE.DB_COLUMN_ID_DICTIONARY} = '${super.idDictionary}') AND (${WordSQLITE.DB_COLUMN_HEADWORD} = '${super.headword}')""")
+                .exec {
+                    exist = this.count > 0
+                }
+        return exist
+    }
 
     /**
      * Select all word and order by headword in the database where the date is not null
@@ -386,6 +403,21 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
                     WordSQLITE.DB_COLUMN_ID_DICTIONARY to super.idDictionary!!)
                     .where("""${WordSQLITE.DB_COLUMN_ID} = ${super.idWord}""")
                     .exec()
+    }
+
+    /**
+     * Update a word in the database in function of the entry parameters
+     * @return  an int which indicates if the Word had been updated in the database
+     */
+    fun update(): Int {
+        var values = ContentValues();
+        values.put(WordSQLITE.DB_COLUMN_NOTE, super.note)
+        values.put(WordSQLITE.DB_COLUMN_HEADWORD, super.headword)
+        values.put(WordSQLITE.DB_COLUMN_ID_DICTIONARY, super.idDictionary)
+        values.put(WordSQLITE.DB_COLUMN_IMAGE, super.image)
+        values.put(WordSQLITE.DB_COLUMN_DATE, if (super.dateView == null) null else super.dateView.toString())
+        values.put(WordSQLITE.DB_COLUMN_SOUND, super.sound)
+        return this.db.update(WordSQLITE.DB_TABLE, values, """${WordSQLITE.DB_COLUMN_ID} = '${super.idWord}'""", null)
     }
 
     /**

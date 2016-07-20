@@ -87,18 +87,18 @@ class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String?
                 .exec {
                     while (this.moveToNext()) {
                         var sqlDate : java.sql.Date? = null
-                        if (!this.isNull(this.getColumnIndex("dateView"))) {
-                            var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                        if (!this.isNull(this.getColumnIndex(WordSQLITE.DB_COLUMN_DATE))) {
+                            var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex(WordSQLITE.DB_COLUMN_DATE)))
                             sqlDate = java.sql.Date(utilDate.getTime())
                         }
                         res.add(Word(
-                                idWord = this.getString(this.getColumnIndex("id")),
-                                note = this.getString(this.getColumnIndex("note")),
-                                image = this.getBlob(this.getColumnIndex("image")),
-                                sound = this.getBlob(this.getColumnIndex("sound")),
-                                headword = this.getString(this.getColumnIndex("headword")),
+                                idWord = this.getString(this.getColumnIndex(WordSQLITE.DB_COLUMN_ID)),
+                                note = this.getString(this.getColumnIndex(WordSQLITE.DB_COLUMN_NOTE)),
+                                image = this.getBlob(this.getColumnIndex(WordSQLITE.DB_COLUMN_IMAGE)),
+                                sound = this.getBlob(this.getColumnIndex(WordSQLITE.DB_COLUMN_SOUND)),
+                                headword = this.getString(this.getColumnIndex(WordSQLITE.DB_COLUMN_HEADWORD)),
                                 dateView = sqlDate,
-                                idDictionary = this.getString(this.getColumnIndex("idDictionary"))))
+                                idDictionary = this.getString(this.getColumnIndex(WordSQLITE.DB_COLUMN_ID_DICTIONARY))))
                     }
                 }
         return res

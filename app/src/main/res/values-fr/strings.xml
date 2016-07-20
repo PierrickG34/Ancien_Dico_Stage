@@ -135,4 +135,8 @@
     <string name="add_translation">Ajoutez une traduction</string>
     <string name="translation_success">La traduction a été ajouté avec succes</string>
     <string name="translation_error">La traduction existe déja</string>
+
+    <string name="add_modify">Ajouter/Modifier</string>
+    <string name="add_txt_img">Toucher pour ajouter une image</string>
+    <string name="modify_image">Modification image</string>
 </resources>

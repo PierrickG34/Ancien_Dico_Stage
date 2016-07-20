@@ -136,4 +136,8 @@
     <string name="add_translation">Add Translation</string>
     <string name="translation_success">The translation added with success</string>
     <string name="translation_error">The translation already exists</string>
+
+    <string name="add_modify">Add/Modify</string>
+    <string name="add_txt_img">Tap to add an image</string>
+    <string name="modify_image">Modification of image</string>
 </resources>

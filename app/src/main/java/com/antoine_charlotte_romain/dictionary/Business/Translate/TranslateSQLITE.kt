@@ -23,7 +23,7 @@ import java.util.*
  *      Cette classe utilise le framework Anko.
  * Created by dineen on 15/06/2016.
  */
-class TranslateSQLITE(ctx : Context, wordTo: Word?, wordFrom: Word?) : Translate(wordTo, wordFrom) {
+class TranslateSQLITE(ctx : Context, wordInLang: Word?, wordOutLang: Word?) : Translate(wordInLang, wordOutLang) {
 
     companion object {
         val DB_TABLE = "TRANSLATE"
@@ -48,9 +48,8 @@ class TranslateSQLITE(ctx : Context, wordTo: Word?, wordFrom: Word?) : Translate
      * @return the number of rows affected, 0 otherwise.
      */
     fun delete() : Int {
-        return this.db.delete(TranslateSQLITE.DB_TABLE,"",
-                TranslateSQLITE.DB_COLUMN_WORDTO to super.wordInLang!!.idWord!!,
-                TranslateSQLITE.DB_COLUMN_WORDFROM to super.wordOutLang!!.idWord!!)
+        return this.db.delete(TranslateSQLITE.DB_TABLE,
+                """${TranslateSQLITE.DB_COLUMN_WORDTO} = '${super.wordInLang!!.idWord!!}' AND ${TranslateSQLITE.DB_COLUMN_WORDFROM} = '${super.wordOutLang!!.idWord!!}'""")
     }
 
     /**
