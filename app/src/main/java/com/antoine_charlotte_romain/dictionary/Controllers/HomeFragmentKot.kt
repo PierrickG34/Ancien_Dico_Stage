@@ -615,8 +615,27 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
             val fileUri = data!!.data
             val fileName = fileUri.lastPathSegment
 
-            //Creating a dictionary named like the file (without the extension)
-            val d = DictionarySQLITE(this.context, fileName.split(".")[0].split(" -> ")[0], fileName.split(".")[0].split(" -> ")[1])
+            //Creating a dictionary named like the file (without the .csv)
+            val d = DictionarySQLITE(this.context, "InLang", "OutLang")
+            //try to detect a pattern for the name
+            var dicoName = fileName.split(".")[0].split(" -> ")
+            if (dicoName.size != 2) {
+                dicoName = fileName.split(".")[0].split(" - ")
+            }
+            if (dicoName.size != 2) {
+                dicoName = fileName.split(".")[0].split("-")
+            }
+            if (dicoName.size != 2) {
+                dicoName = fileName.split(".")[0].split(" ")
+            }
+            if (dicoName.size != 2) {
+                dicoName = fileName.split(".")[0].split(".")
+            }
+            // set the name of the dictionary if he is detected from the file name
+            if (dicoName.size == 2) {
+                d.inLang = dicoName[0]
+                d.outLang = dicoName[1]
+            }
 
             val c = this.activity
 
