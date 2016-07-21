@@ -626,6 +626,12 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
                 dicoName = fileName.split(".")[0].split("-")
             }
             if (dicoName.size != 2) {
+                dicoName = fileName.split(".")[0].split(" _ ")
+            }
+            if (dicoName.size != 2) {
+                dicoName = fileName.split(".")[0].split("_")
+            }
+            if (dicoName.size != 2) {
                 dicoName = fileName.split(".")[0].split(" ")
             }
             if (dicoName.size != 2) {

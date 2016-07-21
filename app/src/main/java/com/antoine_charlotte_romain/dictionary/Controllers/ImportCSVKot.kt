@@ -4,6 +4,7 @@ import android.app.ProgressDialog
 import android.content.Context
 import android.net.Uri
 import android.os.Handler
+import android.util.Log
 import com.antoine_charlotte_romain.dictionary.DataModel.WordDataModel
 import com.antoine_charlotte_romain.dictionary.R
 import com.antoine_charlotte_romain.dictionary.business.word.WordSQLITE
@@ -49,19 +50,19 @@ class ImportCSVKot {
             //InputStream is = getContentResolver().openInputStream(uri);
             //InputStream is = new BufferedInputStream(new FileInputStream(fileToRead));
             var input = context.contentResolver.openInputStream(uri)
-            // ISO-8859-1 interprets accents correctly
-            var br = BufferedReader(InputStreamReader(input!!, "ISO-8859-1"))
+            // ISO-8859-1 interprets accents correctly Edit, not really, why changed for UTF-8
+            var br = BufferedReader(InputStreamReader(input!!, "UTF-8"))
+            //var br = BufferedReader(InputStreamReader(input!!, "ISO-8859-1"))
             var nbLine = 0
             while (br!!.readLine() != null) {
                 nbLine++
             }
             progress!!.max = nbLine
-            println(nbLine)
 
             //InputStream iss = new BufferedInputStream(new FileInputStream(fileToRead));
             input = context.contentResolver.openInputStream(uri)
-            // ISO-8859-1 interprets accents correctly
-            br = BufferedReader(InputStreamReader(input!!, "ISO-8859-1"))
+            // ISO-8859-1 interprets accents correctly Edit, not really, why changed for UTF-8
+            br = BufferedReader(InputStreamReader(input!!, "UTF-8"))
 
             var wordInfo: Array<String>
             var note: String
@@ -87,6 +88,10 @@ class ImportCSVKot {
                     } else {
                         note = extractWord(wordInfo[2])
                     }
+
+                    // TODO remove this Log
+                    Log.d("ImportCsvKot", "Word Added : " + headword + " : " + translation)
+
                     wTo = WordSQLITE(ctx = context, headword = headword, note = note, idDictionary = dicoID)
                     if (wTo.save() < 0) {
                         wTo.readByHeadWord()
