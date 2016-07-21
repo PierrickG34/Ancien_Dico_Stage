@@ -140,4 +140,7 @@
     <string name="add_modify">Add/Modify</string>
     <string name="add_txt_img">Tap to add an image</string>
     <string name="modify_image">Modification of image</string>
+    <string name="succes_create_word">Word succesfully added</string>
+    <string name="succes_update_word">Word succesfully updated</string>
+    <string name="what_do_you_want">What do you want to do ?</string>
 </resources>

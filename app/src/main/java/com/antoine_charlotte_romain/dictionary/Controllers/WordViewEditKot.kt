@@ -13,6 +13,8 @@ import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Message
 import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
@@ -21,6 +23,7 @@ import android.support.v7.widget.Toolbar
 import android.view.*
 import android.widget.*
 import com.antoine_charlotte_romain.dictionary.Controllers.activities.MainActivityKot
+import com.antoine_charlotte_romain.dictionary.Controllers.activities.dictionary.ListWordsActivityKot
 import com.antoine_charlotte_romain.dictionary.R
 import com.antoine_charlotte_romain.dictionary.business.dictionary.Dictionary
 import com.antoine_charlotte_romain.dictionary.business.word.Word
@@ -32,6 +35,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.util.*
+import kotlin.concurrent.thread
 
 /**
  * Created by dineen on 12/07/2016.
@@ -39,7 +43,6 @@ import java.util.*
 class WordViewEditKot : AppCompatActivity() {
 
     var mRecorder : MediaRecorder? = null
-    var soundSet : Boolean = false
     var imgWord : Bitmap? = null
     var word : WordSQLITE? = null
     var translations : ArrayList<Word>? = null
@@ -86,6 +89,7 @@ class WordViewEditKot : AppCompatActivity() {
         }
         else {
             (super.findViewById(R.id.play_button) as Button).isEnabled = false
+            (super.findViewById(R.id.delete_btn) as Button).visibility = View.INVISIBLE
         }
     }
 
@@ -95,19 +99,11 @@ class WordViewEditKot : AppCompatActivity() {
         val fos = FileOutputStream(soundFile)
         fos.write(this.word!!.sound)
         fos.close()
-//
-//        // Tried reusing instance of media player
-//        // but that resulted in system crashes...
-//        MediaPlayer mediaPlayer = new MediaPlayer();
-//
-//        // Tried passing path directly, but kept getting
-//        // "Prepare failed.: status=0x1"
-//        // so using file descriptor instead
-//        FileInputStream fis = new FileInputStream(tempMp3);
-//        mediaPlayer.setDataSource(fis.getFD());
-//
-//        mediaPlayer.prepare();
-//        mediaPlayer.start();
+    }
+
+    fun removeSound(view: View) {
+        (super.findViewById(R.id.delete_btn) as Button).visibility = View.INVISIBLE
+        (super.findViewById(R.id.play_button) as Button).isEnabled = false
     }
 
     fun initTranslationsList() {
@@ -214,7 +210,7 @@ class WordViewEditKot : AppCompatActivity() {
 
     fun loadImagefromGallery(view: View) {
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("NTM")
+        builder.setTitle(this.resources.getString(R.string.what_do_you_want))
         builder.setPositiveButton(R.string.add) { dialog, which ->
             // Create intent to Open Image applications like Gallery, Google Photos
             val galleryIntent = Intent(Intent.ACTION_PICK,
@@ -340,10 +336,6 @@ class WordViewEditKot : AppCompatActivity() {
                 }
                 //create file audio
                 btnRecord.text = this.resources.getString(R.string.recording)
-                //val dir = this.cacheDir
-                //dir.mkdirs() //create folders where write files
-//                var fileAudioPath = this.cacheDir.path//dir.getPath() //Environment.getExternalStorageDirectory().getAbsolutePath();
-//                fileAudioPath += """/${FILE_NAME_SOUND}.${FILE_NAME_EXTENSION}"""
                 var soundFile = File("""${this.cacheDir}/audiorecord.3gp""")
 
                 this.mRecorder = MediaRecorder()
@@ -359,7 +351,7 @@ class WordViewEditKot : AppCompatActivity() {
                     Toast.makeText(this, this.resources.getString(R.string.permission_error), Toast.LENGTH_SHORT).show();
                 }
                 this.mRecorder!!.start()
-                this.soundSet = true
+                (super.findViewById(R.id.delete_btn) as Button).visibility = View.VISIBLE
             } catch (e: Exception) {
                 Toast.makeText(this, this.resources.getString(R.string.permission_error), Toast.LENGTH_SHORT).show();
             }
@@ -418,19 +410,41 @@ class WordViewEditKot : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item!!.itemId == R.id.action_add_word) {
-            this.word!!.headword = this.headwordField!!.text.toString()
-            this.word!!.sound = if (this.soundSet != true ) null else this.audioFileIntoByte()
-            this.word!!.image = if (this.imgWord == null) null else this.imageIntoByte()
-            this.word!!.note = this.noteField!!.text.toString()
-            //println(this.word!!)
-            if (this.word!!.update() > 0) {
-                println("OK")
+
+        val handler = Handler(object : Handler.Callback {
+            override fun handleMessage(p0: Message?): Boolean {
+                if (p0!!.arg1 == 0) {
+                    Toast.makeText(ctx, resources.getString(R.string.succes_update_word), 10000).show()
+                    onBackPressed()
+                }
+                else {
+                    Toast.makeText(ctx, resources.getString(R.string.name_already_exists), 10000).show()
+                }
+                return false
             }
-            else {
-                println("KO")
+        })
+
+        var msg = Message()
+
+        Thread(object : Runnable {
+            override fun run() {
+                if (item!!.itemId == R.id.action_add_word) {
+                    word!!.headword = headwordField!!.text.toString()
+                    word!!.sound = if ((findViewById(R.id.play_button) as Button).isEnabled == false ) null else audioFileIntoByte()
+                    word!!.image = if (imgWord == null) null else imageIntoByte()
+                    word!!.note = noteField!!.text.toString()
+
+                    if (word!!.update() > 0) {
+                        msg.arg1 = 0
+                    }
+                    else {
+                        msg.arg1 = 1
+                    }
+                    handler.sendMessage(msg)
+                }
             }
-        }
+        }).start()
+
         return super.onOptionsItemSelected(item)
     }
 

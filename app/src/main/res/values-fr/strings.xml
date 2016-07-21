@@ -139,4 +139,7 @@
     <string name="add_modify">Ajouter/Modifier</string>
     <string name="add_txt_img">Toucher pour ajouter une image</string>
     <string name="modify_image">Modification image</string>
+    <string name="succes_create_word">Le mot a bien été créé</string>
+    <string name="succes_update_word">Le mot a bien été modifié</string>
+    <string name="what_do_you_want">Que voulez-vous faire ?</string>
 </resources>
