@@ -78,10 +78,15 @@ class ImportCSVKot {
                 // Split the line with comma as a separator
                 wordInfo = access!!.split(cvsSplitBy.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
-                if (wordInfo.size == 3 && extractWord(wordInfo[0]).length > 0) {
+                if (wordInfo.size >= 2 && extractWord(wordInfo[0]).length > 0) {
                     headword = extractWord(wordInfo[0])
                     translation = extractWord(wordInfo[1])
-                    note = extractWord(wordInfo[2])
+                    if (wordInfo.size == 2) {
+                        // if there is no note
+                        note = ""
+                    } else {
+                        note = extractWord(wordInfo[2])
+                    }
                     wTo = WordSQLITE(ctx = context, headword = headword, note = note, idDictionary = dicoID)
                     if (wTo.save() < 0) {
                         wTo.readByHeadWord()
