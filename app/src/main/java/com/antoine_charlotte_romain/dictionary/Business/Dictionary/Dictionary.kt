@@ -27,7 +27,7 @@ open class Dictionary : Serializable {
      * @return String : the name of the dictionary
      */
     fun getNameDictionary() : String {
-        return """${this.inLang} -> ${this.outLang}""".toUpperCase()
+        return """${this.inLang} - ${this.outLang}""".toUpperCase()
     }
 
     /**

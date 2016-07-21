@@ -641,7 +641,6 @@ class HomeFragmentKot: Fragment(), DictionaryAdapterCallbackKot {
 
             if (d.save() < 0) {
                 d.readByInLangOutLang()
-                println(d)
             }
             this.dictionariesDisplay.add(d)
             this.dictionaries.add(d)

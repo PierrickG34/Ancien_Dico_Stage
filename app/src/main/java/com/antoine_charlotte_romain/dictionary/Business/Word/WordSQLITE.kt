@@ -225,8 +225,15 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
     fun getAllTranslationText() : String {
         var translation = ""
         var translations = this.selectAllTranslations()
+        var firstOccurence = true
         for (word in translations) {
-            translation += word.headword + " "
+            if (!firstOccurence) {
+                translation += ", " + word.headword
+            } else {
+                translation += word.headword
+                firstOccurence = false
+            }
+
         }
         return translation
     }
