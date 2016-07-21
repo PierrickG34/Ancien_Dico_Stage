@@ -166,7 +166,8 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
             this.importCsvButton!!.setVisibility(View.VISIBLE)
             this.addButton!!.setVisibility(View.VISIBLE)
         }
-
+        this.initListView()
+        this.initSearch()
     }
 
     /**

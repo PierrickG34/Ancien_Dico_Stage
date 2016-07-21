@@ -187,7 +187,7 @@
                 android:layout_margin="10dp"
                 android:id="@+id/sound_layout"
                 app:columnCount="1"
-                app:rowCount="2">
+                app:rowCount="3">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -227,6 +227,14 @@
                         android:clickable="false"
                         app:layout_columnWeight="0.5" />
                 </android.support.v7.widget.GridLayout>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/delete"
+                    android:id="@+id/delete_btn"
+                    app:layout_gravity="center_horizontal"
+                    android:onClick="removeSound" />
 
             </android.support.v7.widget.GridLayout>
         </android.support.v7.widget.GridLayout>

@@ -3,6 +3,7 @@ package  com.antoine_charlotte_romain.dictionary.business.word
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
+import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 import com.antoine_charlotte_romain.dictionary.DataModel.DataBaseHelperKot
 import com.antoine_charlotte_romain.dictionary.DataModel.WordDataModel
@@ -401,7 +402,9 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         super.headword = headwordNew
         super.dateView = dateViewNew
         super.idDictionary = idDictionaryNew
-        return this.db.update(WordSQLITE.DB_TABLE,
+
+        try {
+            return this.db.update(WordSQLITE.DB_TABLE,
                     WordSQLITE.DB_COLUMN_NOTE to super.note!!,
                     WordSQLITE.DB_COLUMN_IMAGE to super.image!!,
                     WordSQLITE.DB_COLUMN_SOUND to super.sound!!,
@@ -410,6 +413,10 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
                     WordSQLITE.DB_COLUMN_ID_DICTIONARY to super.idDictionary!!)
                     .where("""${WordSQLITE.DB_COLUMN_ID} = ${super.idWord}""")
                     .exec()
+        }
+        catch (e : SQLiteConstraintException) {
+            return -1
+        }
     }
 
     /**
@@ -424,7 +431,12 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         values.put(WordSQLITE.DB_COLUMN_IMAGE, super.image)
         values.put(WordSQLITE.DB_COLUMN_DATE, if (super.dateView == null) null else super.dateView.toString())
         values.put(WordSQLITE.DB_COLUMN_SOUND, super.sound)
-        return this.db.update(WordSQLITE.DB_TABLE, values, """${WordSQLITE.DB_COLUMN_ID} = '${super.idWord}'""", null)
+        try {
+            return this.db.update(WordSQLITE.DB_TABLE, values, """${WordSQLITE.DB_COLUMN_ID} = '${super.idWord}'""", null)
+        }
+        catch (e : SQLiteConstraintException) {
+            return -1
+        }
     }
 
     /**
