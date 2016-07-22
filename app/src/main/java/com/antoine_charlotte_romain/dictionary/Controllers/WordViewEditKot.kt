@@ -95,9 +95,8 @@ class WordViewEditKot : AppCompatActivity() {
 
     fun initMediaPlayerWithByteArrray(ba : ByteArray) {
         val soundFile = File("""${this.cacheDir}/audiorecord.3gp""")
-        //soundFile.deleteOnExit()
         val fos = FileOutputStream(soundFile)
-        fos.write(this.word!!.sound)
+        fos.write(ba)
         fos.close()
     }
 
@@ -369,14 +368,7 @@ class WordViewEditKot : AppCompatActivity() {
         if (btnPlay.isEnabled) {
             var mPlayer = MediaPlayer()
             try {
-                val audioFile = this.cacheDir.list { file, s ->
-                    if (s.contains(FILE_NAME_EXTENSION)) {
-                        true
-                    }
-                    else {
-                        false
-                    }}
-                mPlayer.setDataSource("""${this.cacheDir}/${audioFile[0]}""")
+                mPlayer.setDataSource("""${this.cacheDir}/audiorecord.3gp""")
                 mPlayer.prepare()
                 mPlayer.start()
             }

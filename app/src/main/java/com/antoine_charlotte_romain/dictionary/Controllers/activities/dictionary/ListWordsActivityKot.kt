@@ -295,7 +295,7 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
      */
     override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
         if (!this.isOpen) {
-            this.modify(position)
+            this.viewWord(position)
         }
     }
 
@@ -332,7 +332,6 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
         if (this.isOpen) {
             showFloatingMenu(view)
         }
-        //val newWordIntent = Intent(this, WordViewKot::class.java)
         val newWordIntent = Intent(this, WordViewEditKot::class.java)
 
         newWordIntent.putExtra(MainActivityKot.EXTRA_DICTIONARY, this.selectedDictionary)
@@ -514,6 +513,30 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
         //TODO
         //val wordDetailIntent = Intent(this, WordViewKot::class.java)
         val wordDetailIntent = Intent(this, WordViewEditKot::class.java)
+
+        wordDetailIntent.putExtra(MainActivityKot.EXTRA_WORD, this.myWordsList[position])
+        if (this.selectedDictionary != null) {
+            wordDetailIntent.putExtra(MainActivityKot.EXTRA_DICTIONARY, selectedDictionary)
+        } else {
+            this.ddm = DictionarySQLITE(ctx = applicationContext, id = myWordsList[position].idDictionary)
+            this.ddm!!.read()
+            wordDetailIntent.putExtra(MainActivityKot.EXTRA_DICTIONARY, this.ddm!! as Dictionary)
+        }
+
+        startActivityForResult(wordDetailIntent, DELETE_WORD)
+
+        if (this.filterWords!!.getText().toString().trim { it <= ' ' }.length > 0) {
+            this.filterWords!!.setText("")
+        }
+    }
+
+    /**
+     * This function launches the view details of a word and allows to modify it
+     * @param position the position in the listView of the word the user want to see more details or to modify
+     */
+    private fun viewWord(position: Int) {
+        //TODO
+        val wordDetailIntent = Intent(this, WordViewKot::class.java)
 
         wordDetailIntent.putExtra(MainActivityKot.EXTRA_WORD, this.myWordsList[position])
         if (this.selectedDictionary != null) {
