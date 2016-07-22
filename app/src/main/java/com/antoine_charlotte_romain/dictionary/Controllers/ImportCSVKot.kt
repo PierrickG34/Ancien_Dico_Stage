@@ -89,7 +89,7 @@ class ImportCSVKot {
                         note = extractWord(wordInfo[2])
                     }
 
-                    // TODO remove this Log
+                    // TODO remove this Log when we had make a loading screen
                     Log.d("ImportCsvKot", "Word Added : " + headword + " : " + translation)
 
                     wTo = WordSQLITE(ctx = context, headword = headword, note = note, idDictionary = dicoID)

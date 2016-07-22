@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
+import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.view.animation.OvershootInterpolator
@@ -249,6 +250,9 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
      * Function that load all the words of a dictionary from the database and show them on the listView
      */
     private fun initListView() {
+
+        Log.d("ListWordsActivity","InitListView")
+
         this.wdm = WordSQLITE(this.applicationContext)
         val select: Boolean
 

@@ -55,7 +55,8 @@ class AdvancedSearchResultActivityKot : AppCompatActivity() {
             // find id of the dictionary
             val id: Long
             val ddm = DictionarySQLITE(this)
-            if(!dico.equals("All")) {       // Search in a particular dictionary
+            if( ( (!dico.equals("All")).and(!dico.equals("Tous")) ) ) {
+                // Search in a particular dictionary
                 id = ddm.getIdByName(dico)
             }
             else{                           // Search in all the dictionaries
@@ -229,7 +230,7 @@ class AdvancedSearchResultActivityKot : AppCompatActivity() {
                     }
                 }
             }
-            Log.d("ParWholeMean","$results")
+            Log.d("AdvancedSearchResultActivity - Result","$results")
 
         }
 

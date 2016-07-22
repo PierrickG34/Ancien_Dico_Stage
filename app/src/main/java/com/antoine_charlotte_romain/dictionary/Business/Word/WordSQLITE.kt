@@ -99,8 +99,16 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
                 .orderBy(WordSQLITE.DB_COLUMN_DATE ,SqlOrderDirection.DESC)
                 .exec {
             while (this.moveToNext()) {
-                var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
-                var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())
+//                var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+//                var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())
+                var sqlDate : java.sql.Date?
+                if (this.getString(this.getColumnIndex("dateView")) != null ) { // to protect from null dateView
+                    var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                    sqlDate = java.sql.Date(utilDate.getTime())
+                } else {
+                    sqlDate = null
+                }
+
                 res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
                         note = this.getString(this.getColumnIndex("note")),
                         image = this.getBlob(this.getColumnIndex("image")),
@@ -277,8 +285,16 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
                 .where("""(${WordSQLITE.DB_COLUMN_DATE} <= '${beforeDate}') AND (${WordSQLITE.DB_COLUMN_DATE} != 'null')""")
                 .exec {
                     while (this.moveToNext()) {
-                        var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
-                        var sqlDate: java.sql.Date = java.sql.Date(utilDate.time)
+//                        var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+//                        var sqlDate: java.sql.Date = java.sql.Date(utilDate.time)
+                        var sqlDate : java.sql.Date?
+                        if (this.getString(this.getColumnIndex("dateView")) != null ) { // to protect from null dateView
+                            var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                            sqlDate = java.sql.Date(utilDate.getTime())
+                        } else {
+                            sqlDate = null
+                        }
+
                         res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
                                 note = this.getString(this.getColumnIndex("note")),
                                 image = this.getBlob(this.getColumnIndex("image")),
@@ -303,8 +319,16 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
                 .where("""(${WordSQLITE.DB_COLUMN_DATE} >= '${afterDate}') AND (${WordSQLITE.DB_COLUMN_DATE} != 'null')""")
                 .exec {
                     while (this.moveToNext()) {
-                        var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
-                        var sqlDate: java.sql.Date = java.sql.Date(utilDate.time)
+//                        var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+//                        var sqlDate: java.sql.Date = java.sql.Date(utilDate.time)
+                        var sqlDate : java.sql.Date?
+                        if (this.getString(this.getColumnIndex("dateView")) != null ) { // to protect from null dateView
+                            var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                            sqlDate = java.sql.Date(utilDate.getTime())
+                        } else {
+                            sqlDate = null
+                        }
+
                         res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
                                 note = this.getString(this.getColumnIndex("note")),
                                 image = this.getBlob(this.getColumnIndex("image")),
@@ -463,8 +487,12 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
             val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_HEADWORD} LIKE '$begin%$middle%$end')""").exec {
                 while (this.moveToNext()) {
-                    var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
-                    var sqlDate: java.sql.Date = java.sql.Date(utilDate.getTime())
+                    var sqlDate : java.sql.Date = java.sql.Date(0)
+                    if((this.getString(this.getColumnIndex("dateView")))!=null)
+                    {
+                        var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                        sqlDate = java.sql.Date(utilDate.getTime())
+                    }
                     res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
                             note = this.getString(this.getColumnIndex("note")),
                             image = this.getBlob(this.getColumnIndex("image")),
@@ -489,8 +517,14 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
         val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_ID_DICTIONARY} = '${dictionaryID}') AND (${WordSQLITE.DB_COLUMN_HEADWORD} LIKE '$begin%$middle%$end')""").exec {
             while (this.moveToNext()) {
-                var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
-                var sqlDate: java.sql.Date = java.sql.Date(utilDate.getTime())
+                var sqlDate : java.sql.Date?
+                if (this.getString(this.getColumnIndex("dateView")) != null ) { // to protect from null dateView
+                    var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                    sqlDate = java.sql.Date(utilDate.getTime())
+                } else {
+                    sqlDate = null
+                }
+
                 res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
                         note = this.getString(this.getColumnIndex("note")),
                         image = this.getBlob(this.getColumnIndex("image")),
@@ -521,8 +555,16 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
                         AND (${WordSQLITE.DB_COLUMN_NOTE} = '${search}')""")
                        .exec {
             while (this.moveToNext()) {
-                var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
-                var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())
+//                var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+//                var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())
+                var sqlDate : java.sql.Date?
+                if (this.getString(this.getColumnIndex("dateView")) != null ) { // to protect from null dateView
+                    var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                    sqlDate = java.sql.Date(utilDate.getTime())
+                } else {
+                    sqlDate = null
+                }
+
                 res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
                         note = this.getString(this.getColumnIndex("note")),
                         image = this.getBlob(this.getColumnIndex("image")),
@@ -548,8 +590,16 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         headWord = StringsUtility.removeAccents(headWord)
         val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_HEADWORD} = '${headWord}')""").exec {
             while (this.moveToNext()) {
-                var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
-                var sqlDate: java.sql.Date = java.sql.Date(utilDate.getTime())
+//                var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+//                var sqlDate: java.sql.Date = java.sql.Date(utilDate.getTime())
+                var sqlDate : java.sql.Date?
+                if (this.getString(this.getColumnIndex("dateView")) != null ) { // to protect from null dateView
+                    var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                    sqlDate = java.sql.Date(utilDate.getTime())
+                } else {
+                    sqlDate = null
+                }
+
                 res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
                         note = this.getString(this.getColumnIndex("note")),
                         image = this.getBlob(this.getColumnIndex("image")),
@@ -575,8 +625,16 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         headWord = StringsUtility.removeAccents(headWord)
             val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_ID_DICTIONARY} = '${dictionaryID}') AND (${WordSQLITE.DB_COLUMN_HEADWORD} = '${headWord}')""").exec {
                 while (this.moveToNext()) {
-                    var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
-                    var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())
+//                    var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+//                    var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())
+                    var sqlDate : java.sql.Date?
+                    if (this.getString(this.getColumnIndex("dateView")) != null ) { // to protect from null dateView
+                        var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                        sqlDate = java.sql.Date(utilDate.getTime())
+                    } else {
+                        sqlDate = null
+                    }
+
                     res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
                             note = this.getString(this.getColumnIndex("note")),
                             image = this.getBlob(this.getColumnIndex("image")),
@@ -601,8 +659,16 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         noteWord = StringsUtility.removeAccents(noteWord)
             val c = this.db.select(WordSQLITE.DB_TABLE).exec {
                 while (this.moveToNext()) {
-                    var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
-                    var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())
+//                    var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+//                    var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())
+                    var sqlDate : java.sql.Date?
+                    if (this.getString(this.getColumnIndex("dateView")) != null ) { // to protect from null dateView
+                        var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                        sqlDate = java.sql.Date(utilDate.getTime())
+                    } else {
+                        sqlDate = null
+                    }
+
                     var note = this.getString(this.getColumnIndex("note"))
                     if ((this.getString(this.getColumnIndex("note")).contains(noteWord, true)))
                     {
@@ -632,8 +698,16 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         noteWord = StringsUtility.removeAccents(noteWord)
         val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_ID_DICTIONARY} = '${dictionaryID}')""").exec {
             while (this.moveToNext()) {
-                var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
-                var sqlDate: java.sql.Date = java.sql.Date(utilDate.getTime())
+//                var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+//                var sqlDate: java.sql.Date = java.sql.Date(utilDate.getTime())
+                var sqlDate : java.sql.Date?
+                if (this.getString(this.getColumnIndex("dateView")) != null ) { // to protect from null dateView
+                    var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                    sqlDate = java.sql.Date(utilDate.getTime())
+                } else {
+                    sqlDate = null
+                }
+
                 var note = this.getString(this.getColumnIndex("note"))
                 if ((this.getString(this.getColumnIndex("note")).contains(noteWord, true))) {
                     res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
@@ -660,8 +734,16 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         var stringToFind = StringsUtility.removeAccents(stringToFind)
             val c = this.db.select(WordSQLITE.DB_TABLE).exec {
                 while (this.moveToNext()) {
-                    var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
-                    var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())
+//                    var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+//                    var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())
+                    var sqlDate : java.sql.Date?
+                    if (this.getString(this.getColumnIndex("dateView")) != null ) { // to protect from null dateView
+                        var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                        sqlDate = java.sql.Date(utilDate.getTime())
+                    } else {
+                        sqlDate = null
+                    }
+
                     var note = this.getString(this.getColumnIndex("note"))
                     if ( (this.getString(this.getColumnIndex("note")).contains(stringToFind, true)).or(((this.getString(this.getColumnIndex("headword"))).trim()).equals(stringToFind)) )
                     {
@@ -690,8 +772,16 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         var stringToFind = StringsUtility.removeAccents(stringToFind)
         val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_ID_DICTIONARY} = '${dictionaryID}')""").exec {
             while (this.moveToNext()) {
-                var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
-                var sqlDate: java.sql.Date = java.sql.Date(utilDate.getTime())
+//                var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+//                var sqlDate: java.sql.Date = java.sql.Date(utilDate.getTime())
+                var sqlDate : java.sql.Date?
+                if (this.getString(this.getColumnIndex("dateView")) != null ) { // to protect from null dateView
+                    var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                    sqlDate = java.sql.Date(utilDate.getTime())
+                } else {
+                    sqlDate = null
+                }
+
                 var note = this.getString(this.getColumnIndex("note"))
                 if ( (this.getString(this.getColumnIndex("note")).contains(stringToFind, true)).or(((this.getString(this.getColumnIndex("headword"))).trim()).equals(stringToFind)) ) {
                     res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
@@ -719,8 +809,16 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
             val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_HEADWORD} LIKE '$begin%$middle%$end') OR (${WordSQLITE.DB_COLUMN_NOTE} LIKE '$begin%$middle%$end')""").exec {
                 while (this.moveToNext()) {
-                    var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
-                    var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())
+//                    var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+//                    var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())
+                    var sqlDate : java.sql.Date?
+                    if (this.getString(this.getColumnIndex("dateView")) != null ) { // to protect from null dateView
+                        var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                        sqlDate = java.sql.Date(utilDate.getTime())
+                    } else {
+                        sqlDate = null
+                    }
+
                     var note = this.getString(this.getColumnIndex("note"))
                     res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
                             note = this.getString(this.getColumnIndex("note")),
@@ -748,8 +846,16 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
         val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_ID_DICTIONARY} = '${dictionaryID}') AND ((${WordSQLITE.DB_COLUMN_HEADWORD} LIKE '$begin%$middle%$end') OR (${WordSQLITE.DB_COLUMN_NOTE} LIKE '$begin%$middle%$end' ))""").exec {
             while (this.moveToNext()) {
-                var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
-                var sqlDate: java.sql.Date = java.sql.Date(utilDate.getTime())
+//                var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+//                var sqlDate: java.sql.Date = java.sql.Date(utilDate.getTime())
+                var sqlDate : java.sql.Date?
+                if (this.getString(this.getColumnIndex("dateView")) != null ) { // to protect from null dateView
+                    var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                    sqlDate = java.sql.Date(utilDate.getTime())
+                } else {
+                    sqlDate = null
+                }
+
                 var note = this.getString(this.getColumnIndex("note"))
                 res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
                         note = this.getString(this.getColumnIndex("note")),
@@ -774,8 +880,16 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
             val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_ID} = '${wordId}')""").exec {
                 while (this.moveToNext()) {
-                    var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
-                    var sqlDate: java.sql.Date = java.sql.Date(utilDate.getTime())
+//                    var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+//                    var sqlDate: java.sql.Date = java.sql.Date(utilDate.getTime())
+                    var sqlDate : java.sql.Date?
+                    if (this.getString(this.getColumnIndex("dateView")) != null ) { // to protect from null dateView
+                        var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                        sqlDate = java.sql.Date(utilDate.getTime())
+                    } else {
+                        sqlDate = null
+                    }
+
                     res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
                             note = this.getString(this.getColumnIndex("note")),
                             image = this.getBlob(this.getColumnIndex("image")),
@@ -799,8 +913,16 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
         val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_ID_DICTIONARY} = '${dictionaryID}') AND (${WordSQLITE.DB_COLUMN_ID} = '${wordId}')""").exec {
             while (this.moveToNext()) {
-                var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
-                var sqlDate: java.sql.Date = java.sql.Date(utilDate.getTime())
+//                var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+//                var sqlDate: java.sql.Date = java.sql.Date(utilDate.getTime())
+                var sqlDate : java.sql.Date?
+                if (this.getString(this.getColumnIndex("dateView")) != null ) { // to protect from null dateView
+                    var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                    sqlDate = java.sql.Date(utilDate.getTime())
+                } else {
+                    sqlDate = null
+                }
+
                 res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
                         note = this.getString(this.getColumnIndex("note")),
                         image = this.getBlob(this.getColumnIndex("image")),
@@ -825,8 +947,16 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         var formatter: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
             val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_NOTE} LIKE '$begin%$middle%$end')""").exec {
                 while (this.moveToNext()) {
-                    var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
-                    var sqlDate: java.sql.Date = java.sql.Date(utilDate.getTime())
+//                    var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+//                    var sqlDate: java.sql.Date = java.sql.Date(utilDate.getTime())
+                    var sqlDate : java.sql.Date?
+                    if (this.getString(this.getColumnIndex("dateView")) != null ) { // to protect from null dateView
+                        var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                        sqlDate = java.sql.Date(utilDate.getTime())
+                    } else {
+                        sqlDate = null
+                    }
+
                     res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
                             note = this.getString(this.getColumnIndex("note")),
                             image = this.getBlob(this.getColumnIndex("image")),
@@ -853,8 +983,16 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         var formatter: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
         val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_ID_DICTIONARY} = '${dictionaryID}') AND (${WordSQLITE.DB_COLUMN_NOTE} LIKE '$begin%$middle%$end')""").exec {
             while (this.moveToNext()) {
-                var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
-                var sqlDate: java.sql.Date = java.sql.Date(utilDate.getTime())
+//                var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+//                var sqlDate: java.sql.Date = java.sql.Date(utilDate.getTime())
+                var sqlDate : java.sql.Date?
+                if (this.getString(this.getColumnIndex("dateView")) != null ) { // to protect from null dateView
+                    var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
+                    sqlDate = java.sql.Date(utilDate.getTime())
+                } else {
+                    sqlDate = null
+                }
+
                 res.add(Word(idWord = this.getString(this.getColumnIndex("id")),
                         note = this.getString(this.getColumnIndex("note")),
                         image = this.getBlob(this.getColumnIndex("image")),
