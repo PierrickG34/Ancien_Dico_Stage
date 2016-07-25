@@ -73,6 +73,25 @@ class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String?
     }
 
     /**
+     * Select the dictionary in the database. If the selected word is a translation this is the dico 0
+     * @return List<Dictionary> a list who contains all dictionaries.
+     */
+    fun select(id : String ): Dictionary {
+        var res = Dictionary(id = "0", inLang = "...", outLang = "...")
+        val c = this.db.select(DictionarySQLITE.DB_TABLE)
+                .where("""${DictionarySQLITE.DB_COLUMN_ID} == ${id}""")
+                .orderBy(DictionarySQLITE.DB_COLUMN_INLANG)
+                .exec {
+                    while(this.moveToNext()) {
+                        res = (Dictionary(id = this.getString(this.getColumnIndex("id")),
+                                inLang = this.getString(this.getColumnIndex("inLang")),
+                                outLang = this.getString(this.getColumnIndex("outLang"))))
+                    }
+                }
+        return res
+    }
+
+    /**
      *   @return all the word of the current dictionary
      */
     fun selectAllWords(): List<Word> {

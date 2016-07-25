@@ -13,7 +13,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 
 
-import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.AdvancedSearchResultsAdapter
+import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.AdvancedSearchResultsAdapterKot
 import com.antoine_charlotte_romain.dictionary.Controllers.activities.MainActivityKot
 import com.antoine_charlotte_romain.dictionary.R
 import com.antoine_charlotte_romain.dictionary.business.dictionary.DictionarySQLITE
@@ -30,7 +30,7 @@ class AdvancedSearchResultActivityKot : AppCompatActivity() {
 
     private var results: MutableList<Word>? = null
     private var wdm: WordSQLITE? = null
-    private var myAdapter: AdvancedSearchResultsAdapter? = null
+    private var myAdapter: AdvancedSearchResultsAdapterKot? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -226,29 +226,27 @@ class AdvancedSearchResultActivityKot : AppCompatActivity() {
                     }
                 }
             }
-            Log.d("AdvancedSearchResultActivity - Result","$results")
+            Log.d("AdvancedSearchResult","Result - $results")
 
         }
 
         // Display results
-       /* listResults = findViewById(R.id.resultsList) as GridView?
+        listResults = findViewById(R.id.resultsList) as GridView?
         if (results!!.size > 0) {
-
-            myAdapter = AdvancedSearchResultsAdapter(this, R.layout.row_advanced_search_result, results)
-
+            myAdapter = AdvancedSearchResultsAdapterKot(this, R.layout.row_advanced_search_result, results!!)
             listResults!!.setAdapter(myAdapter)
 
             listResults!!.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
-                val wordDetailIntent = Intent(this@AdvancedSearchResultActivity, WordActivity::class.java)
+                val wordDetailIntent = Intent(this@AdvancedSearchResultActivityKot, WordViewKot::class.java)
                 wordDetailIntent.putExtra(MainActivityKot.EXTRA_WORD, results!!.get(position))
 
                 val ddm = DictionarySQLITE(applicationContext)
-                wordDetailIntent.putExtra(MainActivityKot.EXTRA_DICTIONARY, ddm.select((results as ArrayList<Word>?)!!.get(position).idDictionary))
+                wordDetailIntent.putExtra(MainActivityKot.EXTRA_DICTIONARY, ddm.select(results!!.get(position).idDictionary!!))
 
                 startActivity(wordDetailIntent)
             })
-        }
-        else {
+
+        } else {
             val advancedSearchLayout = findViewById(R.id.advanced_search) as LinearLayout?
 
             advancedSearchLayout!!.removeView(listResults)
@@ -258,6 +256,6 @@ class AdvancedSearchResultActivityKot : AppCompatActivity() {
             textResult.gravity = Gravity.CENTER
             textResult.setPadding(0, 10, 0, 0)
             advancedSearchLayout.addView(textResult)
-        }*/
+        }
     }
 }
