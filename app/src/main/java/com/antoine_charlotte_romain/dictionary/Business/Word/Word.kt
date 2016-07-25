@@ -45,13 +45,7 @@ open class Word(idWord: String? = null, note : String? = null, image : ByteArray
      */
     override fun equals(other: Any?): Boolean {
         val word = other!! as Word
-        // TODO I think this can crash if you don't give him a Word...
-        if (word.idWord  == this.idWord) {
-            return true
-        }
-        else {
-            return false
-        }
+        return word.headword == this.headword && word.idDictionary == this.idDictionary
     }
 
 }

@@ -28,7 +28,9 @@ import com.antoine_charlotte_romain.dictionary.R
 import com.antoine_charlotte_romain.dictionary.business.dictionary.Dictionary
 import com.antoine_charlotte_romain.dictionary.business.word.Word
 import com.antoine_charlotte_romain.dictionary.business.word.WordSQLITE
+import com.dicosaure.Business.Translate.Translate
 import com.dicosaure.Business.Translate.TranslateSQLITE
+import org.jetbrains.anko.act
 import org.jetbrains.anko.ctx
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -45,9 +47,11 @@ class WordViewEditKot : AppCompatActivity() {
     var mRecorder : MediaRecorder? = null
     var imgWord : Bitmap? = null
     var word : WordSQLITE? = null
-    var translations : ArrayList<Word>? = null
+    var translations = ArrayList<Word>()
+    var translationsRemoveList = ArrayList<Word>()
     var headwordField: TextView? = null
     var noteField : TextView? = null
+    var action : Boolean? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,37 +63,45 @@ class WordViewEditKot : AppCompatActivity() {
         this.supportActionBar!!.setTitle(R.string.details)
         this.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        //Set the word and dictionary, come from the segue
-        var wordIntent = this.intent.getSerializableExtra(MainActivityKot.EXTRA_WORD) as Word
-        this.word = WordSQLITE(this.ctx, wordIntent.idWord, wordIntent.note,
-                wordIntent.image, wordIntent.sound, wordIntent.headword, wordIntent.dateView,
-                wordIntent.idDictionary)
         var dictionary = this.intent.getSerializableExtra(MainActivityKot.EXTRA_DICTIONARY) as Dictionary
-
-        //Set fields
         (super.findViewById(R.id.edit_dictionary) as TextView).text = dictionary.getNameDictionary()
         this.headwordField = super.findViewById(R.id.edit_word) as TextView
-        this.headwordField!!.text = this.word!!.headword
         this.noteField = super.findViewById(R.id.edit_note) as TextView
-        if (this.word!!.note == null) {
-            this.noteField!!.text = this.resources.getString(R.string.no_note)
+
+        var intent = this.intent.getSerializableExtra(MainActivityKot.EXTRA_WORD)
+        if (intent == null) {
+            this.action = WordViewEditKot.NEW_WORD
+            this.word = WordSQLITE(this.ctx, idDictionary = dictionary.idDictionary)
         }
         else {
-            this.noteField!!.text = this.word!!.note
-        }
-        this.initTranslationsList()
-        if (this.word!!.image != null) {
-            this.imgWord = BitmapFactory.decodeByteArray(this.word!!.image, 0, this.word!!.image!!.size)
-            (super.findViewById(R.id.image_word) as ImageView).setImageBitmap(this.imgWord)
-            (super.findViewById(R.id.text_image) as TextView).text = this.resources.getString(R.string.modify_image)
-        }
-        if (this.word!!.sound != null) {
-            this.initMediaPlayerWithByteArrray(this.word!!.sound!!)
-            (super.findViewById(R.id.play_button) as Button).isEnabled = true
-        }
-        else {
-            (super.findViewById(R.id.play_button) as Button).isEnabled = false
-            (super.findViewById(R.id.delete_btn) as Button).visibility = View.INVISIBLE
+            //Set the word and dictionary, come from the segue
+            this.action = WordViewEditKot.UPDATE_WORD
+            var wordIntent = intent as Word
+            this.word = WordSQLITE(this.ctx, wordIntent.idWord, wordIntent.note,
+                    wordIntent.image, wordIntent.sound, wordIntent.headword, wordIntent.dateView,
+                    wordIntent.idDictionary)
+            this.headwordField!!.text = this.word!!.headword
+
+            if (this.word!!.note == null) {
+                this.noteField!!.text = this.resources.getString(R.string.no_note)
+            }
+            else {
+                this.noteField!!.text = this.word!!.note
+            }
+            this.initTranslationsList()
+            if (this.word!!.image != null) {
+                this.imgWord = BitmapFactory.decodeByteArray(this.word!!.image, 0, this.word!!.image!!.size)
+                (super.findViewById(R.id.image_word) as ImageView).setImageBitmap(this.imgWord)
+                (super.findViewById(R.id.text_image) as TextView).text = this.resources.getString(R.string.modify_image)
+            }
+            if (this.word!!.sound != null) {
+                this.initMediaPlayerWithByteArrray(this.word!!.sound!!)
+                (super.findViewById(R.id.play_button) as Button).isEnabled = true
+            }
+            else {
+                (super.findViewById(R.id.play_button) as Button).isEnabled = false
+                (super.findViewById(R.id.delete_btn) as Button).visibility = View.INVISIBLE
+            }
         }
     }
 
@@ -107,6 +119,10 @@ class WordViewEditKot : AppCompatActivity() {
 
     fun initTranslationsList() {
         this.translations = ArrayList(this.word!!.selectAllTranslations())
+        this.initFrameTranslation()
+    }
+
+    fun initFrameTranslation() {
         var translationField = super.findViewById(R.id.edit_translation) as TextView
         if (this.translations!!.count() > 0) {
             var strTranslations = ""
@@ -139,17 +155,32 @@ class WordViewEditKot : AppCompatActivity() {
         builder.setPositiveButton(R.string.add) { dialog, which ->
             if (!field.text.toString().isEmpty()) {
                 val translateTxt = field.text.toString().trim { it <= ' ' }
-                val wordFrom = WordSQLITE(this.ctx, headword = translateTxt, idDictionary = "0", note = "")
-                wordFrom.save()
-                val translate = TranslateSQLITE(this.ctx, this.word, wordFrom)
+//                val wordFrom = WordSQLITE(this.ctx, headword = translateTxt, idDictionary = "0", note = "")
+//                wordFrom.save()
+//                val translate = TranslateSQLITE(this.ctx, this.word, wordFrom)
+//
+//                if (translate.save() > 0) {
+//                    Toast.makeText(this.ctx, R.string.translation_success, 10000).show()
+//                    if (this.translations!!.size == 0) {
+//                        val btn = super.findViewById(R.id.delete_translation) as Button
+//                        btn.isEnabled = true
+//                    }
+//                    this.initTranslationsList()
+//                }
+//                else {
+//                    Toast.makeText(this.ctx, R.string.translation_error, 10000).show()
+//                }
+                val wordTo = Word(headword = translateTxt, idDictionary = "0", note = "")
+                val translate = Translate(this.word, wordTo)
 
-                if (translate.save() > 0) {
+                if (!this.translations!!.contains(wordTo)) {
                     Toast.makeText(this.ctx, R.string.translation_success, 10000).show()
                     if (this.translations!!.size == 0) {
                         val btn = super.findViewById(R.id.delete_translation) as Button
                         btn.isEnabled = true
                     }
-                    this.initTranslationsList()
+                    this.translations!!.add(wordTo)
+                    this.initFrameTranslation()
                 }
                 else {
                     Toast.makeText(this.ctx, R.string.translation_error, 10000).show()
@@ -173,10 +204,7 @@ class WordViewEditKot : AppCompatActivity() {
         gridLayout.rowCount = this.translations!!.size + 1
         gridLayout.addView(txtTitle)
 
-        //var tmp = gridLayout.findViewById(R.id.check_translation) as CheckBox
         var checkbox : CheckBox
-
-        //gridLayout.removeView(tmp)
         var listCheckBox = ArrayList<CheckBox>()
 
         for (tr in this.translations!!) {
@@ -196,11 +224,15 @@ class WordViewEditKot : AppCompatActivity() {
             for (cb in listCheckBox) {
                 if (cb.isChecked) {
                     this.translations!!.remove(cb.tag)
-                    val tr = TranslateSQLITE(this.ctx, this.word, cb.tag as Word)
-                    tr.delete()
+                    if (cb.tag is WordSQLITE) {
+                        this.translationsRemoveList.add(cb.tag as Word)
+                    }
+                    //val tr = TranslateSQLITE(this.ctx, this.word, cb.tag as Word)
+                    //tr.delete()
                 }
             }
-            this.initTranslationsList()
+            //this.initTranslationsList()
+            this.initFrameTranslation()
             dialog.cancel()
         }
         builder.create()
@@ -405,12 +437,19 @@ class WordViewEditKot : AppCompatActivity() {
 
         val handler = Handler(object : Handler.Callback {
             override fun handleMessage(p0: Message?): Boolean {
-                if (p0!!.arg1 == 0) {
+                if (p0!!.arg1 == UPDATE_SUCCESS) {
                     Toast.makeText(ctx, resources.getString(R.string.succes_update_word), 10000).show()
                     onBackPressed()
                 }
-                else {
+                else if (p0!!.arg1 == CREATE_SUCCESS) {
+                    Toast.makeText(ctx, resources.getString(R.string.succes_create_word), 10000).show()
+                    onBackPressed()
+                }
+                else if (p0!!.arg1 == NAME_EXIST) {
                     Toast.makeText(ctx, resources.getString(R.string.name_already_exists), 10000).show()
+                }
+                else {
+                    Toast.makeText(ctx, resources.getString(R.string.headword_missing), 10000).show()
                 }
                 return false
             }
@@ -420,22 +459,46 @@ class WordViewEditKot : AppCompatActivity() {
 
         Thread(object : Runnable {
             override fun run() {
-                if (item!!.itemId == R.id.action_add_word) {
+                if (headwordField!!.text.toString().isEmpty()) {
+                    msg.arg1 = HEADWORD_MISSING
+                }
+                else {
                     word!!.headword = headwordField!!.text.toString()
                     word!!.sound = if ((findViewById(R.id.play_button) as Button).isEnabled == false ) null else audioFileIntoByte()
                     word!!.image = if (imgWord == null) null else imageIntoByte()
                     word!!.note = noteField!!.text.toString()
-
-                    if (word!!.update() > 0) {
-                        msg.arg1 = 0
+                    val log : Int
+                    if (action == UPDATE_WORD) {
+                        log = word!!.update()
                     }
                     else {
-                        msg.arg1 = 1
+                        log = word!!.save()
                     }
-                    handler.sendMessage(msg)
+                    if (log > 0) {
+                        for (tr in translations!!) {
+                            val wordFrom = WordSQLITE(ctx, headword = tr.headword, idDictionary = tr.idDictionary, note = tr.note)
+                            wordFrom.save()
+                            val translate = TranslateSQLITE(ctx, word, wordFrom)
+                            translate.save()
+                        }
+                        for (tr in translationsRemoveList) {
+                            val tr = TranslateSQLITE(ctx, word, tr)
+                            tr.delete()
+                        }
+                        if (action == UPDATE_WORD) {
+                            msg.arg1 = UPDATE_SUCCESS
+                        }
+                        else {
+                            msg.arg1 = CREATE_SUCCESS
+                        }
+                    }
+                    else {
+                        msg.arg1 = NAME_EXIST
+                    }
                 }
+                handler.sendMessage(msg)
             }
-        }).start()
+    }).start()
 
         return super.onOptionsItemSelected(item)
     }
@@ -443,6 +506,12 @@ class WordViewEditKot : AppCompatActivity() {
     companion object {
         private val RESULT_LOAD_IMG = 1
         private val MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 2
+        private val NEW_WORD = true
+        private val UPDATE_WORD = false
+        private val UPDATE_SUCCESS = 0
+        private val CREATE_SUCCESS = 1
+        private val NAME_EXIST = 2
+        private val HEADWORD_MISSING = 3
         private val FILE_NAME_SOUND = "audiorecord"
         private val FILE_NAME_EXTENSION = "3gp"
     }

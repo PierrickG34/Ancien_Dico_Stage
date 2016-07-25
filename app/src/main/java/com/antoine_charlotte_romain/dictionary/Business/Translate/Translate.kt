@@ -12,4 +12,8 @@ open class Translate(wordInLang: Word?, wordOutLang: Word?) {
     var wordInLang = wordInLang
     var wordOutLang = wordOutLang
 
+    override fun equals(other: Any?): Boolean {
+        val t = other as Translate
+        return this.wordInLang!!.equals(t.wordInLang) && this.wordOutLang!!.equals(t.wordOutLang)
+    }
 }

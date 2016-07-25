@@ -803,7 +803,7 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
         val size = Point()
         display.getSize(size)
 
-        val pvhY = PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, (-(size.y * applicationContext.resources.getInteger(R.integer.floating_menu_translation) / 100) * i) as Float)
+        val pvhY = PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, (-(size.y * applicationContext.resources.getInteger(R.integer.floating_menu_translation) / 100) * i).toFloat())
         val pvhsX = PropertyValuesHolder.ofFloat(View.SCALE_X, 1f)
         val pvhsY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f)
 

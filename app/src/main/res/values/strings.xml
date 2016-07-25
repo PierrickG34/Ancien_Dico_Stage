@@ -144,4 +144,5 @@
     <string name="succes_update_word">Word succesfully updated</string>
     <string name="what_do_you_want">What do you want to do ?</string>
     <string name="no_image">No image</string>
+    <string name="headword_missing">Headword missing</string>
 </resources>
