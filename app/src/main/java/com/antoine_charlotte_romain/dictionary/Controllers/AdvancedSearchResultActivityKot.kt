@@ -55,7 +55,9 @@ class AdvancedSearchResultActivityKot : AppCompatActivity() {
             // find id of the dictionary
             val id: Long
             val ddm = DictionarySQLITE(this)
-            if(!dico.equals("All")) {       // Search in a particular dictionary
+            //if( ( (!dico.equals("All")).and(!dico.equals("Tous")) ) ) {
+            if( !dico.equals(this.getResources().getString(R.string.allDico))) {
+                // Search in a particular dictionary
                 id = ddm.getIdByName(dico)
             }
             else{                           // Search in all the dictionaries
@@ -78,12 +80,11 @@ class AdvancedSearchResultActivityKot : AppCompatActivity() {
                     var words : MutableList<Word>
                     if(id == 0L) {
                         results = wdm!!.selectNoteOrHeadword(begin, middle,end) // Return all the words corresponding to the Note search and headword search
-                        words = wdm!!.selectHeadword(begin, middle, end)
                     }
                     else{
                         results = wdm!!.selectNoteOrHeadwordByIdDico(begin, middle,end, id)
-                        words = wdm!!.selectHeadwordByIdDico(begin, middle, end, id)
                     }
+                    words = wdm!!.selectHeadword(begin, middle, end)
                     var resultTrans: MutableList<Word>? = mutableListOf()
                     if (!words.isEmpty()) {     // if the search by Headword doesn't return an empty array
                         var idIt = words!!.iterator()
@@ -113,12 +114,8 @@ class AdvancedSearchResultActivityKot : AppCompatActivity() {
                 }
                 else if (searchOption == MainActivityKot.MEANING_ONLY) { // Search by translation
                     var words : MutableList<Word>
-                    if(id == 0L) {
-                        words = wdm!!.selectHeadword(begin, middle, end) // return all the word wich contain middle or begin by begin or end by end in all dictionary
-                    }
-                    else{
-                        words = wdm!!.selectHeadwordByIdDico(begin, middle, end, id)// return all the word wich contain middle or begin by begin or end by end in all dictionary
-                    }
+                    words = wdm!!.selectHeadword(begin, middle, end) // return all the word wich contain middle or begin by begin or end by end in all
+                    //Log.d("Part_Trans_word","Result 2 - ${words}")
                     if (!words.isEmpty()) { // if it found words
                         //val idWord = (words.component1()).idWord // get the id of the word found
                         var idIt = words!!.iterator()
@@ -229,7 +226,7 @@ class AdvancedSearchResultActivityKot : AppCompatActivity() {
                     }
                 }
             }
-            Log.d("ParWholeMean","$results")
+            Log.d("AdvancedSearchResultActivity - Result","$results")
 
         }
 
