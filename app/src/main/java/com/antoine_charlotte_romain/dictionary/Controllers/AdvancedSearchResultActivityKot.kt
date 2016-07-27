@@ -20,8 +20,7 @@ import com.antoine_charlotte_romain.dictionary.business.dictionary.DictionarySQL
 import com.antoine_charlotte_romain.dictionary.business.word.Word
 import com.antoine_charlotte_romain.dictionary.business.word.WordSQLITE
 import com.dicosaure.Business.Translate.TranslateSQLITE
-
-import java.util.ArrayList
+import java.util.*
 
 class AdvancedSearchResultActivityKot : AppCompatActivity() {
 
@@ -229,6 +228,7 @@ class AdvancedSearchResultActivityKot : AppCompatActivity() {
                     }
                 }
             }
+ 
             Log.d("ParWholeMean","$results")
 
         }

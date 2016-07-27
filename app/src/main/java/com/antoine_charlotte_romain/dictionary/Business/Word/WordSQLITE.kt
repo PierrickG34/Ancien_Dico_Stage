@@ -866,4 +866,5 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         }
         return res
     }
+
 }
