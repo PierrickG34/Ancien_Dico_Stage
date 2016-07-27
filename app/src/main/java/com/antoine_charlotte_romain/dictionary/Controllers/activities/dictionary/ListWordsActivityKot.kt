@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
+import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.view.animation.OvershootInterpolator
@@ -249,6 +250,7 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
      * Function that load all the words of a dictionary from the database and show them on the listView
      */
     private fun initListView() {
+
         this.wdm = WordSQLITE(this.applicationContext)
         val select: Boolean
 
@@ -264,6 +266,7 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
             this.exportText!!.setVisibility(View.GONE)
             this.supportActionBar!!.setTitle(R.string.allDico)
             select = false
+            Log.d("ListWordActivity" , "LamaResult - All dico")
         }
         else {
             val ddm = DictionarySQLITE(this.applicationContext,this.selectedDictionary!!.inLang , this.selectedDictionary!!.outLang, this.selectedDictionary!!.idDictionary)
@@ -291,7 +294,7 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
      */
     override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
         if (!this.isOpen) {
-            this.modify(position)
+            this.viewWord(position)
         }
     }
 
@@ -328,7 +331,6 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
         if (this.isOpen) {
             showFloatingMenu(view)
         }
-        //val newWordIntent = Intent(this, WordViewKot::class.java)
         val newWordIntent = Intent(this, WordViewEditKot::class.java)
 
         newWordIntent.putExtra(MainActivityKot.EXTRA_DICTIONARY, this.selectedDictionary)
@@ -510,6 +512,30 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
         //TODO
         //val wordDetailIntent = Intent(this, WordViewKot::class.java)
         val wordDetailIntent = Intent(this, WordViewEditKot::class.java)
+
+        wordDetailIntent.putExtra(MainActivityKot.EXTRA_WORD, this.myWordsList[position])
+        if (this.selectedDictionary != null) {
+            wordDetailIntent.putExtra(MainActivityKot.EXTRA_DICTIONARY, selectedDictionary)
+        } else {
+            this.ddm = DictionarySQLITE(ctx = applicationContext, id = myWordsList[position].idDictionary)
+            this.ddm!!.read()
+            wordDetailIntent.putExtra(MainActivityKot.EXTRA_DICTIONARY, this.ddm!! as Dictionary)
+        }
+
+        startActivityForResult(wordDetailIntent, DELETE_WORD)
+
+        if (this.filterWords!!.getText().toString().trim { it <= ' ' }.length > 0) {
+            this.filterWords!!.setText("")
+        }
+    }
+
+    /**
+     * This function launches the view details of a word and allows to modify it
+     * @param position the position in the listView of the word the user want to see more details or to modify
+     */
+    private fun viewWord(position: Int) {
+        //TODO
+        val wordDetailIntent = Intent(this, WordViewKot::class.java)
 
         wordDetailIntent.putExtra(MainActivityKot.EXTRA_WORD, this.myWordsList[position])
         if (this.selectedDictionary != null) {
@@ -780,7 +806,7 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
         val size = Point()
         display.getSize(size)
 
-        val pvhY = PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, (-(size.y * applicationContext.resources.getInteger(R.integer.floating_menu_translation) / 100) * i) as Float)
+        val pvhY = PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, (-(size.y * applicationContext.resources.getInteger(R.integer.floating_menu_translation) / 100) * i).toFloat())
         val pvhsX = PropertyValuesHolder.ofFloat(View.SCALE_X, 1f)
         val pvhsY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f)
 

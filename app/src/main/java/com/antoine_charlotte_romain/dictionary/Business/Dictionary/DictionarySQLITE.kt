@@ -3,7 +3,6 @@ package com.antoine_charlotte_romain.dictionary.business.dictionary
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import android.util.Log
 import com.antoine_charlotte_romain.dictionary.DataModel.DataBaseHelperKot
 
 import com.antoine_charlotte_romain.dictionary.Utilities.StringsUtility
@@ -66,6 +65,25 @@ class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String?
                 .exec {
                     while(this.moveToNext()) {
                         res.add(Dictionary(id = this.getString(this.getColumnIndex("id")),
+                                inLang = this.getString(this.getColumnIndex("inLang")),
+                                outLang = this.getString(this.getColumnIndex("outLang"))))
+                    }
+                }
+        return res
+    }
+
+    /**
+     * Select the dictionary in the database. If the selected word is a translation this is the dico 0
+     * @return List<Dictionary> a list who contains all dictionaries.
+     */
+    fun select(id : String ): Dictionary {
+        var res = Dictionary(id = "0", inLang = "...", outLang = "...")
+        val c = this.db.select(DictionarySQLITE.DB_TABLE)
+                .where("""${DictionarySQLITE.DB_COLUMN_ID} == ${id}""")
+                .orderBy(DictionarySQLITE.DB_COLUMN_INLANG)
+                .exec {
+                    while(this.moveToNext()) {
+                        res = (Dictionary(id = this.getString(this.getColumnIndex("id")),
                                 inLang = this.getString(this.getColumnIndex("inLang")),
                                 outLang = this.getString(this.getColumnIndex("outLang"))))
                     }
@@ -164,9 +182,11 @@ class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String?
                 while (this.moveToNext()) {
                     inlang = this.getString(this.getColumnIndex("inLang"))
                     outlang = this.getString(this.getColumnIndex("outLang"))
-                    if ("""${inlang} -> ${outlang}""" == name) {
+
+                    val currentName =  """${inlang} - ${outlang}""".toUpperCase()
+
+                    if (currentName == name) {
                         id = (this.getString(this.getColumnIndex("id")).toLong())
-                        Log.d("mytag2", "$id")
                     }
                 }
             }

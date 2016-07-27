@@ -55,7 +55,7 @@
     <string name="list_words_activity">List</string>
     <string name="details">Details</string>
     <string name="headword">HeadWord :</string>
-    <string name="translation">Translation :</string>
+    <string name="translation">Translation / Meaning :</string>
     <string name="note">Note :</string>
     <string name="notes_only">Notes only</string>
     <string name="translation_meaning_only">Translation/Meaning only</string>
@@ -143,4 +143,6 @@
     <string name="succes_create_word">Word succesfully added</string>
     <string name="succes_update_word">Word succesfully updated</string>
     <string name="what_do_you_want">What do you want to do ?</string>
+    <string name="no_image">No image</string>
+    <string name="headword_missing">Headword missing</string>
 </resources>
