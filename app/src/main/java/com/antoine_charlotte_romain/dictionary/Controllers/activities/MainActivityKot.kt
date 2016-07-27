@@ -11,14 +11,13 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
+import android.view.LayoutInflater
 import android.view.View
-import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.DrawerAdapter
+import android.widget.AdapterView
 import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.PagerAdapterKot
-import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.ViewPagerAdapter
 import com.antoine_charlotte_romain.dictionary.Controllers.Lib.SlidingTabLayout
 import com.antoine_charlotte_romain.dictionary.Controllers.activities.about.AboutActivityKot
 import com.antoine_charlotte_romain.dictionary.Controllers.activities.language.SetLanguageKot
-import com.antoine_charlotte_romain.dictionary.DataModel.DataBaseHelper
 import com.antoine_charlotte_romain.dictionary.DataModel.DataBaseHelperKot
 import com.antoine_charlotte_romain.dictionary.R
 import org.jetbrains.anko.ctx
@@ -62,11 +61,6 @@ class MainActivityKot : AppCompatActivity() {
         val ALL_DATA = "allData"
     }
 
-    //var menuDrawerList: RecyclerView? = null
-    //var menuDrawerLayout: DrawerLayout? = null
-    private var myMenuDrawerToggle: ActionBarDrawerToggle? = null
-    var menuAdapter: DrawerAdapter? = null
-
     var addButton: FloatingActionButton? = null
         private set
 
@@ -78,10 +72,7 @@ class MainActivityKot : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         super.setContentView(R.layout.activity_main)
-        var db = DataBaseHelper(this)
         var d = DataBaseHelperKot(this.ctx)
-        //d.insertTest(this.ctx)
-        //d.imageTest(this.ctx)
 
         // Creating The Toolbar and setting it as the Toolbar for the activity
         this.toolbar = findViewById(R.id.tool_bar) as Toolbar?
@@ -139,94 +130,13 @@ class MainActivityKot : AppCompatActivity() {
             }
         })
 
-
-        //setupUI(findViewById(R.id.activity_main)!!)
-
         addButton = findViewById(R.id.add_button) as FloatingActionButton?
         rootLayout = findViewById(R.id.rootLayout) as CoordinatorLayout?
-//    }
-//
-//    override fun onPostCreate(savedInstanceState: Bundle?) {
-//        super.onPostCreate(savedInstanceState)
-//        // Sync the toggle state after onRestoreInstanceState has occurred.
-//        myMenuDrawerToggle!!.syncState()
-//    }
-//
-//    override fun onConfigurationChanged(newConfig: Configuration) {
-//        super.onConfigurationChanged(newConfig)
-//        myMenuDrawerToggle!!.onConfigurationChanged(newConfig)
-//    }
-//
-//    override fun onResume() {
-//        super.onResume()
-//        if (currentPage == HOME_FRAGMENT) {
-//            addButton!!.visibility = View.VISIBLE
-//        } else {
-//            addButton!!.visibility = View.GONE
-//        }
-//        adapter!!.notifyDataSetChanged()
-//    }
-//
-//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        menuInflater.inflate(R.menu.menu_main, menu)
-//        return true
-//    }
-//
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        val id = item.itemId
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true
-//        }
-//
-//        if (myMenuDrawerToggle!!.onOptionsItemSelected(item)) {
-//            return true
-//        }
-//
-//        return super.onOptionsItemSelected(item)
-//    }
-//
-//    fun setupUI(view: View) {
-//
-//        //Set up touch listener for non-text box views to hide keyboard.
-//        if (view !is EditText) {
-//
-//            view.setOnTouchListener { v, event ->
-//                KeyboardUtility.hideSoftKeyboard(this@MainActivityKot)
-//                false
-//            }
-//        }
-//
-//        //If a layout container, iterate over children and seed recursion.
-//        if (view is ViewGroup) {
-//
-//            for (i in 0..view.childCount - 1) {
-//
-//                val innerView = view.getChildAt(i)
-//
-//                setupUI(innerView)
-//            }
-//        }
-//    }
     }
 
     //Create menu settings
     fun initMenu() {
-        val menuTitles = arrayOf(getString(R.string.language), getString(R.string.about))
-        val menuIcons = intArrayOf(R.drawable.ic_language_white_24dp, R.drawable.ic_info_white_24dp)
         val menuDrawerLayout = findViewById(R.id.activity_main) as DrawerLayout?
-        val menuDrawerList = findViewById(R.id.left_drawer) as RecyclerView?
-
-        // Set the adapter for the recycler view of the menu settings
-        this.menuAdapter = DrawerAdapter(menuTitles, menuIcons)
-        menuDrawerList!!.adapter = this.menuAdapter
-        val layoutManager = LinearLayoutManager(this)
-        menuDrawerList!!.layoutManager = layoutManager
 
         //Add listener when the menu is open or close
         val menuDrawerToggle = object : ActionBarDrawerToggle(this, menuDrawerLayout, toolbar, R.string.open, R.string.close) {
@@ -246,17 +156,16 @@ class MainActivityKot : AppCompatActivity() {
 
         menuDrawerLayout!!.addDrawerListener(menuDrawerToggle)
         menuDrawerToggle!!.syncState()
-
-        // Set the onItemClickListener of the menu settings
-        this.menuAdapter!!.SetOnItemClickListener { v, position ->
-            // Languages position
-            if (position == 1) {
-                val languageIntent = Intent(applicationContext, SetLanguageKot::class.java)
-                startActivity(languageIntent)
-            } else if (position == 2) {
-                val aboutIntent = Intent(applicationContext, AboutActivityKot::class.java)
-                startActivity(aboutIntent)
-            }// About position
-        }
     }
+
+    fun launchLanguage(v : View) {
+        val languageIntent = Intent(applicationContext, SetLanguageKot::class.java)
+        this.startActivity(languageIntent)
+    }
+
+    fun launchAbout(v : View) {
+        val aboutIntent = Intent(applicationContext, AboutActivityKot::class.java)
+        this.startActivity(aboutIntent)
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.antoine_charlotte_romain.dictionary.Utilities;
+package com.antoine_charlotte_romain.dictionary.utilities;
 
 import java.text.Normalizer;
 import java.text.Normalizer.Form;

@@ -1,7 +1,6 @@
 package com.antoine_charlotte_romain.dictionary.Controllers.Lib;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -16,8 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.PagerAdapterKot;
-import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.ViewPagerAdapter;
-import com.antoine_charlotte_romain.dictionary.R;
 
 /**
  * To be used with ViewPager to provide a tab indicator component which give constant feedback as to

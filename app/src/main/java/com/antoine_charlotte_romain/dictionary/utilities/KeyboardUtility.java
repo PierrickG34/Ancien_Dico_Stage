@@ -1,4 +1,4 @@
-package com.antoine_charlotte_romain.dictionary.Utilities;
+package com.antoine_charlotte_romain.dictionary.utilities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.view.inputmethod.InputMethodManager;

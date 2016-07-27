@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import com.antoine_charlotte_romain.dictionary.Controllers.Adapter.SearchDateAdapterKot
 import com.antoine_charlotte_romain.dictionary.Controllers.activities.MainActivityKot
+import com.antoine_charlotte_romain.dictionary.Controllers.activities.dictionary.ListWordsActivityKot
 import com.antoine_charlotte_romain.dictionary.business.dictionary.DictionarySQLITE
 
 /**
@@ -353,7 +354,7 @@ class HistoryFragmentKot(): Fragment() {
      */
     fun seeWord(position: Int) {
         // TODO Look ListWordActivityKot.kt pour le faire.
-        val wordDetailIntent = Intent(activity, WordActivityKot::class.java)
+        val wordDetailIntent = Intent(activity, ListWordsActivityKot::class.java)
 
         wordDetailIntent.putExtra(MainActivityKot.EXTRA_WORD, mySearchDateList!!.get(position))
         var dictionaryModel: DictionarySQLITE? = DictionarySQLITE(this.context)

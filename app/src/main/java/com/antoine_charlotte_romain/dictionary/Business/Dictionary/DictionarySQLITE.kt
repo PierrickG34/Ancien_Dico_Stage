@@ -1,16 +1,14 @@
 package com.antoine_charlotte_romain.dictionary.business.dictionary
 
 import android.content.Context
-import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import com.antoine_charlotte_romain.dictionary.DataModel.DataBaseHelperKot
-
-import com.antoine_charlotte_romain.dictionary.Utilities.StringsUtility
-
 import com.antoine_charlotte_romain.dictionary.business.word.Word
 import com.antoine_charlotte_romain.dictionary.business.word.WordSQLITE
-
-import org.jetbrains.anko.db.*
+import org.jetbrains.anko.db.delete
+import org.jetbrains.anko.db.insert
+import org.jetbrains.anko.db.select
+import org.jetbrains.anko.db.update
 import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*

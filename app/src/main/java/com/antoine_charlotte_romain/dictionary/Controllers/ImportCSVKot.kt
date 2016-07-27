@@ -3,19 +3,15 @@ package com.antoine_charlotte_romain.dictionary.Controllers
 import android.app.ProgressDialog
 import android.content.Context
 import android.net.Uri
-import android.os.Handler
 import android.util.Log
-import com.antoine_charlotte_romain.dictionary.DataModel.WordDataModel
 import com.antoine_charlotte_romain.dictionary.R
-import com.antoine_charlotte_romain.dictionary.business.word.WordSQLITE
-import com.antoine_charlotte_romain.dictionary.business.dictionary.Dictionary
 import com.antoine_charlotte_romain.dictionary.business.dictionary.DictionarySQLITE
 import com.antoine_charlotte_romain.dictionary.business.word.Word
+import com.antoine_charlotte_romain.dictionary.business.word.WordSQLITE
 import com.dicosaure.Business.Translate.TranslateSQLITE
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
-import java.util.*
 
 /**
  * Created by dineen on 30/06/2016.

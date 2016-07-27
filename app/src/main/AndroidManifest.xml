@@ -34,16 +34,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Controllers.ListWordsActivity"
-            android:label="@string/list_words_activity"
-            android:launchMode="singleTop"
-            android:parentActivityName=".Controllers.activities.MainActivityKot"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Controllers.activities.MainActivityKot" />
-        </activity>
-        <activity
             android:name=".Controllers.activities.dictionary.ListWordsActivityKot"
             android:label="@string/list_words_activity"
             android:launchMode="singleTop"
@@ -70,15 +60,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Controllers.activities.MainActivityKot" />
-        </activity>
-        <activity
-            android:name=".Controllers.CSVExportActivity"
-            android:label="@string/title_activity_csvexport"
-            android:parentActivityName=".Controllers.ListWordsActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Controllers.ListWordsActivity" />
         </activity>
         <activity
             android:name=".Controllers.CSVExportKot"

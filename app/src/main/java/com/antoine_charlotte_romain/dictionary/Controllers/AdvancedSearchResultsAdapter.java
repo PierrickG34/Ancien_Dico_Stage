@@ -1,4 +1,4 @@
-package com.antoine_charlotte_romain.dictionary.Controllers.Adapter;
+package com.antoine_charlotte_romain.dictionary.Controllers;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,44 +7,39 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.antoine_charlotte_romain.dictionary.business.old.SearchDate;
 import com.antoine_charlotte_romain.dictionary.R;
+import com.antoine_charlotte_romain.dictionary.business.word.Word;
 
 import java.util.ArrayList;
 
-/**
- * Created by summer1 on 30/06/2015.
- */
-public class SearchDateAdapter extends ArrayAdapter<SearchDate> {
+public class AdvancedSearchResultsAdapter extends ArrayAdapter<Word> {
 
     private Context context;
     private int layoutResourceId;
-    private ArrayList<SearchDate> asd = null;
+    private ArrayList<Word> aw = null;
 
     /**
      * This function creates a custom ArrayAdapter of words
-     *
-     * @param context
-     * @param resource
-     * @param data
+     * @param context the context of the application
+     * @param resource the layout to inflate
+     * @param data the ArrayList of words
      */
-    public SearchDateAdapter(Context context, int resource, ArrayList<SearchDate> data) {
+    public AdvancedSearchResultsAdapter(Context context, int resource, ArrayList<Word> data) {
         super(context, resource, data);
         this.layoutResourceId = resource;
         this.context = context;
-        this.asd = data;
+        this.aw = data;
     }
 
     @Override
     public int getCount() {
-
-        return asd.size();
+        return aw.size();
     }
 
     @Override
-    public SearchDate getItem(int position) {
+    public Word getItem(int position) {
 
-        return asd.get(position);
+        return aw.get(position);
     }
 
     @Override
@@ -54,18 +49,17 @@ public class SearchDateAdapter extends ArrayAdapter<SearchDate> {
     }
 
     /**
-     * This function is used to show the word in the listView each word in a custom layout "row_word"
-     *
-     * @param position
-     * @param convertView
-     * @param parent
-     * @return
+     * This function is used to show the word in the listView each word in a custom layout
+     * @param position the position of the item the user is interacting with
+     * @param convertView the rowView
+     * @param parent the listView
+     * @return the rowView completed
      */
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
         // Get the data item for this position
-        SearchDate sd = getItem(position);
+        final Word word = getItem(position);
 
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
@@ -73,12 +67,12 @@ public class SearchDateAdapter extends ArrayAdapter<SearchDate> {
         }
 
         // Lookup view for data population
-        TextView textHeadword = (TextView) convertView.findViewById(R.id.textHeadword);
-        TextView textDate  = (TextView) convertView.findViewById(R.id.textDate);
+        TextView mainItem = (TextView) convertView.findViewById(R.id.textHeader);
+        TextView subItem = (TextView) convertView.findViewById(R.id.textSub);
 
         // Populate the data into the template view using the data object
-        textHeadword.setText(sd.getWord().getHeadword());
-        textDate.setText(sd.getDate());
+        mainItem.setText(word.getHeadword());
+        //subItem.setText(word.getTranslation());
 
         // Return the completed view to render on screen
         return convertView;

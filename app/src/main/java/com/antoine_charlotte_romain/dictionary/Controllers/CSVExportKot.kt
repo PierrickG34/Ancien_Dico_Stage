@@ -21,14 +21,13 @@ import android.view.WindowManager
 import android.widget.EditText
 import com.antoine_charlotte_romain.dictionary.Controllers.activities.MainActivityKot
 import com.antoine_charlotte_romain.dictionary.R
-import com.antoine_charlotte_romain.dictionary.Utilities.KeyboardUtility
 import com.antoine_charlotte_romain.dictionary.business.dictionary.Dictionary
 import com.antoine_charlotte_romain.dictionary.business.dictionary.DictionarySQLITE
 import com.antoine_charlotte_romain.dictionary.business.word.Word
 import com.antoine_charlotte_romain.dictionary.business.word.WordSQLITE
+import com.antoine_charlotte_romain.dictionary.utilities.KeyboardUtility
 import net.rdrei.android.dirchooser.DirectoryChooserActivity
 import java.io.*
-import java.util.*
 
 /**
  * Created by dineen on 30/06/2016.

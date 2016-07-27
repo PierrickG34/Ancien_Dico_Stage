@@ -2,21 +2,15 @@ package  com.antoine_charlotte_romain.dictionary.business.word
 
 import android.content.ContentValues
 import android.content.Context
-import android.database.Cursor
 import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 import com.antoine_charlotte_romain.dictionary.DataModel.DataBaseHelperKot
-import com.antoine_charlotte_romain.dictionary.DataModel.WordDataModel
-import com.antoine_charlotte_romain.dictionary.Utilities.StringsUtility
-import com.antoine_charlotte_romain.dictionary.business.dictionary.Dictionary
-import com.antoine_charlotte_romain.dictionary.business.dictionary.DictionarySQLITE
+import com.antoine_charlotte_romain.dictionary.utilities.StringsUtility
 import com.dicosaure.Business.Translate.TranslateSQLITE
-import org.jetbrains.anko.db.classParser
+import org.jetbrains.anko.db.SqlOrderDirection
 import org.jetbrains.anko.db.delete
-import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.db.select
-import org.jetbrains.anko.db.*
-import java.sql.Blob
+import org.jetbrains.anko.db.update
 import java.sql.Date
 import java.text.SimpleDateFormat
 import java.util.*
