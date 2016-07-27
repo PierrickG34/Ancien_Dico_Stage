@@ -6,7 +6,7 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "com.antoine_charlotte_romain.dictionary"
+        applicationId "ie.csis.dicosaure"
         minSdkVersion 21
         targetSdkVersion 21
         versionCode 1

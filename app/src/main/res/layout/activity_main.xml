@@ -4,7 +4,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Controllers.activities.MainActivityKot">
+    tools:context="ie.csis.dicosaure.Controllers.activities.MainActivity">
 
         <!-- The main content view -->
         <LinearLayout
@@ -18,7 +18,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"/>
 
-            <com.antoine_charlotte_romain.dictionary.Controllers.Lib.SlidingTabLayout
+            <ie.csis.dicosaure.Controllers.Lib.SlidingTabLayout
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
