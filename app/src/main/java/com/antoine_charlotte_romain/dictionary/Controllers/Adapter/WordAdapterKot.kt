@@ -95,7 +95,9 @@ class WordAdapterKot(context: Context, resource: Int, data: ArrayList<Word>, sel
             subItem.setText(wordModel.getAllTranslationText())
         }
         else {
-            subItem.setText(wordModel.headword)
+            //subItem.setText(wordModel.headword)
+            // I don't know why the writer of this code don't add the translations ? work well with translation...
+            subItem.setText(wordModel.getAllTranslationText())
         }
 
         if (this.layoutResourceId == R.layout.row_word) {

@@ -159,11 +159,13 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         var res: MutableList<Word> = ArrayList<Word>()
         var formatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
         val c = this.db.select(WordSQLITE.DB_TABLE)
-                .where("""${WordSQLITE.DB_COLUMN_ID_DICTIONARY} != '0' AND (${WordSQLITE.DB_COLUMN_DATE} != 'null')""")
+//                .where("""${WordSQLITE.DB_COLUMN_ID_DICTIONARY} != '0' AND (${WordSQLITE.DB_COLUMN_DATE} != 'null')""")
+                .where("""${WordSQLITE.DB_COLUMN_ID_DICTIONARY} != '0'""")
                 .orderBy(WordSQLITE.DB_COLUMN_HEADWORD)
                 .exec {
             while (this.moveToNext()) {
                 var sqlDate : java.sql.Date? = null
+
                 if (!this.isNull(this.getColumnIndex("dateView"))) {
                     var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
                     sqlDate = java.sql.Date(utilDate.getTime())
