@@ -41,11 +41,15 @@ open class Word(idWord: String? = null, note : String? = null, image : ByteArray
     }
 
     /**
-     * Check i
+     * Check if the dictionary are the same with the names
      */
     override fun equals(other: Any?): Boolean {
         val word = other!! as Word
         return word.headword == this.headword && word.idDictionary == this.idDictionary
     }
+
+//    fun getHeadword() : String {
+//        return this.headword
+//    }
 
 }

@@ -254,8 +254,6 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
      */
     private fun initListView() {
 
-        Log.d("ListWordsActivity","InitListView")
-
         this.wdm = WordSQLITE(this.applicationContext)
         val select: Boolean
 
@@ -271,6 +269,7 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
             this.exportText!!.setVisibility(View.GONE)
             this.supportActionBar!!.setTitle(R.string.allDico)
             select = false
+            Log.d("ListWordActivity" , "LamaResult - All dico")
         }
         else {
             val ddm = DictionarySQLITE(this.applicationContext,this.selectedDictionary!!.inLang , this.selectedDictionary!!.outLang, this.selectedDictionary!!.idDictionary)
