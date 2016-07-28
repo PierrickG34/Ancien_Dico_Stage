@@ -9,13 +9,11 @@ import android.support.v4.app.Fragment
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
-import android.util.Log
 import android.view.*
 import android.widget.*
 import android.widget.Toast.makeText
 import ie.csis.dicosaure.Controllers.Adapter.SearchDateAdapter
 import ie.csis.dicosaure.Controllers.activities.MainActivity
-import ie.csis.dicosaure.Controllers.activities.dictionary.ListWordsActivity
 import ie.csis.dicosaure.business.dictionary.DictionarySQLITE
 import ie.csis.dicosaure.business.word.Word
 import ie.csis.dicosaure.business.word.WordSQLITE
@@ -193,7 +191,8 @@ class HistoryFragment(): Fragment() {
 
             // Call the method that allows to load more word
             private fun isScrollCompleted() {
-                if (this.currentVisibleItemCount > 0 && this.currentScrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                // the "historySearch!!.text.length == 0" is for checking if we are not making research in history.
+                if (this.currentVisibleItemCount > 0 && this.currentScrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && historySearch!!.text.length == 0) {
                     val lastInScreen = currentFirstVisibleItem + currentVisibleItemCount
                     if (lastInScreen == mySearchDateList!!.size && !loadingMore && !allLoaded) {
                         progressDialog!!.show()
