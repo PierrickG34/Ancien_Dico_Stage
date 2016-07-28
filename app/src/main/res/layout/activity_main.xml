@@ -4,7 +4,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ie.csis.dicosaure.Controllers.activities.MainActivity">
+    tools:context=".activities.MainActivity">
 
         <!-- The main content view -->
         <LinearLayout
@@ -18,7 +18,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"/>
 
-            <ie.csis.dicosaure.Controllers.Lib.SlidingTabLayout
+            <ie.csis.dicosaure.lib.SlidingTabLayout
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

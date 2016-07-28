@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="ie.csis.dicosaure.Controllers.AdvancedSearchResultActivity"
+    tools:context=".AdvancedSearchResultActivity"
     android:id="@+id/advanced_search">
 
     <include android:id="@+id/tool_bar"
