@@ -106,7 +106,7 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         val c = this.db.select(WordSQLITE.DB_TABLE)
                 .where("""(${WordSQLITE.DB_COLUMN_DATE} != 'null') AND ${WordSQLITE.DB_COLUMN_HEADWORD} LIKE "${search}%"
                     OR ${WordSQLITE.DB_COLUMN_DATE} LIKE "%${search}%" """)
-                .orderBy(WordSQLITE.DB_COLUMN_DATE ,SqlOrderDirection.DESC)
+                .orderBy(WordSQLITE.DB_COLUMN_DATE , SqlOrderDirection.DESC)
                 .exec {
             while (this.moveToNext()) {
 //                var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
@@ -256,7 +256,6 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
             }
 
         }
-        Log.d("WordSQLite", "Result Lama ${translation}")
         return translation
     }
     /**
