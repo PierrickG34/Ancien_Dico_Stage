@@ -71,16 +71,6 @@ class AdvancedSearchResultsAdapterKot (context: Context, private val layoutResou
         mainItem.setText(word.headword)
         subItem.setText(wordModel.getAllTranslationText())
 
-       // subItem.setText(word.getTranslation())
-       // Exemple de WordAdapterKot.kt
-//        if (this.selectedDictionary) {
-//            subItem.setText(wordModel.getAllTranslationText())
-//        }
-//        else {
-//            subItem.setText(wordModel.headword)
-//        }
-
-
         // Return the completed view to render on screen
         return convertView
     }

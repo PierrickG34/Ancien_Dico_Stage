@@ -19,6 +19,7 @@ import org.jetbrains.anko.ctx
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.util.*
 
 /**
  * Created by dineen on 11/07/2016.
@@ -37,11 +38,16 @@ class WordViewKot : AppCompatActivity() {
         this.supportActionBar!!.setTitle(R.string.details)
         this.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
+        val currentDate = java.sql.Date(Calendar.getInstance().getTime().getTime())
+
         //Set the word and dictionary, come from the segue
         this.word = this.intent.getSerializableExtra(MainActivityKot.EXTRA_WORD) as Word
         var wordDB = WordSQLITE(this.applicationContext, (this.word as Word).idWord, (this.word as Word).note,
-                (this.word as Word).image, (this.word as Word).sound, (this.word as Word).headword, (this.word as Word).dateView,
+                (this.word as Word).image, (this.word as Word).sound, (this.word as Word).headword, currentDate,
                 (this.word as Word).idDictionary)
+        wordDB.update()
+
+
         var dictionary = this.intent.getSerializableExtra(MainActivityKot.EXTRA_DICTIONARY) as Dictionary
 
         //Set fields

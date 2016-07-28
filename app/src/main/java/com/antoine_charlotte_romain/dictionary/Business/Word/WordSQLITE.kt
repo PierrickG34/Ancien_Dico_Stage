@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
+import android.util.Log
 import com.antoine_charlotte_romain.dictionary.DataModel.DataBaseHelperKot
 import com.antoine_charlotte_romain.dictionary.DataModel.WordDataModel
 import com.antoine_charlotte_romain.dictionary.Utilities.StringsUtility
@@ -434,6 +435,8 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
      * @param idDictionaryNew the new dictionnary id  that will replace the old one. If it is null, nothing is done.
      * @return  an int which indicates if the Word had been updated in the database
      */
+
+    // TODO delete this method after the refractoring of Kevin
     fun update(noteNew : String? = null,
                imageNew : ByteArray? = null, soundNew : ByteArray? = null, headwordNew: String,
                dateViewNew: Date? = null, idDictionaryNew: String? = null): Int {

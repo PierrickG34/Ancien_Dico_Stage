@@ -17,7 +17,6 @@ import android.support.v7.widget.Toolbar
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
-import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.view.animation.OvershootInterpolator
@@ -266,7 +265,6 @@ class ListWordsActivityKot() : AppCompatActivity(), AdapterView.OnItemClickListe
             this.exportText!!.setVisibility(View.GONE)
             this.supportActionBar!!.setTitle(R.string.allDico)
             select = false
-            Log.d("ListWordActivity" , "LamaResult - All dico")
         }
         else {
             val ddm = DictionarySQLITE(this.applicationContext,this.selectedDictionary!!.inLang , this.selectedDictionary!!.outLang, this.selectedDictionary!!.idDictionary)

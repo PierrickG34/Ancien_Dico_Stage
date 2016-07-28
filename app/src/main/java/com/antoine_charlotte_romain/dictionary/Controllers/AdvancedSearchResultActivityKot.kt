@@ -20,8 +20,8 @@ import com.antoine_charlotte_romain.dictionary.business.dictionary.DictionarySQL
 import com.antoine_charlotte_romain.dictionary.business.word.Word
 import com.antoine_charlotte_romain.dictionary.business.word.WordSQLITE
 import com.dicosaure.Business.Translate.TranslateSQLITE
-
-import java.util.ArrayList
+import org.jetbrains.anko.ctx
+import java.util.*
 
 class AdvancedSearchResultActivityKot : AppCompatActivity() {
 
@@ -236,15 +236,17 @@ class AdvancedSearchResultActivityKot : AppCompatActivity() {
             myAdapter = AdvancedSearchResultsAdapterKot(this, R.layout.row_advanced_search_result, results!!)
             listResults!!.setAdapter(myAdapter)
 
-            listResults!!.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
+            listResults!!.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
                 val wordDetailIntent = Intent(this@AdvancedSearchResultActivityKot, WordViewKot::class.java)
-                wordDetailIntent.putExtra(MainActivityKot.EXTRA_WORD, results!!.get(position))
+
+                val wordClicked = results!!.get(position)
+                wordDetailIntent.putExtra(MainActivityKot.EXTRA_WORD, wordClicked)
 
                 val ddm = DictionarySQLITE(applicationContext)
                 wordDetailIntent.putExtra(MainActivityKot.EXTRA_DICTIONARY, ddm.select(results!!.get(position).idDictionary!!))
 
                 startActivity(wordDetailIntent)
-            })
+            }
 
         } else {
             val advancedSearchLayout = findViewById(R.id.advanced_search) as LinearLayout?
