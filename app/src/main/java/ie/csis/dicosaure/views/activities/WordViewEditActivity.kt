@@ -22,12 +22,12 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.*
 import android.widget.*
-import ie.csis.dicosaure.Controllers.R
 import ie.csis.dicosaure.model.dictionary.Dictionary
 import ie.csis.dicosaure.model.translate.Translate
 import ie.csis.dicosaure.model.translate.TranslateSQLITE
 import ie.csis.dicosaure.model.word.Word
 import ie.csis.dicosaure.model.word.WordSQLITE
+import ie.csis.dicosaure.views.R
 import org.jetbrains.anko.ctx
 import java.io.ByteArrayOutputStream
 import java.io.File

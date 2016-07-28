@@ -8,8 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import ie.csis.dicosaure.Controllers.R
 import ie.csis.dicosaure.model.word.Word
+import ie.csis.dicosaure.views.R
 
 /**
  * Created by summer1 on 30/06/2015.

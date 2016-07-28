@@ -19,13 +19,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.EditText
-import ie.csis.dicosaure.Controllers.R
-import ie.csis.dicosaure.views.activities.MainActivity
+import ie.csis.dicosaure.lib.KeyboardUtility
 import ie.csis.dicosaure.model.dictionary.Dictionary
 import ie.csis.dicosaure.model.dictionary.DictionarySQLITE
 import ie.csis.dicosaure.model.word.Word
 import ie.csis.dicosaure.model.word.WordSQLITE
-import ie.csis.dicosaure.lib.KeyboardUtility
+import ie.csis.dicosaure.views.R
+import ie.csis.dicosaure.views.activities.MainActivity
 import net.rdrei.android.dirchooser.DirectoryChooserActivity
 import java.io.*
 

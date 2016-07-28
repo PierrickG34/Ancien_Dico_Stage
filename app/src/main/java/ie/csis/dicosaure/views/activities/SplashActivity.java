@@ -3,10 +3,10 @@ package ie.csis.dicosaure.views.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
-import android.os.Handler;
 import android.os.Bundle;
+import android.os.Handler;
 
-import ie.csis.dicosaure.Controllers.R;
+import ie.csis.dicosaure.views.R;
 
 public class SplashActivity extends Activity {
 
@@ -19,7 +19,7 @@ public class SplashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        splashSound = MediaPlayer.create(SplashActivity.this,R.raw.splash);
+        splashSound = MediaPlayer.create(SplashActivity.this, R.raw.splash);
         splashSound.start();
         new Handler().postDelayed(new Runnable() {
             @Override

@@ -10,12 +10,10 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.View
-import ie.csis.dicosaure.views.adapters.PagerAdapter
 import ie.csis.dicosaure.lib.SlidingTabLayout
-import ie.csis.dicosaure.Controllers.R
-import ie.csis.dicosaure.views.activities.AboutActivityKot
-import ie.csis.dicosaure.views.activities.SetLanguageKot
 import ie.csis.dicosaure.model.database.DataBaseHelperKot
+import ie.csis.dicosaure.views.R
+import ie.csis.dicosaure.views.adapters.PagerAdapter
 import org.jetbrains.anko.ctx
 
 /**

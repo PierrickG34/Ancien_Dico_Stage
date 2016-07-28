@@ -10,11 +10,10 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import ie.csis.dicosaure.Controllers.R
-import ie.csis.dicosaure.views.activities.MainActivity
 import ie.csis.dicosaure.model.dictionary.Dictionary
 import ie.csis.dicosaure.model.word.Word
 import ie.csis.dicosaure.model.word.WordSQLITE
+import ie.csis.dicosaure.views.R
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException

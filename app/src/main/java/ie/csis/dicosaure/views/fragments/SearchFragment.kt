@@ -12,11 +12,11 @@ import android.view.*
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import ie.csis.dicosaure.Controllers.R
-import ie.csis.dicosaure.views.activities.MainActivity
 import ie.csis.dicosaure.model.dictionary.Dictionary
 import ie.csis.dicosaure.model.dictionary.DictionarySQLITE
+import ie.csis.dicosaure.views.R
 import ie.csis.dicosaure.views.activities.AdvancedSearchResultActivity
+import ie.csis.dicosaure.views.activities.MainActivity
 
 
 /**

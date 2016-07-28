@@ -4,11 +4,10 @@ import android.app.ProgressDialog
 import android.content.Context
 import android.net.Uri
 import android.util.Log
-import ie.csis.dicosaure.Controllers.R
-import ie.csis.dicosaure.model.translate.TranslateSQLITE
 import ie.csis.dicosaure.model.dictionary.DictionarySQLITE
-import ie.csis.dicosaure.model.word.Word
+import ie.csis.dicosaure.model.translate.TranslateSQLITE
 import ie.csis.dicosaure.model.word.WordSQLITE
+import ie.csis.dicosaure.views.R
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -85,20 +84,20 @@ class CSVImport {
                     // TODO remove this Log when we had make a loading screen
                     Log.d("ImportCsvKot", "Word Added : " + headword + " : " + translation)
 
-                    wTo = WordSQLITE(ctx = context, headword = headword, note = note, idDictionary = dicoID)
-                    if (wTo.save() < 0) {
-                        wTo.readByHeadWord()
+                    wFrom = WordSQLITE(ctx = context, headword = headword, note = note, idDictionary = dicoID)
+                    if (wFrom.save() < 0) {
+                        wFrom.readByHeadWord()
                         updateWords++
                     }
                     else {
                         addedWords++
                     }
                     if (translation.length > 0) {
-                        wFrom = WordSQLITE(ctx = context, headword = translation, note = "", idDictionary = "0")
-                        if (wFrom.save() < 0) {
-                            wFrom.readByHeadWord()
+                        wTo = WordSQLITE(ctx = context, headword = translation, note = "", idDictionary = "0")
+                        if (wTo.save() < 0) {
+                            wTo.readByHeadWord()
                         }
-                        var dtm = TranslateSQLITE(context, wTo, wFrom)
+                        var dtm = TranslateSQLITE(context, wFrom, wTo)
                         dtm.save()
                     }
                 }

@@ -7,15 +7,16 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.Gravity
-import android.widget.*
-import ie.csis.dicosaure.views.adapters.AdvancedSearchResultsAdapter
-import ie.csis.dicosaure.Controllers.R
-import ie.csis.dicosaure.views.activities.WordViewActivity
-import ie.csis.dicosaure.views.activities.MainActivity
-import ie.csis.dicosaure.model.translate.TranslateSQLITE
+import android.widget.AdapterView
+import android.widget.GridView
+import android.widget.LinearLayout
+import android.widget.TextView
 import ie.csis.dicosaure.model.dictionary.DictionarySQLITE
+import ie.csis.dicosaure.model.translate.TranslateSQLITE
 import ie.csis.dicosaure.model.word.Word
 import ie.csis.dicosaure.model.word.WordSQLITE
+import ie.csis.dicosaure.views.R
+import ie.csis.dicosaure.views.adapters.AdvancedSearchResultsAdapter
 
 class AdvancedSearchResultActivity : AppCompatActivity() {
 

@@ -10,8 +10,8 @@ import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.ImageButton
 import android.widget.TextView
-import ie.csis.dicosaure.Controllers.R
 import ie.csis.dicosaure.model.dictionary.Dictionary
+import ie.csis.dicosaure.views.R
 import java.util.*
 
 /**

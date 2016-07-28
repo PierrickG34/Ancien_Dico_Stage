@@ -2,18 +2,11 @@ package ie.csis.dicosaure.model.database
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.widget.Toast
-import ie.csis.dicosaure.Controllers.R
-import ie.csis.dicosaure.model.translate.TranslateSQLITE
 import ie.csis.dicosaure.model.dictionary.DictionarySQLITE
+import ie.csis.dicosaure.model.translate.TranslateSQLITE
 import ie.csis.dicosaure.model.word.WordSQLITE
 import org.jetbrains.anko.db.ManagedSQLiteOpenHelper
 import org.jetbrains.anko.db.dropTable
-import java.io.ByteArrayOutputStream
-import java.text.SimpleDateFormat
-import java.util.*
 
 /**
  * Created by dineen on 13/06/2016.

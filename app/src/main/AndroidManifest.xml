@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ie.csis.dicosaure.Controllers" >
+    package="ie.csis.dicosaure.views" >
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme" >
 
         <activity
-            android:name="ie.csis.dicosaure.views.activities.SplashActivity"
+            android:name=".activities.SplashActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -46,7 +46,7 @@
         </activity>
 
         <activity
-            android:name=".AdvancedSearchResultActivity"
+            android:name=".activities.AdvancedSearchResultActivity"
             android:label="@string/title_activity_advanced_search_result"
             android:parentActivityName=".activities.MainActivity"
             android:screenOrientation="portrait">
@@ -68,7 +68,7 @@
         <!-- external libraries -->
         <activity android:name="net.rdrei.android.dirchooser.DirectoryChooserActivity" />
         <activity
-            android:name=".activities.language.SetLanguageKot"
+            android:name=".activities.SetLanguageKot"
             android:label="@string/title_activity_language"
             android:parentActivityName=".activities.MainActivity"
             android:screenOrientation="portrait">
@@ -77,7 +77,7 @@
                 android:value=".activities.MainActivity" />
         </activity>
         <activity
-            android:name=".activities.about.AboutActivityKot"
+            android:name=".activities.AboutActivityKot"
             android:label="@string/about"
             android:parentActivityName=".activities.MainActivity"
             android:screenOrientation="portrait">
@@ -87,23 +87,23 @@
         </activity>
 
         <activity
-            android:name="ie.csis.dicosaure.views.WordViewEditActivity"
+            android:name=".activities.WordViewEditActivity"
             android:label="Word View"
             android:windowSoftInputMode="stateHidden"
-            android:parentActivityName=".WordViewActivity" >
+            android:parentActivityName=".activities.WordViewActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".WordViewActivity" />
+                android:value=".activities.WordViewActivity" />
         </activity>
 
         <activity
-            android:name=".WordViewActivity"
+            android:name=".activities.WordViewActivity"
             android:label="Word View"
             android:windowSoftInputMode="stateHidden"
-            android:parentActivityName=".WordViewActivity" >
+            android:parentActivityName=".activities.WordViewActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".WordViewActivity" />
+                android:value=".activities.WordViewActivity" />
         </activity>
 
     </application>

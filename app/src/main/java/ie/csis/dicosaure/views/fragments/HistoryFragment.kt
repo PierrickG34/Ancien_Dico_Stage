@@ -12,13 +12,13 @@ import android.text.TextWatcher
 import android.view.*
 import android.widget.*
 import android.widget.Toast.makeText
-import ie.csis.dicosaure.Controllers.R
-import ie.csis.dicosaure.views.adapters.SearchDateAdapter
-import ie.csis.dicosaure.views.activities.MainActivity
 import ie.csis.dicosaure.model.dictionary.DictionarySQLITE
 import ie.csis.dicosaure.model.word.Word
 import ie.csis.dicosaure.model.word.WordSQLITE
+import ie.csis.dicosaure.views.R
+import ie.csis.dicosaure.views.activities.MainActivity
 import ie.csis.dicosaure.views.activities.WordViewActivity
+import ie.csis.dicosaure.views.adapters.SearchDateAdapter
 import java.text.SimpleDateFormat
 import java.util.*
 

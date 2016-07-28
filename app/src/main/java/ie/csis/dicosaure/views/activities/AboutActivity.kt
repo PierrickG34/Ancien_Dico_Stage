@@ -3,10 +3,11 @@ package ie.csis.dicosaure.views.activities
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import ie.csis.dicosaure.Controllers.R
+import ie.csis.dicosaure.views.R
 
 /**
  * Created by dineen on 14/06/2016.
+ *
  */
 
 class AboutActivityKot : AppCompatActivity() {

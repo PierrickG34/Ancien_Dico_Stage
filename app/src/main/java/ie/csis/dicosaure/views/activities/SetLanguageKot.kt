@@ -6,9 +6,8 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.widget.ListView
 import android.widget.SimpleAdapter
-import ie.csis.dicosaure.Controllers.R
+import ie.csis.dicosaure.views.R
 import ie.csis.dicosaure.views.adapters.ItemClickListenerLanguage
-import ie.csis.dicosaure.views.activities.MainActivity
 import java.util.*
 
 /**

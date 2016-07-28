@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import ie.csis.dicosaure.Controllers.Adapter.PagerAdapter;
+import ie.csis.dicosaure.views.adapters.PagerAdapter;
 
 /**
  * To be used with ViewPager to provide a tab indicator component which give constant feedback as to
