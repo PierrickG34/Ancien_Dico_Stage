@@ -118,6 +118,7 @@ class HistoryFragment(): Fragment() {
 
     override fun onResume() {
         super.onResume()
+        initListView()
     }
 
     /**

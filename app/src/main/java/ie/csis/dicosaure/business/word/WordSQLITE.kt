@@ -4,7 +4,6 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
-import android.util.Log
 import ie.csis.dicosaure.DataModel.DataBaseHelperKot
 import ie.csis.dicosaure.business.Translate.TranslateSQLITE
 import ie.csis.dicosaure.utilities.StringsUtility
@@ -256,7 +255,6 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
             }
 
         }
-        Log.d("WordSQLite", "Result Lama ${translation}")
         return translation
     }
     /**

@@ -64,9 +64,6 @@ class ImportCSV {
             var translation: String
             var wTo: WordSQLITE
             var wFrom: WordSQLITE
-            var databaseWord: List<Word>
-            var meanings: String
-            var dbNotes: String
             var headword : String
             var access = br!!.readLine()
 
