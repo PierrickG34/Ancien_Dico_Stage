@@ -1,13 +1,10 @@
 package ie.csis.dicosaure.views.csv
 
-import android.app.ProgressDialog
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import ie.csis.dicosaure.model.dictionary.DictionarySQLITE
 import ie.csis.dicosaure.model.translate.TranslateSQLITE
 import ie.csis.dicosaure.model.word.WordSQLITE
-import ie.csis.dicosaure.views.R
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader

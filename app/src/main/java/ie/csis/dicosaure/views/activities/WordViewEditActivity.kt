@@ -430,67 +430,66 @@ class WordViewEditActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 
-        val handler = Handler(object : Handler.Callback {
-            override fun handleMessage(p0: Message?): Boolean {
-                if (p0!!.arg1 == UPDATE_SUCCESS) {
-                    Toast.makeText(ctx, resources.getString(R.string.succes_update_word), 10000).show()
-                    onBackPressed()
-                } else if (p0!!.arg1 == CREATE_SUCCESS) {
-                    Toast.makeText(ctx, resources.getString(R.string.succes_create_word), 10000).show()
-                    onBackPressed()
-                } else if (p0!!.arg1 == NAME_EXIST) {
-                    Toast.makeText(ctx, resources.getString(R.string.name_already_exists), 10000).show()
-                } else {
-                    Toast.makeText(ctx, resources.getString(R.string.headword_missing), 10000).show()
-                }
-                return false
-            }
-        })
+        if (item!!.title != null) {
 
-        var msg = Message()
-
-        Thread(object : Runnable {
-            override fun run() {
-                if (headwordField!!.text.toString().isEmpty()) {
-                    msg.arg1 = HEADWORD_MISSING
+            val handler = Handler(object : Handler.Callback {
+                override fun handleMessage(p0: Message?): Boolean {
+                    if (p0!!.arg1 == UPDATE_SUCCESS) {
+                        Toast.makeText(ctx, resources.getString(R.string.succes_update_word), 10000).show()
+                        onBackPressed()
+                    } else if (p0!!.arg1 == CREATE_SUCCESS) {
+                        Toast.makeText(ctx, resources.getString(R.string.succes_create_word), 10000).show()
+                        onBackPressed()
+                    } else if (p0!!.arg1 == NAME_EXIST) {
+                        Toast.makeText(ctx, resources.getString(R.string.name_already_exists), 10000).show()
+                    } else {
+                        Toast.makeText(ctx, resources.getString(R.string.headword_missing), 10000).show()
+                    }
+                    return false
                 }
-                else {
-                    word!!.headword = headwordField!!.text.toString()
-                    word!!.sound = if ((findViewById(R.id.play_button) as Button).isEnabled == false ) null else audioFileIntoByte()
-                    word!!.image = if (imgWord == null) null else imageIntoByte()
-                    word!!.note = noteField!!.text.toString()
-                    val log : Int
-                    if (action == UPDATE_WORD) {
-                        log = word!!.update()
-                    }
-                    else {
-                        log = word!!.save()
-                    }
-                    if (log > 0) {
-                        for (tr in translations!!) {
-                            val wordFrom = WordSQLITE(ctx, headword = tr.headword, idDictionary = tr.idDictionary, note = tr.note)
-                            wordFrom.save()
-                            val translate = TranslateSQLITE(ctx, word, wordFrom)
-                            translate.save()
-                        }
-                        for (tr in translationsRemoveList) {
-                            val tr = TranslateSQLITE(ctx, word, tr)
-                            tr.delete()
-                        }
+            })
+
+            var msg = Message()
+
+            Thread(object : Runnable {
+                override fun run() {
+                    if (headwordField!!.text.toString().isEmpty()) {
+                        msg.arg1 = HEADWORD_MISSING
+                    } else {
+                        word!!.headword = headwordField!!.text.toString()
+                        word!!.sound = if ((findViewById(R.id.play_button) as Button).isEnabled == false) null else audioFileIntoByte()
+                        word!!.image = if (imgWord == null) null else imageIntoByte()
+                        word!!.note = noteField!!.text.toString()
+                        val log: Int
                         if (action == UPDATE_WORD) {
-                            msg.arg1 = UPDATE_SUCCESS
+                            log = word!!.update()
+                        } else {
+                            log = word!!.save()
                         }
-                        else {
-                            msg.arg1 = CREATE_SUCCESS
+                        if (log > 0) {
+                            for (tr in translations!!) {
+                                val wordFrom = WordSQLITE(ctx, headword = tr.headword, idDictionary = tr.idDictionary, note = tr.note)
+                                wordFrom.save()
+                                val translate = TranslateSQLITE(ctx, word, wordFrom)
+                                translate.save()
+                            }
+                            for (tr in translationsRemoveList) {
+                                val tr = TranslateSQLITE(ctx, word, tr)
+                                tr.delete()
+                            }
+                            if (action == UPDATE_WORD) {
+                                msg.arg1 = UPDATE_SUCCESS
+                            } else {
+                                msg.arg1 = CREATE_SUCCESS
+                            }
+                        } else {
+                            msg.arg1 = NAME_EXIST
                         }
                     }
-                    else {
-                        msg.arg1 = NAME_EXIST
-                    }
+                    handler.sendMessage(msg)
                 }
-                handler.sendMessage(msg)
-            }
-    }).start()
+            }).start()
+        }
 
         return super.onOptionsItemSelected(item)
     }

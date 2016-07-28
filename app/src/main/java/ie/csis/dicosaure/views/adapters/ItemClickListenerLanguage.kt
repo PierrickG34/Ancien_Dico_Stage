@@ -1,11 +1,9 @@
 package ie.csis.dicosaure.views.adapters
 
 import android.content.Context
-import android.content.Intent
 import android.content.res.Configuration
 import android.view.View
 import android.widget.AdapterView
-import ie.csis.dicosaure.views.activities.MainActivity
 import ie.csis.dicosaure.views.activities.SetLanguageKot
 import java.util.*
 

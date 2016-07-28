@@ -4,10 +4,9 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
-import android.util.Log
+import ie.csis.dicosaure.lib.StringsUtility
 import ie.csis.dicosaure.model.database.DataBaseHelperKot
 import ie.csis.dicosaure.model.translate.TranslateSQLITE
-import ie.csis.dicosaure.lib.StringsUtility
 import org.jetbrains.anko.db.SqlOrderDirection
 import org.jetbrains.anko.db.delete
 import org.jetbrains.anko.db.select
