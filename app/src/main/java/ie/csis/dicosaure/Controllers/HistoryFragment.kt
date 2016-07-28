@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
+import android.util.Log
 import android.view.*
 import android.widget.*
 import android.widget.Toast.makeText
@@ -352,12 +353,14 @@ class HistoryFragment(): Fragment() {
      * @param position the position in the listView of the word the user want to see more details or to modify
      */
     fun seeWord(position: Int) {
-        // TODO Look ListWordActivityKot.kt pour le faire.
-        val wordDetailIntent = Intent(activity, ListWordsActivity::class.java)
+        val wordDetailIntent = Intent(activity, WordView::class.java)
 
+        //add the word in the intent
         wordDetailIntent.putExtra(MainActivity.EXTRA_WORD, mySearchDateList!!.get(position))
+
+        //add the dictionary in the intent
         var dictionaryModel: DictionarySQLITE? = DictionarySQLITE(this.context)
-        wordDetailIntent.putExtra(MainActivity.EXTRA_DICTIONARY, dictionaryModel!!.selectDictionary((mySearchDateList as MutableList<Word>).get(position).idDictionary!!))
+        wordDetailIntent.putExtra(MainActivity.EXTRA_DICTIONARY, dictionaryModel!!.select((mySearchDateList as MutableList<Word>).get(position).idDictionary!!))
 
         startActivity(wordDetailIntent)
 

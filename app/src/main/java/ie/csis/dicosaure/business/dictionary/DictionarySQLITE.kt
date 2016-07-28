@@ -192,15 +192,6 @@ class DictionarySQLITE(ctx : Context, inLang : String? = null, outLang : String?
     }
 
     /**
-     * TODO il y a une petit soucis sur cette méthode ... non ? =) nom c'est un selectDictionnary pourtant y'a un delete dedans
-     *
-     */
-    fun selectDictionary(idDictionary: String): Int {
-        return this.db.delete(DictionarySQLITE.DB_TABLE,
-                """${DictionarySQLITE.DB_COLUMN_ID} = ${idDictionary}""")
-    }
-
-    /**
      * Set the idDictionary, inLang  and the outLang to the supper class with the InLang and the OutLang
      */
     fun readByInLangOutLang() {
