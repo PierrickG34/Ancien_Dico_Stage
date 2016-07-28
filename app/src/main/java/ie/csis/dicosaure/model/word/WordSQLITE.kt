@@ -46,7 +46,6 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
      * @return the row ID of the newly inserted row, or -1 if an error occurred
      */
     fun save(): Int {
-        var log : Int
         var values = ContentValues();
         values.put(WordSQLITE.DB_COLUMN_NOTE, super.note)
         values.put(WordSQLITE.DB_COLUMN_HEADWORD, super.headword)
@@ -54,29 +53,8 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         values.put(WordSQLITE.DB_COLUMN_IMAGE, super.image)
         values.put(WordSQLITE.DB_COLUMN_DATE, if (super.dateView == null) null else super.dateView.toString())
         values.put(WordSQLITE.DB_COLUMN_SOUND, super.sound)
-        try {
-            this.db.insert(WordSQLITE.DB_TABLE, "" ,values)
-            log =  1
-            //return this.db.save(WordSQLITE.DB_TABLE, values, null)
-        }
-        catch (e : SQLiteConstraintException) {
-            log = -1
-        }
-//        if (super.image == null && super.sound == null && super.dateView == null) {
-//            log = this.db.insert(WordSQLITE.DB_TABLE,
-//                    WordSQLITE.DB_COLUMN_NOTE to super.note!!,
-//                    WordSQLITE.DB_COLUMN_HEADWORD to super.headword!!,
-//                    WordSQLITE.DB_COLUMN_ID_DICTIONARY to super.idDictionary!!).toInt()
-//        }
-//        else {
-//            log = this.db.insert(WordSQLITE.DB_TABLE,
-//                    WordSQLITE.DB_COLUMN_NOTE to super.note!!,
-//                    WordSQLITE.DB_COLUMN_IMAGE to super.image!!,
-//                    WordSQLITE.DB_COLUMN_SOUND to super.sound!!,
-//                    WordSQLITE.DB_COLUMN_HEADWORD to super.headword!!,
-//                    WordSQLITE.DB_COLUMN_DATE to super.dateView.toString()!!,
-//                    WordSQLITE.DB_COLUMN_ID_DICTIONARY to super.idDictionary!!).toInt()
-//        }
+        val log = this.db.insert(WordSQLITE.DB_TABLE, "" ,values)
+
         if (log < 0) {
             this.db.select(WordSQLITE.DB_TABLE, WordSQLITE.DB_COLUMN_ID)
                     .where("""(${WordSQLITE.DB_COLUMN_HEADWORD} == '${super.headword}') AND (${WordSQLITE.DB_COLUMN_ID_DICTIONARY} == '${super.idDictionary}')""")
@@ -91,7 +69,7 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
                 super.idWord = this.getString(this.getColumnIndex("rowid"))
             }
         }
-        return log
+        return log.toInt()
     }
 
     /**

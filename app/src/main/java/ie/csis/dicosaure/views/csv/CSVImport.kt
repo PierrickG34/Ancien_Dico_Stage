@@ -23,21 +23,11 @@ class CSVImport {
      * @param uri The CSV file providing the words to add in the dictionary
      * @param context Activity which called the method
      */
-    fun importCSV(d: DictionarySQLITE, uri: Uri, context: Context) : IntArray {
+    fun importCSV(d: DictionarySQLITE, uri: Uri, context: Context) {
         var wdm = WordSQLITE(context)
         var dicoID = d.idDictionary
         var res : IntArray
-        var addedWords = 0
-        var updateWords = 0
         var br : BufferedReader? = null
-
-        //Initialising the progressBar
-        var progress = ProgressDialog(context)
-        progress.setMessage(context.getString(R.string.import_progress))
-        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
-        progress.progress = 0
-        progress.setCancelable(false)
-        progress.show()
 
         // Each line of the CSV file will by split by the comma character
         val cvsSplitBy = ","
@@ -47,12 +37,6 @@ class CSVImport {
             var input = context.contentResolver.openInputStream(uri)
             // ISO-8859-1 interprets accents correctly Edit, not really, why changed for UTF-8
             var br = BufferedReader(InputStreamReader(input!!, "UTF-8"))
-            //var br = BufferedReader(InputStreamReader(input!!, "ISO-8859-1"))
-            var nbLine = 0
-            while (br!!.readLine() != null) {
-                nbLine++
-            }
-            progress!!.max = nbLine
 
             //InputStream iss = new BufferedInputStream(new FileInputStream(fileToRead));
             input = context.contentResolver.openInputStream(uri)
@@ -81,27 +65,17 @@ class CSVImport {
                         note = extractWord(wordInfo[2])
                     }
 
-                    // TODO remove this Log when we had make a loading screen
-                    Log.d("ImportCsvKot", "Word Added : " + headword + " : " + translation)
-
                     wFrom = WordSQLITE(ctx = context, headword = headword, note = note, idDictionary = dicoID)
-                    if (wFrom.save() < 0) {
-                        wFrom.readByHeadWord()
-                        updateWords++
-                    }
-                    else {
-                        addedWords++
-                    }
+                    wFrom.save()
+
                     if (translation.length > 0) {
                         wTo = WordSQLITE(ctx = context, headword = translation, note = "", idDictionary = "0")
-                        if (wTo.save() < 0) {
-                            wTo.readByHeadWord()
-                        }
+                        wTo.save()
+
                         var dtm = TranslateSQLITE(context, wFrom, wTo)
                         dtm.save()
                     }
                 }
-                progress!!.incrementProgressBy(1)
                 access = br!!.readLine()
             }
         }
@@ -118,8 +92,6 @@ class CSVImport {
 
             }
         }
-        progress!!.dismiss()
-        return intArrayOf(addedWords, updateWords)
     }
 
     /**
