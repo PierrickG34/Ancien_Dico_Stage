@@ -10,7 +10,7 @@
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
     android:focusable="true"
-    tools:context="Controllers.HomeFragment">
+    tools:context="ie.csis.dicosaure.Controllers.HomeFragment">
 
         <EditText
             android:layout_width="match_parent"
@@ -26,7 +26,7 @@
             android:inputType="text"
             android:imeOptions="actionGo|flagNoExtractUi" />
 
-        <com.antoine_charlotte_romain.dictionary.Controllers.Lib.HeaderGridView
+        <ie.csis.dicosaure.Controllers.Lib.HeaderGridView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/dictionary_list"
