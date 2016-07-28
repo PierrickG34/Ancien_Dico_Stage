@@ -23,6 +23,7 @@ import ie.csis.dicosaure.lib.HeaderGridView
 import ie.csis.dicosaure.model.dictionary.Dictionary
 import ie.csis.dicosaure.model.dictionary.DictionarySQLITE
 import ie.csis.dicosaure.views.R
+import ie.csis.dicosaure.views.activities.InternetImport
 import ie.csis.dicosaure.views.activities.ListWordsActivity
 import ie.csis.dicosaure.views.activities.MainActivity
 import ie.csis.dicosaure.views.adapters.DictionaryAdapter
@@ -322,7 +323,11 @@ class HomeFragment : Fragment(), DictionaryAdapterCallback {
         }
 
         //Dialog negative action
-        builder.setNegativeButton(R.string.cancel) { dialog, which -> dialog.cancel() }
+        builder.setNegativeButton(R.string.from_internet) { dialog, which ->
+            val intent = Intent(this.getActivity(), InternetImport::class.java)
+            startActivity(intent)
+        }
+
         builder.setNeutralButton(R.string.from_csv) { dialog, which ->
             val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.addCategory(Intent.CATEGORY_OPENABLE)
@@ -358,6 +363,7 @@ class HomeFragment : Fragment(), DictionaryAdapterCallback {
             alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
             true
         })
+
         alertDialog.show()
     }
 

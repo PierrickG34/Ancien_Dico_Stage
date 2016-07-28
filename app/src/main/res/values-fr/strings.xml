@@ -144,4 +144,5 @@
     <string name="what_do_you_want">Que voulez-vous faire ?</string>
     <string name="no_image">Aucune image</string>
     <string name="headword_missing">Veuillez renseigner le nom du mot</string>
+    <string name="from_internet">Depuis Internet</string>
 </resources>

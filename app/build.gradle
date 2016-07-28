@@ -4,6 +4,7 @@ apply plugin: 'kotlin-android'
 android {
     compileSdkVersion 24
     buildToolsVersion "23.0.3"
+    useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         applicationId "ie.csis.dicosaure"
@@ -45,6 +46,10 @@ dependencies {
     compile 'com.android.support:support-annotations:+'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile 'org.jetbrains.anko:anko-sqlite:0.8.3'
+    compile 'org.apache.httpcomponents:httpclient-android:+'
+    compile 'org.apache.httpcomponents:httpcore:+'
+    compile 'org.apache.httpcomponents:httpclient:+'
+    compile 'org.apache.commons:commons-io:+'
 }
 repositories {
     mavenCentral()
