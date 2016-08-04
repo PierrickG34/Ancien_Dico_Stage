@@ -36,7 +36,7 @@ open class Dictionary : Serializable {
      * @return String : return the ID, the inLang and outLang of the dictionary
      */
     override fun toString(): String {
-        return """id => ${this.idDictionary}, inLang => ${this.inLang}, outLang => ${this.outLang}"""
+        return """${this.inLang} - ${this.outLang}"""
     }
 
 }

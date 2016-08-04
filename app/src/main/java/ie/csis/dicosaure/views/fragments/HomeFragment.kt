@@ -662,7 +662,7 @@ class HomeFragment : Fragment(), DictionaryAdapterCallback {
                 this.searchBox!!.setText("")
             }
             val import = CSVImport()
-            import.importCSV(d, data.data, c)
+            import.importCSV(d, c, data.data, null)
 
             //Handling the end of the import
             val handler = object : Handler() {

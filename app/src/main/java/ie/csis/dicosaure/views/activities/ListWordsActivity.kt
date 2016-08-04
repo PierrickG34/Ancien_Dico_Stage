@@ -764,7 +764,7 @@ class ListWordsActivity() : AppCompatActivity(), AdapterView.OnItemClickListener
 
             //Handling the end of the import
             val import = CSVImport()
-            var importExec = import.importCSV(DictionarySQLITE(this.ctx, this.selectedDictionary!!.inLang, this.selectedDictionary!!.outLang, this.selectedDictionary!!.idDictionary), data!!.data, c)
+            var importExec = import.importCSV(DictionarySQLITE(this.ctx, this.selectedDictionary!!.inLang, this.selectedDictionary!!.outLang, this.selectedDictionary!!.idDictionary), c, data!!.data, null)
         }
         else if ((requestCode == NEW_WORD || requestCode == DELETE_WORD) && resultCode == Activity.RESULT_OK) {
             this.myWordsList.clear()

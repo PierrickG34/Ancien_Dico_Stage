@@ -146,4 +146,12 @@
     <string name="no_image">No image</string>
     <string name="headword_missing">Headword missing</string>
     <string name="from_internet">From Internet</string>
+
+    <string name="loading">Loading...</string>
+    <string name="downloading">Downloading...</string>
+    <string name="msg_error_connection">No internet connectivity</string>
+    <string name="retry_connection">Try again</string>
+    <string name="download_dictionary">Download a dictionary</string>
+    <string name="importing">Import in progress</string>
+    <string name="end_import">Import done</string>
 </resources>

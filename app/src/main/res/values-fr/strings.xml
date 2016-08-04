@@ -145,4 +145,12 @@
     <string name="no_image">Aucune image</string>
     <string name="headword_missing">Veuillez renseigner le nom du mot</string>
     <string name="from_internet">Depuis Internet</string>
+
+    <string name="loading">Chargement en cours...</string>
+    <string name="downloading">Téléchargement en cours...</string>
+    <string name="msg_error_connection">Vous n\'êtes pas connecté</string>
+    <string name="retry_connection">Réessayer</string>
+    <string name="download_dictionary">Télécharger un dictionnaire</string>
+    <string name="importing">Importation en cours</string>
+    <string name="end_import">Importation terminée</string>
 </resources>

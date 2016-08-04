@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "ie.csis.dicosaure"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"

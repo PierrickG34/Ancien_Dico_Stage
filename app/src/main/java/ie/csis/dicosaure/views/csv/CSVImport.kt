@@ -5,9 +5,7 @@ import android.net.Uri
 import ie.csis.dicosaure.model.dictionary.DictionarySQLITE
 import ie.csis.dicosaure.model.translate.TranslateSQLITE
 import ie.csis.dicosaure.model.word.WordSQLITE
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
+import java.io.*
 
 /**
  * Created by dineen on 30/06/2016.
@@ -20,25 +18,23 @@ class CSVImport {
      * @param uri The CSV file providing the words to add in the dictionary
      * @param context Activity which called the method
      */
-    fun importCSV(d: DictionarySQLITE, uri: Uri, context: Context) {
-        var wdm = WordSQLITE(context)
+    fun importCSV(d: DictionarySQLITE, context: Context, uri: Uri?, contentCSV: String?) {
+
         var dicoID = d.idDictionary
-        var res : IntArray
+        var input : InputStream
         var br : BufferedReader? = null
 
         // Each line of the CSV file will by split by the comma character
         val cvsSplitBy = ","
         try {
-            //InputStream is = getContentResolver().openInputStream(uri);
-            //InputStream is = new BufferedInputStream(new FileInputStream(fileToRead));
-            var input = context.contentResolver.openInputStream(uri)
-            // ISO-8859-1 interprets accents correctly Edit, not really, why changed for UTF-8
-            var br = BufferedReader(InputStreamReader(input!!, "UTF-8"))
-
-            //InputStream iss = new BufferedInputStream(new FileInputStream(fileToRead));
-            input = context.contentResolver.openInputStream(uri)
-            // ISO-8859-1 interprets accents correctly Edit, not really, why changed for UTF-8
-            br = BufferedReader(InputStreamReader(input!!, "UTF-8"))
+            if (uri != null) {
+                input = context.contentResolver.openInputStream(uri)
+                br = BufferedReader(InputStreamReader(input!!, "UTF-8"))
+            }
+            else {
+                input = ByteArrayInputStream(contentCSV!!.toByteArray())
+                br = BufferedReader(InputStreamReader(input!!, "UTF-8"))
+            }
 
             var wordInfo: Array<String>
             var note: String
