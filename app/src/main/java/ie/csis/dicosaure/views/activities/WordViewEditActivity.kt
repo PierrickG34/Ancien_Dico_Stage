@@ -219,14 +219,11 @@ class WordViewEditActivity : AppCompatActivity() {
             for (cb in listCheckBox) {
                 if (cb.isChecked) {
                     this.translations!!.remove(cb.tag)
-                    if (cb.tag is WordSQLITE) {
+                    if ((cb.tag as Word).idWord != null) {
                         this.translationsRemoveList.add(cb.tag as Word)
                     }
-                    //val tr = TranslateSQLITE(this.ctx, this.word, cb.tag as Word)
-                    //tr.delete()
                 }
             }
-            //this.initTranslationsList()
             this.initFrameTranslation()
             dialog.cancel()
         }
@@ -453,6 +450,7 @@ class WordViewEditActivity : AppCompatActivity() {
 
             Thread(object : Runnable {
                 override fun run() {
+                    println("NTM")
                     if (headwordField!!.text.toString().isEmpty()) {
                         msg.arg1 = HEADWORD_MISSING
                     } else {
@@ -466,6 +464,7 @@ class WordViewEditActivity : AppCompatActivity() {
                         } else {
                             log = word!!.save()
                         }
+                        println(log)
                         if (log > 0) {
                             for (tr in translations!!) {
                                 val wordFrom = WordSQLITE(ctx, headword = tr.headword, idDictionary = tr.idDictionary, note = tr.note)
@@ -474,8 +473,8 @@ class WordViewEditActivity : AppCompatActivity() {
                                 translate.save()
                             }
                             for (tr in translationsRemoveList) {
-                                val tr = TranslateSQLITE(ctx, word, tr)
-                                tr.delete()
+                                val trans = TranslateSQLITE(ctx, word, tr)
+                                trans.delete()
                             }
                             if (action == UPDATE_WORD) {
                                 msg.arg1 = UPDATE_SUCCESS
