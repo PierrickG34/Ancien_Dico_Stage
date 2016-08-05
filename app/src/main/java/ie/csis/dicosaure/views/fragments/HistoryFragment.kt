@@ -379,7 +379,7 @@ class HistoryFragment(): Fragment() {
         alert.setMessage(getString(R.string.clearHistory) + " ?")
         alert.setPositiveButton(getString(R.string.clear)) { dialog, whichButton ->
             makeText(activity, getString(R.string.historyCleared), Toast.LENGTH_SHORT).show()
-            sddm!!.deleteAll()
+            sddm!!.deleteAllDates()
             initListView();
         }
 

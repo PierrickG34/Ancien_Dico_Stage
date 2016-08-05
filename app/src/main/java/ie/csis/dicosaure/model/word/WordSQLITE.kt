@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
+import android.util.Log
 import ie.csis.dicosaure.lib.StringsUtility
 import ie.csis.dicosaure.model.database.DataBaseHelperKot
 import ie.csis.dicosaure.model.translate.TranslateSQLITE
@@ -456,13 +457,17 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
 
     /**
      * Change the date attribute to 'null' for all word
-     * @return The value if the request work
-     * TODO peut etre rename cette fonction ?
+     * @return the number of words in the dictionary value if the request work
      */
-    fun deleteAll() : Int {
-        return this.db.update(WordSQLITE.DB_TABLE,
-                WordSQLITE.DB_COLUMN_DATE to "null")
-                .exec()
+    fun deleteAllDates() : Int {
+        var values = ContentValues();
+        values.put(WordSQLITE.DB_COLUMN_DATE, if (super.dateView == null) null else super.dateView.toString())
+        try {
+            return this.db.update(WordSQLITE.DB_TABLE, values, null, null)
+        }
+        catch (e : SQLiteConstraintException) {
+            return -1
+        }
     }
 
     /*
