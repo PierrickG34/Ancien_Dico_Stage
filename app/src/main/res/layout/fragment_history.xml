@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ie.csis.dicosaure.views.fragments.HistoryFragment"
+    tools:context="ie.csis.app.dicosaure.views.fragments.HistoryFragment"
     android:id="@+id/history_fragment"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"

@@ -7,7 +7,7 @@ android {
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
-        applicationId "ie.csis.dicosaure"
+        applicationId "ie.csis.app.dicosaure"
         minSdkVersion 23
         targetSdkVersion 21
         versionCode 1

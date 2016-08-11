@@ -18,7 +18,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"/>
 
-            <ie.csis.dicosaure.lib.SlidingTabLayout
+            <ie.csis.app.dicosaure.lib.SlidingTabLayout
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ie.csis.dicosaure.views" >
+    package="ie.csis.app.dicosaure.views" >
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -35,7 +35,7 @@
         </activity>
 
         <activity
-            android:name="ie.csis.dicosaure.views.activities.ListWordsActivity"
+            android:name="ie.csis.app.dicosaure.views.activities.ListWordsActivity"
             android:label="@string/list_words_activity"
             android:launchMode="singleTop"
             android:parentActivityName=".activities.MainActivity"
@@ -56,13 +56,13 @@
         </activity>
 
         <activity
-            android:name="ie.csis.dicosaure.views.csv.CSVExport"
+            android:name="ie.csis.app.dicosaure.views.csv.CSVExport"
             android:label="@string/title_activity_csvexport"
-            android:parentActivityName="ie.csis.dicosaure.views.activities.ListWordsActivity"
+            android:parentActivityName="ie.csis.app.dicosaure.views.activities.ListWordsActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ie.csis.dicosaure.views.activities.ListWordsActivity" />
+                android:value="ie.csis.app.dicosaure.views.activities.ListWordsActivity" />
         </activity>
 
         <!-- external libraries -->

@@ -24,7 +24,7 @@
             android:inputType="text"
             android:imeOptions="actionGo|flagNoExtractUi" />
 
-        <ie.csis.dicosaure.lib.HeaderGridView
+        <ie.csis.app.dicosaure.lib.HeaderGridView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/dictionary_list"
