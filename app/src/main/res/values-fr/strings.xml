@@ -153,4 +153,5 @@
     <string name="download_dictionary">Télécharger un dictionnaire</string>
     <string name="importing">Importation en cours</string>
     <string name="end_import">Importation terminée</string>
+    <string name="access_API_impossible">Impossible d\'accéder à l\'API</string>
 </resources>

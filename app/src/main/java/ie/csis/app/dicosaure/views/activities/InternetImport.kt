@@ -37,16 +37,21 @@ class InternetImport() : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        this.setContentView(R.layout.import_internet)
+        try{
+            super.onCreate(savedInstanceState)
+            this.setContentView(R.layout.import_internet)
 
-        //Set the toolbar on the view
-        var toolbar = super.findViewById(R.id.tool_bar) as Toolbar
-        super.setSupportActionBar(toolbar)
-        this.supportActionBar!!.setTitle(R.string.download_dictionary)
-        this.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+            //Set the toolbar on the view
+            var toolbar = super.findViewById(R.id.tool_bar) as Toolbar
+            super.setSupportActionBar(toolbar)
+            this.supportActionBar!!.setTitle(R.string.download_dictionary)
+            this.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        this.tryConnection(null)
+            this.tryConnection(null)
+        }
+        catch(e : Exception ) {
+            Toast.makeText(this, R.string.access_API_impossible, Toast.LENGTH_SHORT).show();
+        }
     }
 
     fun launchConnection() {
@@ -72,29 +77,34 @@ class InternetImport() : AppCompatActivity() {
     }
 
     fun initListView(APIResult : String) {
-        val dictionaries = JSONObject(APIResult).getJSONArray("list")
-        var listDictionary = ArrayList<Dictionary>()
-        var dictionary : Dictionary
-        var rowJSON : JSONObject
-        var i = 0
-        while (i < dictionaries.length()) {
-            rowJSON = dictionaries.getJSONObject(i)
-            dictionary = Dictionary(inLang = rowJSON.getString("inLang"), outLang = rowJSON.getString("outLang"), id = rowJSON.getString("id"))
-            listDictionary.add(dictionary)
-            i++
-        }
-        val listDicoView = this.findViewById(R.id.listView) as ListView
-        listDicoView.setOnItemClickListener { adapterView, view, i, l ->
-            if (isConnected()) {
-                val dic = adapterView.getItemAtPosition(i) as Dictionary
-                this.startSpinner(this.getString(R.string.downloading))
-                HTTPAsyncTask(this, TASK_GET_ONE_DICO).execute(URL(APIURL + "getdico/" + dic.idDictionary))
+        try{
+            val dictionaries = JSONObject(APIResult).getJSONArray("list")
+            var listDictionary = ArrayList<Dictionary>()
+            var dictionary : Dictionary
+            var rowJSON : JSONObject
+            var i = 0
+            while (i < dictionaries.length()) {
+                rowJSON = dictionaries.getJSONObject(i)
+                dictionary = Dictionary(inLang = rowJSON.getString("inLang"), outLang = rowJSON.getString("outLang"), id = rowJSON.getString("id"))
+                listDictionary.add(dictionary)
+                i++
             }
-            else {
-                this.findViewById(R.id.connection_error_layout).visibility = View.VISIBLE
+            val listDicoView = this.findViewById(R.id.listView) as ListView
+            listDicoView.setOnItemClickListener { adapterView, view, i, l ->
+                if (isConnected()) {
+                    val dic = adapterView.getItemAtPosition(i) as Dictionary
+                    this.startSpinner(this.getString(R.string.downloading))
+                    HTTPAsyncTask(this, TASK_GET_ONE_DICO).execute(URL(APIURL + "getdico/" + dic.idDictionary))
+                }
+                else {
+                    this.findViewById(R.id.connection_error_layout).visibility = View.VISIBLE
+                }
             }
+            listDicoView.adapter = ArrayAdapter<Dictionary>(this, android.R.layout.simple_list_item_1, listDictionary)
         }
-        listDicoView.adapter = ArrayAdapter<Dictionary>(this, android.R.layout.simple_list_item_1, listDictionary)
+        catch(e : Exception ) {
+            Toast.makeText(this, R.string.access_API_impossible, Toast.LENGTH_SHORT).show();
+        }
     }
 
     fun startSpinner(txtSpinner : String) {
