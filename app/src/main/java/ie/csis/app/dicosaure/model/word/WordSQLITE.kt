@@ -547,8 +547,8 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         val search = StringsUtility.removeAccents("$begin%$middle%$end")
         val c = this.db.select(WordSQLITE.DB_TABLE)
                        .where("""(${WordSQLITE.DB_COLUMN_ID_DICTIONARY} = '${dictionaryID}')
-                        AND (${WordSQLITE.DB_COLUMN_HEADWORD} = '${search}')
-                        AND (${WordSQLITE.DB_COLUMN_NOTE} = '${search}')""")
+                        AND (${WordSQLITE.DB_COLUMN_HEADWORD} LIKE '${search}')
+                        AND (${WordSQLITE.DB_COLUMN_NOTE} LIKE '${search}')""")
                        .exec {
             while (this.moveToNext()) {
 //                var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
@@ -584,7 +584,7 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         var res: MutableList<Word> = ArrayList<Word>()
         var formatter: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
         headWord = StringsUtility.removeAccents(headWord)
-        val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_HEADWORD} = '${headWord}')""").exec {
+        val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_HEADWORD} LIKE '${headWord}')""").exec {
             while (this.moveToNext()) {
 //                var utilDate: java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
 //                var sqlDate: java.sql.Date = java.sql.Date(utilDate.getTime())
@@ -619,7 +619,7 @@ class WordSQLITE(ctx : Context, idWord: String? = null, note : String? = null, i
         var res: MutableList<Word> = ArrayList<Word>()
         var formatter: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
         headWord = StringsUtility.removeAccents(headWord)
-            val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_ID_DICTIONARY} = '${dictionaryID}') AND (${WordSQLITE.DB_COLUMN_HEADWORD} = '${headWord}')""").exec {
+            val c = this.db.select(WordSQLITE.DB_TABLE).where("""(${WordSQLITE.DB_COLUMN_ID_DICTIONARY} = '${dictionaryID}') AND (${WordSQLITE.DB_COLUMN_HEADWORD} LIKE '${headWord}')""").exec {
                 while (this.moveToNext()) {
 //                    var utilDate : java.util.Date = formatter.parse(this.getString(this.getColumnIndex("dateView")))
 //                    var sqlDate : java.sql.Date = java.sql.Date(utilDate.getTime())

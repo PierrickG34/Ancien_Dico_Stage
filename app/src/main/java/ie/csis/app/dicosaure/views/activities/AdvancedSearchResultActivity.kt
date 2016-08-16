@@ -152,33 +152,35 @@ class AdvancedSearchResultActivity : AppCompatActivity() {
                     }
                 }
                 else if (searchOption == MainActivity.ALL_DATA) {
-                    val words : MutableList<Word>
+                    var words : MutableList<Word>
                     if(id == 0L) {
-                        results = wdm!!.selectWholeNoteOrHeadword(end)
-                        words = wdm!!.selectWholeHeadword(end)
+                        results = wdm!!.selectNoteOrHeadword("","",end) // Return all the words corresponding to the Note search and headword search
                     }
                     else{
-                        results = wdm!!.selectWholeNoteOrHeadwordByIdDico(end, id)
-                        words = wdm!!.selectWholeHeadwordByIdDico(end,id)
+                        results = wdm!!.selectNoteOrHeadwordByIdDico("", "",end, id)
                     }
+                    words = wdm!!.selectHeadword("", "", end)
                     var resultTrans: MutableList<Word>? = mutableListOf()
-                    if (!words.isEmpty()) {
-                        val idWord = (words.component1()).idWord
-                        var resultsId = translat!!.selectListWordsOutLangFromWordInLang(idWord!!, id)
-                        var it = resultsId!!.iterator()
-                        var e : Word
-                        while (it.hasNext()) {
-                            if(id == 0L) {
-                                e = wdm!!.getWordById(it.next())
+                    if (!words.isEmpty()) {     // if the search by Headword doesn't return an empty array
+                        var idIt = words!!.iterator()
+                        while(idIt.hasNext())
+                        {
+                            var resultsId = translat!!.selectListWordsOutLangFromWordInLang(idIt.next().idWord!!, id) // return all the id of the word found by search translation
+                            var it = resultsId!!.iterator() // an iterator to parse all the array resultsID (all the id word found by seearch translation)
+                            var e : Word
+                            while (it.hasNext()) { // until there is an other word to iterate
+                                if(id == 0L) {
+                                    e = wdm!!.getWordById(it.next()) // return the word corresponding to the id
+                                }
+                                else{
+                                    e = wdm!!.getWordByIdByIdDico(it.next(), id)
+                                }
+                                resultTrans = resultTrans!!.plus(e) as MutableList<Word>
                             }
-                            else{
-                                e = wdm!!.getWordByIdByIdDico(it.next(), id)
-                            }
-                            resultTrans = resultTrans!!.plus(e) as MutableList<Word>
                         }
                     }
-                    var it = resultTrans?.iterator()
-                    while(it!!.hasNext()) {
+                    var it = resultTrans?.iterator() // an iterator to parse all the array resultsID (all the id word found by seearch translation)
+                    while(it!!.hasNext()) { // this while enables that all research doesn't return the same word two time
                         val el = it.next()
                         if (!results!!.contains(el)) {
                             results = results!!.plus(el) as MutableList<Word>
@@ -187,28 +189,26 @@ class AdvancedSearchResultActivity : AppCompatActivity() {
                 }
                 else if (searchOption == MainActivity.MEANING_ONLY) {
                     val words : MutableList<Word>
-                    if(id == 0L) {
-                        words = wdm!!.selectWholeHeadword(end)
-                    }
-                    else{
-                        words = wdm!!.selectWholeHeadwordByIdDico(end,id)
-                    }
-                    if(!words.isEmpty())
-                    {
-                        val idWord = (words.component1()).idWord
-                        var resultsId = translat!!.selectListWordsOutLangFromWordInLang(idWord!!, id)
-                        var it = resultsId!!.iterator()
+                    words = wdm!!.selectHeadword("", "", end) // return all the word wich contain middle or begin by begin or end by end in all
+                    //Log.d("Part_Trans_word","Result 2 - ${words}")
+                    if (!words.isEmpty()) { // if it found words
+                        //val idWord = (words.component1()).idWord // get the id of the word found
+                        var idIt = words!!.iterator()
                         results = mutableListOf()
-                        var e : Word
-                        while(it.hasNext())
+                        while(idIt.hasNext())
                         {
-                            if(id == 0L) {
-                                e = wdm!!.getWordById(it.next())
+                            var resultsId = translat!!.selectListWordsOutLangFromWordInLang((idIt.next()).idWord!!, id)
+                            var it = resultsId!!.iterator()
+                            var e : Word
+                            while(it.hasNext()) {
+                                if(id == 0L) {
+                                    e = wdm!!.getWordById(it.next())
+                                }
+                                else{
+                                    e = wdm!!.getWordByIdByIdDico(it.next(), id)
+                                }
+                                results = results!!.plus(e) as MutableList<Word>
                             }
-                            else{
-                                e = wdm!!.getWordByIdByIdDico(it.next(), id)
-                            }
-                            results = results!!.plus(e) as MutableList<Word>
                         }
                     }
                 }
@@ -226,7 +226,7 @@ class AdvancedSearchResultActivity : AppCompatActivity() {
 
         // Display results
         listResults = findViewById(R.id.resultsList) as GridView?
-        if (results!!.size > 0) {
+        if (results != null) {
             myAdapter = AdvancedSearchResultsAdapter(this, R.layout.row_advanced_search_result, results!!)
             listResults!!.setAdapter(myAdapter)
 
