@@ -8,7 +8,6 @@
         android:layout_height="wrap_content"
         android:descendantFocusability="blocksDescendants"
         android:background="@color/colorPrimaryDark"
-        android:forceHasOverlappingRendering="true"
         android:paddingTop="35dp"
         android:paddingBottom="35dp"
         android:id="@+id/groupHeader">

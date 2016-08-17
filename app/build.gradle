@@ -2,16 +2,16 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 24
+    compileSdkVersion 23
     buildToolsVersion "23.0.3"
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         applicationId "ie.csis.app.dicosaure"
-        minSdkVersion 23
-        targetSdkVersion 21
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion 14
+        targetSdkVersion 23
+        versionCode 3
+        versionName "1.2"
     }
     buildTypes {
         release {
@@ -34,7 +34,7 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:preference-v7:+'
+    compile 'com.android.support:preference-v14:23.2.0+'
     compile 'com.android.support:design:+'
     compile 'com.android.support:appcompat-v7:+'
     compile "org.jonnyzzz.kotlin.xml.bind:jdom:0.1.9"

@@ -1,5 +1,5 @@
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/lib/com.app.chasebank"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -70,7 +70,6 @@
             android:layout_height="wrap_content"
             android:descendantFocusability="blocksDescendants"
             android:background="@color/colorPrimaryDark"
-            android:forceHasOverlappingRendering="true"
             android:paddingTop="35dp"
             android:paddingBottom="35dp"
             android:id="@+id/groupHeader">
